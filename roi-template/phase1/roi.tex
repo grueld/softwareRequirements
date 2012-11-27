@@ -1,0 +1,669 @@
+% !TEX TS-program = pdflatex   
+\documentclass[runningheads,12pt]{article} 
+\usepackage{textcomp,color,longtable,landscape}
+\def\headerTitle{CSE4312F12 Project -- ROI Solution}
+\input{defns.tex} 
+
+
+\begin{document}
+
+\title{CSE4312F12 Project Solution\\
+ROI}
+
+\author{Damien Gruel (cse23089@cse.yorku.ca)
+\and Ludovic Lavalette (cse23088@cse.yorku.ca)}
+
+\date{\today}
+
+\maketitle
+
+\section*{Note}
+\begin{itemize}
+\item A customer elicitation session was held during class on Tuesday November 6, 2012. If you were not there sure to catch up with a fellow student who was there.
+\item This template is handed out \emph{caveat emptor}.  There may be errors and wrong information. It is ultimately your responsibility to elicit the correct requirements from the customer and to ensure that you satisfy the customer goals and specify correct output from the input.
+\item Your are required to correct any errors or ambiguities in this template and use this template to produce your final requirements document.
+\end{itemize}
+
+\section*{Revisions}
+
+\begin{tabular}{|l|l|p{3in}|}
+\hline
+Date & Revision& Description \\ 
+\hline
+10 October  2012 
+& 1.0       
+& Initial customer elicitation\\ 
+\hline
+15 November 2012
+& 2.0       
+& Initial Student solution       \\
+\hline
+1 December 2012
+& 3.0       
+& Final Student solution       \\
+\hline
+\end{tabular}
+
+\newpage
+\tableofcontents
+\listoffigures
+\listoftables
+
+\newpage
+
+\section{Context Diagram}
+
+
+
+The following diagram is the context diagram for the ROI system.\\
+The only monitored variable is the CSV file (provided by the user), which contains the evaluation dates (\textit{start} and \textit{end}).\\
+\\
+The format of the output is the following (whole input = everything between the earliest date and the latest date in the sequence of tuple data):\\
+-------------------------------------------\\
+Whole input: yyyy-mm-dd to yyyy-mm-dd\\
+TWR: ?? \%\\
+ROI: ?? \%\\
+Benchmark: ?? \%\\
+--------------------------------------------\\
+-------------------------------------------\\
+Evaluation Period: yyyy-mm-dd to yyyy-mm-dd\\
+TWR: ?? \%\\
+ROI: ?? \%\\
+Benchmark: ?? \%\\
+--------------------------------------------\\
+\\
+\\
+The controlled variables are also a warning (if a calculation is not possible) and an error (if the CSV file is not valid).\\
+
+\begin{figure}
+\centering
+\includegraphics[scale=1.0]{inputs/context.pdf}
+\caption{Context diagram for the ROI system}
+\label{fig:ROI-context}
+\end{figure}
+\section{Dictionary}
+
+\smallskip
+
+
+\noindent\textbf{Agent fees}: Money that the customer pays to the investment advisor to run the account.\smallskip
+
+\noindent\textbf{Benchmark}: Standard used as a point of reference for evaluating performance.\smallskip
+
+\noindent\textbf{Cash Flow}: Revenue or expense stream that changes a cash account over a given period.\smallskip
+
+\noindent\textbf{CSV}: Comma Separated Value file format used to store tabular data in which numbers and text are stored in plain-text form that can be easily written and read in a text editor.\smallskip
+
+\noindent\textbf{Customer}: The user of the software system.\smallskip
+
+\noindent\textbf{Evaluation Period}: a start and end date (provided by the user) for the portfolio history over which the return on investment is calculated.\smallskip
+
+\noindent\textbf{GIPS}: Global Investment Performance Standards\smallskip
+
+\noindent\textbf{Investment broker}: Runs the portfolio on behalf of the customer and supplies portfolio accounts.\smallskip
+
+\noindent\textbf{Portfolio statement}: List of all investments and current value.\smallskip
+
+\noindent\textbf{Portfolio History}: the historical data of investment performance over time that the customer stores about their investments as gleaned from their monthly or yearly investment accounts. Usually stored by customers in a CSV file (see Figure 1).\smallskip
+
+\noindent\textbf{ROI}: Return On Investment: Performance measure used to evaluate the efficiency of an investment.\smallskip
+
+\noindent\textbf{TWR}: Time Weighted Return: Measure of the compound rate of growth in a portfolio.\smallskip
+
+\noindent\textbf{Tuple data}: \textit{date}, \textit{market value}, \textit{cash flow}, \textit{agent fees} and \textit{benchmark}.\smallskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{E/R-descriptions}
+
+\subsection{E-descriptions}
+
+{\centering
+\begin{tabular}{|l|p{9cm}|p{5cm}|}
+\hline
+\textbf{ID} & \textbf{Description} & \textbf{Comment}\\
+
+\hline
+E1 & Customers create and store a portfolio history, i.e. the historical data of their investment performance as determined from portfolio statements. & \\
+
+\hline
+E2 & Customers store their portfolio history as a CSV text file. CSV files may be prepared on editors of any operating system and encoded as ANSI or UTF-8. & \\
+
+\hline
+E3 & Every portfolio history has a name. & \\
+
+\hline
+E4 & Optionally, every portfolio history has a description, account number, email, address, and phone number fields. & \\
+
+\hline
+E5 & A portfolio history records investment performance in a non-empty sequence of tuple data, each tuple having the fields: date, market value, cash flow, agent fees and benchmark. & See \textit{tr} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+E6 & When there is a customer contribution, the cash flow is a positive number. For a withdrawal, the number is negative. & \\
+
+\hline
+E7 & Agent fees can be internal (deducted from within the portfolio) or external (additional amounts paid by the customer to the investment broker). The portfolio history reflects only external agent fees, always reported as a non-negative amount. & \\
+
+\hline
+E8 & Optionally, every portfolio has an evaluation period that is between the start and end date of the historical performance data. & See Invariant 1 of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+\hline
+\end{tabular}
+}
+
+%%%%%%%%%%%%%%%%
+\newpage
+\subsection{R-descriptions}
+
+{\centering
+\begin{longtable}{|l|p{9cm}|p{5cm}|}
+\hline
+\textbf{ID} & \textbf{Description} & \textbf{Comment}\\
+
+\hline
+R1 & All return on investment calculations shall follow the GIPS standard. & See twr, roi, benchmark (Fig.~\ref{tab:twr_calculation}) \\
+
+\hline
+\end{longtable}
+%%%
+\centering
+\begin{longtable}{|l|p{9cm}|p{5cm}|}
+\hline
+\multicolumn{3}{|c|}{\textbf{Evaluation period}} \\
+
+\hline
+R2.1 & The evaluation period is in range. & See Invariant 1 of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+R2.2 & If no evaluation period is provided, then the start date is the earliest date and the end date the latest date in the sequence of tuple data. & See Start\_Valid and End\_Valid in Function Table\\
+
+\hline
+R2.3 & If the evaluation dates are not valid, then the following error message shall be displayed to the user: "Invalid\_Evaluation\_Period" & See Function Table \\
+
+\hline
+\end{longtable}
+%%%
+\centering
+\begin{longtable}{|l|p{9cm}|p{5cm}|}
+
+\hline
+\multicolumn{3}{|c|}{\textbf{CSV file}} \\
+
+\hline
+R3.1 & Every data tuple (row in the CSV file) has a date and a non-negative market value. & See Invariant 2 of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+R3.2 &  Dates in the tuples are unique and ordered. & See Invariant 3 of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+R3.3 & No withdrawal in the tuple data can be greater than the market value. & See Invariant 4 of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+R3.4 & An account cannot grow from zero market value and cash flow. & See Invariant 5 of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+R3.5 &  For each tuple, the market value plus cash-flow plus agent-fees must be non-zero. & See precondition 3 of feature \textit{twr} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+R3.6 &  Error message: If the CSV file is not valid (i.e. if any of the conditions mentioned above do not hold), then the following error message shall be displayed to the user: "Invalid\_file". & See Function table\\
+
+\hline
+R3.7 &  All dates must be in ISO format (yyyy-mm-dd). & \\
+
+\hline
+\end{longtable}
+%%%
+\centering
+\begin{longtable}{|l|p{9cm}|p{5cm}|}
+
+\hline
+\multicolumn{3}{|c|}{\textbf{Calculation of the TWR}} \\
+
+\hline
+R4.1 & The system should provide two TWR : one for the evaluation period, and one for the whole input. & See Function Table \\
+
+\hline
+R4.2 & If the evaluation period is less than a year, then the TWR shall be reported in absolute terms as a percentage return (i.e. it is not annualized). If the evaluation period is a year or more, then the TWR is annualized to a percentage per year. & See postcondition of  \textit{annual\_compounded\_TWR} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+R4.3 & The annualized TWR shall be reported as a percentage. & See \textit{annual\_compounded\_TWR} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+R4.4 & Agent fees are treated like a deposit. & See \textit{annual\_compounded\_TWR} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+R4.5 & Warning message: If the TWR is not calculable, then a warning message shall be displayed to the user. & See Function Table\\
+
+\hline
+\end{longtable}
+%%%
+\centering
+\begin{longtable}{|l|p{9cm}|p{5cm}|}
+
+\hline
+\multicolumn{3}{|c|}{\textbf{Calculation of the ROI}} \\
+
+\hline
+R5.1 & The system should provide two ROI : one for the evaluation period, and one for the whole input. & See Function Table\\
+
+\hline
+R5.2 & The ROI shall be reported as a percentage. & See \textit{roi} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+R5.3 & Agent fees are treated like a deposit. & See \textit{roi} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+\end{longtable}
+%%%
+\centering
+\begin{longtable}{|l|p{9cm}|p{5cm}|}
+
+\hline
+\multicolumn{3}{|c|}{\textbf{Calculation of the Benchmark}} \\
+
+\hline
+R6.1 & The system should provide two benchmarks : one for the evaluation period, and one for the whole input. & See Function Table\\
+
+\hline
+R6.2 & The benchmark shall be reported as a compounded ROI, if the benchmark figures are available for the evaluation period. & See \textit{benchmark} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+R6.3 & Warning message: If the benchmark is not calculable, then a warning message shall be displayed to the user. & See Function Table\\
+
+
+
+\hline
+\end{longtable}
+}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Mathematical model}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.8]{inputs/spec.pdf}
+\input{inputs/roi-system}
+\caption{Module specification of return on investment}
+\end{figure}
+
+\begin{figure}
+\input{inputs/input-csv}
+\caption{Type input-csv}
+\label{fig:input}
+\end{figure}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\tab}{\hspace*{2em}}
+
+{
+\centering
+\begin{longtable}{|l|}
+
+\hline
+\multicolumn{1}{|c|}{\textbf{TWR\_ROI\_CALCULATION}}\\
+
+\hline
+\textbf{\comment input} (\textit{input.csv})\\
+\\
+\textit{tr}: SEQ[TUPLE[\textit{date}: DATE, \textit{mv}: VALUE, \textit{cf}: VALUE, \textit{af}: VALUE, \\
+\textit{bm}: VALUE $\bunion$ \{void\}]]\\
+\comment sequence of transaction-tuples [\textit{date, market\_value, cash\_flow, agent\_fees,}\\
+\comment \textit{benchmark}]\\
+\comment \textit{tr.domain} = \{1,2,...,\textit{tr.count}\}\\
+\\
+\textit{count}: INTEGER$\eqdef$\textit{tr.count}\\
+\\
+\textit{dates}: SET[DATE]$\eqdef$\{\textit{t $\in$ tr$\itholds$t.date}\}\\
+\\
+\textit{start, end}: DATE$\comment$ metadata evaluation period\\
+\\
+\textit{duration}: VALUE$\eqdef$ \textit{days(end - start)}$\div$(365.2422) \\
+\comment years between \textit{start} and \textit{end} calculated by days\\
+\comment \textit{days}(x) similar to Excel\\
+
+\\
+\\
+\textbf{\comment output calculation} (\textit{input.out.csv})\\
+\\
+\textit{di (d}:DATE): INTEGER\\
+\comment index into sequence of transaction for date \textit{d}\\
+\require \textit{d $\in$ dates} \\
+\ensure \textit{Result $\in$ tr.domain $\land$ tr[Result].date=d}\\
+\\
+
+\comment TWR for the period \textit{start .. end}\\
+\textit{twr (a\_start, a\_end}: DATE): VALUE\\
+\require\\
+	\tab \textit{a\_start, a\_end $\in$ dates}\\
+	\tab \textit{a\_end $>$ a\_start}\\
+	\tab \textit{$\forall$i $\in$ 2..count$\itholds$tr[i-1].mv + tr[i-1].cf + tr[i-1].af $\neq$ 0}\\
+\ensure\\
+	\tab \textit{Result $\eqdef$ ($\Pi$i:INTEGER $|$ di(a\_start) $<$i$\le$ di(a\_end)$\itholds$wealth(i)) - 1}\\
+	\tab where \textit{wealth(i) $\eqdef$ tr(i].mv$\div$(tr[i-1].mv + tr[i-1].cf + tr[i-1].af)}\\
+\\
+
+\textit{annual\_compounded\_TWR (a\_start, a\_end}: DATE): VALUE \\
+\ensure \\
+	\tab \textit{(duration$\ge 1)\Rightarrow Result=((1+twr(a\_start, a\_end))^{1\div duration}-1)*100$}\\
+	\tab \textit{(duration$<$1)$\Rightarrow$ Result= twr(a\_start, a\_end) * 100}\\
+\\
+
+\textit{roi (a\_start, a\_end}: DATE): VALUE\\
+\require\\
+	\tab \textit{a\_start, a\_end $\in$ dates}\\
+	\tab\textit{a\_end $>$ a\_start}\\
+\ensure\\
+	\tab \textit{(tr[m].mv+tr[m].cf) $\ast (1+Result\div 100)^{days(a\_end - a\_start)\div365.2422}$ }\\
+	\tab \tab \textit{+ ($\Sigma i:\nat  |  m <i<n\itholds (tr[i].cf + tr[i].af) \ast $}\\
+	\tab \tab \textit{$(1+Result\div 100)^{days(a\_end - tr[i].date)\div365.2422}) - tr[n].mv = 0$}\\
+	\tab where \textit{m = di(a\_start)}\\ 
+	\tab \tab \hspace*{1em} \textit{n = di(a\_end)}\\
+\\
+
+\textit{benchmark\_calculable (a\_start, a\_end}: DATE): $\Bool$\\
+\require\\
+	\tab \textit{\{$\forall t \in tr  |  t.date="yyyy-01-01" \itholds t.bench \neq void$\}}\\
+	\tab \textit {$\bunion \{tr[di(a\_end)].bench \neq void\}$}\\
+\ensure\\
+	\tab \textit {Result = $\True$} \\
+\\
+
+\comment the function below return a set of index corresponding to the date with\\
+\comment a benchmark\\
+\textit{bench\_seq (a\_start, a\_end}: DATE): SEQ[INTEGER]\\
+\require\\
+	\tab \textit{benchmark\_calculable(a\_start, a\_end) }\\
+\ensure\\
+	\tab \textit{$\{\forall i \in Result \itholds tr[i].bench \neq void \wedge (di(a\_start)<i\le di(a\_end))\}$}\\
+	\tab \comment \textit{ Result.domain = \{1,2..Result.count\}}\\
+\\
+
+\textit{benchmark (a\_start, a\_end}: DATE): VALUE\\
+\require\\
+	\tab \textit{benchmark\_calculable(a\_start, a\_end) }\\
+\ensure\\
+
+	\tab \textit{$(tr[m].mv+tr[m].cf) \ast (Result+1)^{days(a\_end - a\_start)\div365.2422} $}\\
+	\tab \textit{$+ (\Sigma k: VALUE | m+1 \le k \le n \itholds tr[k].cf \ast$}\\
+	\tab \tab \textit{$(Result+1)^{days(a\_end - tr[k].date)\div365.2422} = FV$}\\
+\\
+
+	\tab where \textit{m = di(a\_start)}\\ 
+	\tab \tab \hspace*{1em} \textit{n = di(a\_end)}\\
+	\tab \tab \hspace*{1em} \textit{$FV \eqdef  $}\\
+	\tab \textit{$(tr[m].mv+tr[m].cf) \ast (\Pi i: VALUE | s = bench\_seq(a\_start, a\_end) $} \\
+	\tab \tab \textit{$ \wedge s[0] = m\wedge i \in s \wedge i \ge 1 \wedge i = s(j) \itholds $}\\
+ 	\tab \tab \textit{$tr[i].bench^{days(tr[i].date - tr[s(j-1)].date)\div365.2422} )$}\\
+	\tab \textit{$+ (\Sigma k: VALUE | m+1 \le k \le n \itholds (tr[k].cf - tr[k].af) \ast$}\\
+	\tab \tab \textit{$(\Pi i: VALUE | s = bench\_seq(tr[k].date, a\_end) \wedge s[0] = k \wedge i \in s$}\\
+	\tab \tab \textit{$\wedge  i \ge 1 \wedge i = s(j) \itholds tr[k].bench^{days(tr[i].date-tr[s(j-1)].date)\div365.2422}))$}\\
+\\
+
+
+\hline
+\textbf{Invariants}\\
+\\
+(1) \textit{ (start$<$end)$\wedge$(start,end$\in$dates)} \\
+\comment metadata evaluation period is in range and valid\\
+\\
+(2) \textit{$\forall$t$\in$tr$\itholds$t.date$\neq$Void$\wedge$t.mv$\ge$0}\\
+\comment every row has a date and a non-negative market value\\
+\\
+(3) \textit{$\forall$i$\in$2..count$\itholds$tr[i].date$>$tr[i-1].date}\\
+\comment date are unique and ordered\\
+\\
+(4) \textit{$\forall$t$\in$tr$\itholds$t.mv+t.cf$\ge$0}\\
+\comment Cannot withdraw more than the market value\\
+\\
+(5) \textit{$\forall$i$\in$2..count $|$ tr[i-1].mv=0$\wedge$tr[i-1].cf=0$\itholds$tr[i].mv=0}\\
+\comment account coannot grow from zero market value and cash flow\\
+
+\hline
+\caption{Mathematical model for the ROI system}
+\label{tab:twr_calculation}
+\end{longtable}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bibliographystyle{plain}
+\bibliography{inputs/ref}
+
+
+
+
+
+
+
+\newpage
+\begin{landscape}
+\begin{table}
+
+\centering
+
+\begin{tabular}{|l|l|l|l|l|l||l|l|l|l|l|}
+\hline
+\multicolumn{6}{|c||}{} & $Error$ & $Warning$ & \multicolumn{3}{|c|}{Whole input}\\ 
+
+
+\multicolumn{6}{|c||}{} & & & TWR & ROI & B\\ 
+
+
+\hline
+Valid$\_$CSV & \multicolumn{5}{|l||}{Start$\_$Invalid $\vee$ } & E1 & | & | & | & |\\ 
+& \multicolumn{5}{|l||}{End$\_$Invalid $\vee$}& & & &&\\
+& \multicolumn{5}{|l||}{end $\le$ start}& & & &&\\
+
+\cline{2-11}
+& Start$\_$Valid  $\wedge$ & C1 & \multicolumn{3}{|l||}{C2} & | & | & a$\_$c$\_$TWR(all) & roi(all) & b(all)\\
+& End$\_$Valid $\wedge$& &\multicolumn{3}{|l||}{}&&&&&\\
+& end$>$start &&\multicolumn{3}{|l||}{}&&&&&\\
+
+\cline{4-11}
+& & & $\lnot$C2 &\multicolumn{2}{|l||}{C4} & | & W1 & a$\_$c$\_$TWR(all) & roi(all) & |\\
+
+\cline{5-11}
+& & & &\multicolumn{2}{|l||}{$\lnot$C4} & | & W2 & a$\_$c$\_$TWR(all) & roi(all) & |\\
+
+\cline{3-11}
+& & $\lnot$C1 & C3 &\multicolumn{2}{|l||}{C2} & | & W3 & | & roi(all) & b(all)\\
+
+\cline{5-11}
+& & & & $\lnot$C2 & C4 & | & W4 & | & roi(all) & |\\
+
+\cline{6-11}
+& & & & & $\lnot$C4 & | & W5 & | & roi(all) & |\\
+
+\cline{4-11}
+& & & $\lnot$C3 &\multicolumn{2}{|l||}{C2} & | & W6 & | & roi(all) & b(all)\\
+
+\cline{5-11}
+& & & & $\lnot$C2 & C4 & | & W7 & | & roi(all) & |\\
+
+\cline{6-11}
+& & & & & $\lnot$C4 & | & W8 & | & roi(all) & |\\
+
+\hline
+\multicolumn{6}{|l||}{Invalid$\_$CSV} & E2 & | & | & | & |\\ 
+
+
+\hline
+\end{tabular}
+\caption{Function table for ROI system (error, warning and whole input)}
+\label{table:table_ROI}
+\end{table}
+\end{landscape}
+
+
+
+
+\newpage
+\begin{landscape}
+\begin{table}
+\centering
+
+\begin{tabular}{|l|l|l|l|l|l||l|l|l|}
+\hline
+\multicolumn{6}{|c||}{} & \multicolumn{3}{|c|}{Evaluation period}\\ 
+
+\multicolumn{6}{|c||}{} & TWR & ROI & B\\ 
+
+
+\hline
+Valid$\_$CSV & \multicolumn{5}{|l||}{Start$\_$Invalid $\vee$ } & | & | & |\\ 
+& \multicolumn{5}{|l||}{End$\_$Invalid $\vee$} & &&\\
+& \multicolumn{5}{|l||}{end $\le$ start}& & &\\
+
+\cline{2-9}
+& Start$\_$Valid  $\wedge$ & C1 & \multicolumn{3}{|l||}{C2} & a$\_$c$\_$TWR(start,end) & roi(start,end) & b(start,end)\\
+& End$\_$Valid $\wedge$& &\multicolumn{3}{|l||}{}&&&\\
+& end$>$start &&\multicolumn{3}{|l||}{}&&&\\
+
+\cline{4-9}
+& & & $\lnot$C2 &\multicolumn{2}{|l||}{C4} & a$\_$c$\_$TWR(start,end) & roi(start,end) & b(start,end)\\
+
+\cline{5-9}
+& & & &\multicolumn{2}{|l||}{$\lnot$C4} & a$\_$c$\_$TWR(start,end) & roi(start,end) & |\\
+
+\cline{3-9}
+& & $\lnot$C1 & C3 &\multicolumn{2}{|l||}{C2} & a$\_$c$\_$TWR(start,end) & roi(start,end) & b(start,end)\\
+
+\cline{5-9}
+& & & & $\lnot$C2 & C4 & a$\_$c$\_$TWR(start,end) & roi(start,end) & b(start,end)\\
+
+\cline{6-9}
+& & & & & $\lnot$C4 & a$\_$c$\_$TWR(start,end) & roi(start,end) & |\\
+
+\cline{4-9}
+& & & $\lnot$C3 &\multicolumn{2}{|l||}{C2} & | & roi(start,end) & b(start,end)\\
+
+\cline{5-9}
+& & & & $\lnot$C2 & C4 & | & roi(start,end) & b(start,end)\\
+
+\cline{6-9}
+& & & & & $\lnot$C4 & | & roi(start,end) & |\\
+
+
+\hline
+\multicolumn{6}{|l||}{Invalid$\_$CSV} & | & | & |\\ 
+
+
+\hline
+\end{tabular}
+
+
+
+
+\caption{Function table for ROI system (evaluation period)}
+\label{table:table_ROI_2}
+\end{table}
+\end{landscape}
+
+
+\bigskip
+The function tables use some abbreviations:\\
+\begin{itemize}
+\item a\_c\_TWR = annual\_compounded\_TWR (see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation}))\\
+\item b = benchmark (see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation}))\\
+\item function(all) = function(tr[1].date, tr[tr.count].date)\\
+\end{itemize}
+\bigskip
+\bigskip
+The function tables use also conditions:\\
+\begin{itemize}
+\item C1 = \textit{$\forall$i $\in$ 2..count$\itholds$tr[i-1].mv + tr[i-1].cf + tr[i-1].af $\neq$ 0}\\
+\item C2 = benchmark\_calculable(all) (see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation}))\\
+\item C3 = \textit{$\forall$i $\in$ di(start)+1..di(end)$\itholds$tr[i-1].mv + tr[i-1].cf + tr[i-1].af $\neq$ 0}\\
+\item C4 = benchmark\_calculable(start,end) (see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation}))\\
+\item Start\_Valid = $\lnot$ (Start\_Invalid) = (start $\in$ dates$\cup$\{null\}) $\wedge$ (start in ISO format)\\
+(if Start\_Valid $\wedge$ start=null, then start=tr[1].date)\\
+\item End\_Valid = $\lnot$ (End\_Invalid) = (end $\in$ dates$\cup$\{null\}) $\wedge$ (end in ISO format)\\
+(if End\_Valid $\wedge$ end=null, then end=tr[tr.count].date)\\
+
+
+\end{itemize}
+\bigskip
+\bigskip
+The function tables provide errors and warnings messages:\\
+\begin{itemize}
+\item E1 = "Invalid\_Evaluation\_Period"
+\item E2 = "Invalid\_file"
+\item W1 =  "Benchmark for the whole input is not calculable"
+\item W2 = "The benchmarks are not calculable"
+\item W3 = "The TWR for the whole input is not calculable"
+\item W4 = W1+W3
+\item W5 = W1+W2+W3
+\item W6 = "The TWR's are not calculable"
+\item W7 = W1+W6
+\item W8 = W2+W6
+\end{itemize}
+
+
+
+\newpage
+\appendix
+
+\section{REGEXP}
+
+\begin{figure}
+\input{inputs/regexp}
+\caption{Type REGEXP for regular expressions over printing characters}
+\end{figure}
+
+A set of strings is used as the model for regular expressions. We use prefix operators for the Kleene closure (e.g. $*x$ where $x$ is a regular expression such as $\{\squote{hello}\}$) and iteration at least one or more (e.g. $\textrm{+}x$) rather than suffix operators. Note that where there is no confusion we use \squote{hello} instead of $\{\squote{hello}\}$ where the set is a singleton. 
+
+We may use type REGEXP to specify a $FLOAT\_STRING$ as follows.
+
+\begin{align}
+FLOAT\_STRING = &\squote{+}Inf\\
+&|\squote{-}Inf\\
+&|NaN\\
+&|(\squote{-}|\squote{+}|\epsilon)\cdot(^*d\cdot\squote{.}|\epsilon)\cdot
+	^*\!\!d\cdot ((\squote{e}\cdot(\squote{-}|\epsilon)\cdot^\textrm{+}d)\,|\,\epsilon)\\
+d = &\squote{0} | \squote{1} | \cdots |\squote{9} 
+\end{align}
+
+In the above we use the convention that \squote{e}, for example, really stands for the single set $\{\squote{e}\}$.
+
+%  x^0
+%=    { definition }
+%   (⊙i : 0 ≤ i < 0 : x)
+%=    { arithmetic }
+%   (⊙i : false : x)
+%=    { identity of ∙ }
+%   1
+
+% w ∈ x∙1
+%=    { definition of ∙ }
+%   (∃u,t:  w = u∙t:  u ∈ x ∧ t ∈ 1)
+%=    { definition of 1 }
+%   (∃u,t:  w = u∙t:  u ∈ x ∧ t ∈ { "" })
+%=    { membership of a singleton set }
+%   (∃u,t:  w = u∙t:  u ∈ x ∧ t = "")
+%=    { one point rule }
+%   (∃u:  w = u∙"":  u ∈ x)
+%=    { identity of string catenation }
+%   (∃u:  w = u:  u ∈ x)
+%=    { one point rule }
+%   w ∈ x
+%%%%%%%%%%%%%%%%%%
+
+
+
+\end{document}
+
+
