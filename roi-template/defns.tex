@@ -1,0 +1,219 @@
+\usepackage{sty/bsymb} %% Event-B symbols
+\usepackage{sty/eventB} %% REQ and ENV
+%%UML
+%UML
+\usepackage{tikz}
+%\usepackage[school,simplified]{pgf-umlcd}
+%\usepackage[simplified]{sty/pgf-umlcd}
+\usepackage{mdframed}%% put frame around a table
+\usepackage{rotating} 
+\usepackage{subfigure}
+\usepackage{sty/CalcStyleV8}
+
+\def\newlineindent{\newline\indent}
+\def\require{\quad\textbf{require}~}           
+\def\ensure{\quad\textbf{ensure}~}
+\def\param{\quad\textbf{param}~}
+\def\where{\quad\textbf{where}~}
+\def\when{\quad\textbf{when}~}
+\def\axiom{\textbf{axiom}~}
+\def\comment{\quad \texttt{--}}
+\def\ddo{\quad\textbf{do}~} 
+\def\any{\quad\textbf{any}~}   
+\def\cset{\textbf{carrier set}~}
+\def\var{\textbf{var}~}
+\def\const{\textbf{const}~}
+\def\is{~\textbf{is}~}
+\def\suchthat{\,|\,}
+\def\yields{\,\bullet\,}
+\def\itholds{\,\bullet\,}
+\def\inv{\textbf{inv}~}
+\def\eqdef{~\triangleq~}
+\def\event{\textbf{event}~}
+\def\proc{\textbf{proc}~}
+\def\query{\textbf{query}~}
+\def\init{\textbf{init}~}
+\def\use{\textbf{use}~}
+\def\constraint{\textbf{constraint}~}
+\def\property{\textbf{property}~}
+\def\regexp{REGEXP}
+\def\infix{\textbf{infix }}
+\def\prefix{\textbf{prefix }}
+\def\dummy{\textbf{dummy }}
+\def\theorem{\textbf{theorem }}
+\def\squote#1{\textrm{\textquotesingle#1\textquotesingle}}
+
+\usepackage{listings,xcolor}%%lstlang0.sty
+\definecolor{codebg}{rgb}{0.92,0.92,0.92}      
+
+\usepackage{multirow}    
+\usepackage{pbox}
+
+% block in math mode
+\def\block{\array{@{}l@{}}}
+\let\endblock=\endarray
+
+% Inline Eiffel Code
+\newcommand{\e}[1]{\lstinline[language=OOSC2Eiffel]|#1|}
+
+
+% Eiffel figure setup
+\lstnewenvironment
+  {ecodel}[1][]
+  {\lstset{language=OOSC2Eiffel,float=htb,columns=fullflexible,backgroundcolor=\color{codebg},captionpos=b,
+  xleftmargin=1cm,numberfirstline=true,numberstyle=\hspace*{1cm},numbers=left,mathescape=true,#1}}
+  {}
+
+\lstnewenvironment
+  {ecodel2}[1][]
+  {\lstset{language=OOSC2Eiffel,float=htb,columns=fullflexible,backgroundcolor=\color{codebg},captionpos=t,
+  xleftmargin=1cm,mathescape=true,#1}}
+  {}
+                          
+%%%%% Pretty print an Eiffel feature
+%%%%% Arguments:
+%%%%% 1. Name of the routine, parameters and return type if applicable.
+%%%%% 2. Comments of the routine.
+%%%%% 3. Pre-condition (can be split into multiple lines; math symbols must be enclosed within $...$)
+%%%%% 4. Implemnetation (it's recommanded that use \texttt{...} to wrap each line to emphasize that it's code, not spec.)
+%%%%% 5. Post-condition (can be split into multiple lines; math symbols must be enclosed within $...$)
+%%%%%
+%%%%% Usage: \feature{f (params) : return }{comment}{pre}{do}{post}  
+%%%%%       will produce the following
+%%%%%
+%%%%%       f (params) : return
+%%%%%       		-- comment
+%%%%%       	require pre
+%%%%%          	do
+%%%%%				imp
+%%%%%			ensure post
+%%%%%			end        
+%%%%% Special case:
+%%%%% - Contract view --> \feature{f (params) : return }{comment}{pre}{}{post} 
+%%%%% - Precondition only -->  \feature{f (params) : return }{comment}{pre}{}{} 
+%%%%% - Postcondition only --> \feature{f (params) : return }{comment}{}{}{post}      
+%%%%% - Implementation only --> \feature{f (params) : return }{comment}{}{imp}{} 
+
+\def\requires{\textbf{require}}           
+\def\ensures{\textbf{ensure}}    
+\def\Do{\textbf{do}}
+\def\End{\textbf{end}}   
+                                        
+\newlength{\requirewidth}
+\settowidth{\requirewidth}{require}  
+\def\old{\mathop{\textbf{old}}}   
+
+\newcommand\contract[2]{  
+	\begin{array}{@{\quad}l@{\quad}l}
+	\begin{minipage}[t]{\widthofpbox{#1}} #1 \end{minipage} 
+	&
+	\begin{minipage}[t]{\widthofpbox{#2}} #2 \end{minipage}
+	\end{array}}             
+
+\newcommand{\feature}[5]{
+  \def\comments{#2}
+  \def\pre{#3}
+  \def\imp{#4}
+  \def\post{#5}     
+  \begin{array}[!htbp]{|@{\quad}l@{\quad}|}
+    \hline
+    \\[-1ex]
+    #1 \\   
+
+	\ifx\comments\empty
+	\else
+	\quad\quad\text{-}\text{- }\text{\comments} \\
+	\fi   
+	
+	\ifx\pre\empty
+	\else                        
+		\contract{\requires}{\pre} \\
+	\fi  
+	
+	\ifx\imp\empty
+	\else
+	\begin{array}[!htbp]{@{\quad}l}
+	    \Do \\ 
+	    \begin{array}[!htbp]{@{\quad}l}
+			\imp
+		\end{array}
+	\end{array}\\
+	\fi        
+	
+	\ifx\post\empty
+	\else
+	\contract{\ensures}{\post} \\
+	\fi 
+	  
+	\ifx\imp\empty 
+	% contract view
+    \else
+     \quad\Bend
+    \fi \\[1ex] 
+    \hline
+  \end{array}
+}
+
+\newcommand{\module}
+{
+ \begin{array}[!htbp]{|@{\quad}l@{\quad}|}
+    \hline
+   
+    \hline
+  \end{array}
+}
+
+\usepackage{amssymb,amsmath}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx}
+%\usepackage[text={16cm,23cm}]{geometry} %% use more of the page
+\usepackage{url} 
+
+\usepackage{enumitem} 
+\usepackage{float,afterpage}
+\usepackage{caption}
+
+%reduce spacing in lists
+\usepackage[section]{placeins}
+\setlist{nolistsep,leftmargin=*} 
+
+\usepackage{fancyhdr,lastpage}
+\lhead{\rm \headerTitle}
+\rhead {\rm Page \thepage~of \pageref{LastPage}}
+\lfoot{}\cfoot{}\rfoot{}
+\pagestyle{fancy}
+
+%%%%%%%%%Definitions%%%%%%%%%%
+
+\def\implies{\Rightarrow } 
+\def\Fl{\mathbb{F}}%%FLOAT
+\def\Bl{\mathbb{B}}%%BOOLEAN
+\def\St{\mathbb{S}}%%STRING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%For reducing size of section headings
+\usepackage{sectsty}
+\sectionfont{\normalsize}
+\subsectionfont{\small}
+\subsubsectionfont{\small}
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{*1.2}{*0.5}
+\titlespacing*{\subsection}{0pt}{*0.5}{*0.5}
+\titlespacing*{\subsubsection}{0pt}{*0.5}{*0.5}
+
+%http://www.eng.cam.ac.uk/help/tpl/textprocessing/squeeze.html
+%By default, LaTeX doesn't like to fill more than 0.7 of a text page with tables and graphics, nor does it like too many figures per page. This behaviour can be changed by placing lines like the following before \begin{document}
+\renewcommand\floatpagefraction{.9}
+\renewcommand\topfraction{.9}
+\renewcommand\bottomfraction{.9}
+\renewcommand\textfraction{.1}   
+\setcounter{totalnumber}{50}
+\setcounter{topnumber}{50}
+\setcounter{bottomnumber}{50}
+
+%\usepackage{CalcStyleV8}
+%\usepackage{subfigure}
+
+
+\usepackage{sty/tikz-uml}%% Put this last
+\usepackage{lscape}

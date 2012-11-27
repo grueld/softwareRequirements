@@ -1,0 +1,7 @@
+\contentsline {section}{\numberline {1}Context Diagram}{3}
+\contentsline {section}{\numberline {2}Dictionary}{4}
+\contentsline {section}{\numberline {3}E/R-descriptions}{5}
+\contentsline {subsection}{\numberline {3.1}E-descriptions}{5}
+\contentsline {subsection}{\numberline {3.2}R-descriptions}{7}
+\contentsline {section}{\numberline {4}Mathematical model}{9}
+\contentsline {section}{\numberline {A}REGEXP}{18}

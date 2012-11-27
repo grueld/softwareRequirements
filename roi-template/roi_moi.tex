@@ -1,0 +1,492 @@
+% !TEX TS-program = pdflatex   
+\documentclass[runningheads,12pt]{article} 
+\usepackage{textcomp,color,longtable}
+\def\headerTitle{CSE4312F12 Project -- ROI Solution}
+\input{defns.tex} 
+
+
+\begin{document}
+
+\title{CSE4312F12 Project Solution\\
+ROI}
+
+\author{Damien Gruel (cse23089@cse.yorku.ca)
+\and Ludovic Lavalette (cse23088@cse.yorku.ca)}
+
+\date{\today}
+
+\maketitle
+
+\section*{Note}
+\begin{itemize}
+\item A customer elicitation session was held during class on Tuesday November 6, 2012. If you were not there sure to catch up with a fellow student who was there.
+\item This template is handed out \emph{caveat emptor}.  There may be errors and wrong information. It is ultimately your responsibility to elicit the correct requirements from the customer and to ensure that you satisfy the customer goals and specify correct output from the input.
+\item Your are required to correct any errors or ambiguities in this template and use this template to produce your final requirements document.
+\end{itemize}
+
+\section*{Revisions}
+
+\begin{tabular}{|l|l|p{3in}|}
+\hline
+Date & Revision& Description \\ 
+\hline
+10 October  2012 
+& 1.0       
+& Initial customer elicitation\\ 
+\hline
+15 November 2012
+& 2.0       
+& Initial Student solution       \\
+\hline
+1 December 2012
+& 3.0       
+& Final Student solution       \\
+\hline
+\end{tabular}
+
+\newpage
+\tableofcontents
+\listoffigures
+\listoftables
+
+\newpage
+
+\section{Elicitation of customer goals}
+Our customers are the CEO and IT manager of Investment Corp. They desire an easy-to-use application to keep track of their return on their investments (ROI). A requirements elicitation session with our customers yielded the following issues and goals:
+
+Each month, the customer receives a portfolio statement. The customer is not interested in keeping track of individual stocks, bonds etc. in their portfolio. What they would like to know is how the fund is doing thus far, i.e. over all data as well as over a specified evaluation period. There are free applications such as GnuCash for calculating ROI, but such applications require too much input information and are too complex for what is required. Customers also want to compare their return on their investment portfolios with respect to standard benchmarks \cite{gips,Lawton09}. Benchmark data (when available) is either at year-end or year-to-date.
+
+Customers might have multiple portfolios e.g. one for themselves and one for their spouse. All returns on investments are expressed in percentage per annun and all calculations must be done to industry standards. Customers might enter deposits into the investment account at arbitrary dates during the year. They may also withdraw money at arbitrary dates. This will affect the ROI calculation.
+
+The input data for each portfolio is maintained by the customer as a CSV (comma separated value) text file as in Fig.~\ref{fig:csv}. This allows them to keep track of their data on their smart phones or other devices. On the Windows desktop, double clicking on the file opens in Excel as in in the figure. The input also reports agent fees and, possibly a benchmark. For market values, cash flow (positive in, negative out) and agent fees, where no value is shown the default is zero.
+
+Customers receive statements (sometimes monthly or every couple of months and always at the end of each year – Dec. 31) from their investment brokers. The statement has a bottom line viz. the total value of all their investments to date (which includes bonds, stocks, etc.). Customers enter the total value of their portfolio at that date. For example, customers might receive a statement dated December 31, 2006 for \$10,000. This is the value of the portfolio at the end of December 31, 2007, and is entered as \$10,000 dated January 1, 2007. All entries thus reflect the value of the portfolio at the beginning of the day with deposits and withdrawals occurring during the rest of the day. 
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.6]{inputs/excel-csv.pdf}
+\input{inputs/roi}
+\caption{Excel CSV input file}
+\label{fig:csv}
+\end{figure}
+
+Customers do not want to pay a lot of money for the software and so they are prepared to forgo many things --- a minimalistic product is expected. The product may be used via a command line interface (it may also have a simple GUI or can be mounted as a properly secured web application). 
+
+
+\section{Context Diagram}
+
+\begin{figure}
+\centering
+\includegraphics[scale=1.0]{inputs/context.pdf}
+\caption{Context diagram for the ROI system}
+\label{fig:ROI-context}
+\end{figure}
+
+{\color{red} Provide a context diagram with precise description of monitored and controlled variables. Indicate the entities in the environment. Note that in the sequel below we provide the precise nature of the input. You must elicit the precise outputs that are required.}
+
+\section{Dictionary}
+
+The dictionary is incomplete
+
+\smallskip
+
+\noindent\textbf{CSV}: Comma Separated Value file format used to store tabular data in which numbers and text are stored in plain-text form that can be easily written and read in a text editor.\smallskip
+
+\noindent\textbf{Customer}: The user of the software system.\smallskip
+
+\noindent\textbf{Evaluation Period}: a start and end date (provided by the user) for the portfolio history over which the return on investment is calculated.\smallskip
+
+\noindent\textbf{GIPS}: Global Investment Performance Standards [1]\smallskip
+
+\noindent\textbf{Investment broker}: Runs the portfolio on behalf of the customer and supplies portfolio accounts.\smallskip
+
+\noindent\textbf{Portfolio statement}: List of all investments and current value.\smallskip
+
+\noindent\textbf{Portfolio History}: the historical data of investment performance over time that the customer stores about their investments as gleaned from their monthly or yearly investment accounts. Uusally stored by customers in a CSV file (see Figure 1).\smallskip
+
+\noindent\textbf{TWR}: Time Weighted Return (see [1])\smallskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{E/R-descriptions}
+Fill this in ..
+
+
+\centering
+\begin{tabular}{|l|p{9cm}|p{3cm}|}
+\hline
+\textbf{ID} & \textbf{Description} & \textbf{Comment}\\
+
+
+\hline
+\multicolumn{3}{|c|}{\textbf{Domain Descriptions/Assumptions}}\\
+
+\hline
+\textbf{E1} & Customers create and store a portfolio history, i.e. the historical data of their investment performance as determined from portfolio statements (see Figure 1). & See Figure 2\\
+
+\hline
+E1.1 & Customers store their portfolio history as a CSV text file. CSV files may be prepared on editors of any operating system and encoded as ANSI or UTF-8. & See input.csv in Figure 4\\
+
+\hline
+E1.2 & Every portfolio history has a name. & e.g. "Roy Bostock" in Figure 2\\
+
+\hline
+E1.3 & Optionally, every portfolio history has a description, account number, email, address, and phone number fields. & See Figure 2\\
+
+\hline
+E1.4 & A portfolio history records investment performance in a non-empty sequence of tuple data, each tuple having the fields: date, market value, cash flow, agent fees and benchmark. & See Figure 2\\
+
+\hline
+E1.5 & When there is a customer contribution, the cash flow is a positive number. For a withdrawal, the number is negative & \\
+
+\hline
+E1.6 & Agent fees can be internal (deducted from within the portfolio) or external (additional amounts paid by the customer to the investment broker). The portfolio history reflects only external agent fees, always reported as a non-negative amount. & \\
+
+\hline
+E1.7 & Optionally, every portfolio has an evaluation period that is between the start and end date of the historical performance data. & See Figure 2 \\
+
+\hline
+\end{tabular}
+
+
+\centering
+\begin{tabular}{|l|p{9cm}|p{5cm}|}
+\hline
+\textbf{ID} & \textbf{Description} & \textbf{Comment}\\
+
+\hline
+\multicolumn{3}{|c|}{\textbf{Requirements}}\\
+
+\hline
+R1 & All return on investment calculations shall follow the GIPS standard. & \\
+
+\hline
+R2 & The user shall be provided with the annual compounded TWR for the evaluation period start to end, provided that:
+\begin{enumerate}
+\item The optional evaluation period is in range (see Invariant 1).
+\item If no evaluation period is provided then the start date is the earliest date and the end date the latest date in the sequence of tuple data.
+\item Every data tuple (row in the CSV file) has a date and a non-negative market value (Invariant 2).
+\item Dates in the tuples are unique and ordered (see Invariant 3).
+\item No withdrawal in the tuple data can be greater than the market value (Invariant 4).
+\item An account cannot grow from zero market value and cash flow (Invariant 5).
+\item For each tuple, the market value plus cash-flow must be non-zero (see third precondition of feature twr).
+\end{enumerate}
+& See invariants of TWR\_CALCULATION in Figure 5 TWR\_CALCULATION. See feature annual\_coumpounded\_TWR in TWR\_CALCULATION.\\
+
+\hline
+R3 & If the evaluation period is less than a year, then the TWR shall be reported in absolute terms as a percentage return (e.e. it is not annualized). If the evaluation period is a year or more, then the TWR is annualized to a percentage per year. & See postcondition of annual\_compounded\_TWR \\
+
+\hline
+R4 & The annualized TWR shall be reported as a percentage. & \\
+
+\hline
+R5 & Agent fees are treated like a deposit. & \\
+
+\hline
+R6 & The benchmark shall be reported as a compounded TWR if the benchmark figures are available for the evaluation period. & \\
+
+\hline
+R7 & Error messages: If any of the conditions mentioned in requirement R2 do not hold then an appropriate error message shall be displayed to the user. & Invariants and preconditions in TWR\_CALCULATION provide error conditions.\\
+
+
+
+
+\hline
+\end{tabular}
+
+{\color{red} Note that you must calculate the compounded TWR (and its annualized value) for the complete period as well as for the evaluation period. The TWR is not always accurate. You must provide an accurate calculation (called precise-ROI).}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Mathematical model}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\color{red} We provide below an incomplete mathematical model for ROI system. We define a valid input CSV file as a regular expression. Obviously there must be an error report for files that do not match the precise specification of input. We also provide the outline of a type to calculate the TWR and precise-ROI, which you must complete. You will also need a function table to ensure that all possible inputs (including faulty inputs) are handled.}
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.8]{inputs/spec.pdf}
+\input{inputs/roi-system}
+\caption{Module specification of return on investment}
+\end{figure}
+
+\begin{figure}
+\input{inputs/input-csv}
+\caption{Type input-csv}
+\label{fig:input}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\tab}{\hspace*{2em}}
+
+{
+\centering
+\begin{longtable}{|l|}
+
+\hline
+\multicolumn{1}{|c|}{\textbf{TWR\_ROI\_CALCULATION}}\\
+
+\hline
+\textbf{\comment input} (\textit{input.csv})\\
+\\
+\textit{tr}: SEQ[TUPLE[\textit{date}: DATE, \textit{mv}: VALUE, \textit{cf}: VALUE, \textit{af}: VALUE]]\\
+\comment sequence of transaction-tuples [\textit{date, market\_value, cash\_flow, agent\_fees}]\\
+\comment \textit{tr.domain} = \{1,2,...,\textit{tr.count}\}\\
+\\
+\textit{count}: INTEGER$\eqdef$\textit{tr.count}\\
+\\
+\textit{dates}: SET[DATE]$\eqdef$\{\textit{t $\in$ tr$\itholds$t.date}\}\\
+\\
+\textit{start, end}: DATE$\comment$ metadata evaluation period\\
+\\
+\textit{duration}: VALUE$\eqdef$ \textit{days(end - start)}$\div$(365.2422) \\
+\comment years between \textit{start} and \textit{end} calculated by days\\
+\comment \textit{days}(x) similar to Excel\\
+
+\\
+\\
+\textbf{\comment output calculation} (\textit{input.out.csv})\\
+\\
+\textit{di (d}:DATE): INTEGER\\
+\comment index into sequence of transaction for date \textit{d}\\
+\require \textit{d $\in$ dates} \\
+\ensure \textit{Result $\in$ tr.domain $\land$ tr[Result].date=d}\\
+\\
+
+\comment TWR for the period \textit{start .. end}\\
+\textit{twr (a\_start, a\_end}: DATE): VALUE\\
+\require\\
+	\tab \textit{a\_start, a\_end $\in$ dates}\\
+	\tab \textit{a\_end $>$ a\_start}\\
+	\tab \textit{$\forall$i $\in$ 2..count$\itholds$tr[i-1].mv + tr[i-1].cf + tr[i-1].af $\neq$ 0}\\
+\ensure\\
+	\tab \textit{Result $\eqdef$ ($\Pi$i:INTEGER $|$ di(a\_start) $<$i$\le$ di(a\_end)$\itholds$wealth(i)) - 1}\\
+	\tab where \textit{wealth(i) $\eqdef$ tr(i].mv$\div$(tr[i-1].mv + tr[i-1].cf + tr[i-1].af)}\\
+\\
+
+\comment parameters allow to compute twr for all the periode\\
+\comment or just for the evaluation periode \\
+\textit{annual\_compounded\_TWR (a\_start, a\_end}: DATE): VALUE \\
+\ensure \\
+	\tab \textit{(duration$\ge$1)$\Rightarrow$ Result= ((1+twr(a\_start, a\_end) $\hat{~}$ (1$\div$duration) ) -1)* 100}\\
+	\tab \textit{(duration$<$1)$\Rightarrow$ Result= twr(a\_start, a\_end) * 100}\\
+\\
+
+\textit{roi (a\_start, a\_end}: DATE): VALUE\\
+\require\\
+	\tab \textit{a\_start, a\_end $\in$ dates}\\
+	\tab\textit{a\_end $>$ a\_start}\\
+\ensure\\
+	\tab tr[m].mv $\ast Result^{days(a\_end - a\_start)}$ \\
+	\tab \tab + ($\Sigma i:\nat  |  m <i<n\itholds tr[i].cf \ast Result^{days(a\_end - tr[i].date)})$\\
+	\tab \tab $- tr[n].mv = 0$\\
+	\tab where \textit{m = di(a\_start)}\\ 
+	\tab \tab \hspace*{1em} n = di(a\_end)\\
+\\
+
+\hline
+\textbf{Invariants}  -- See (R2, R6  \textbf{A VERIFIER}) \\
+\\
+(1) \textit{ (start$<$end)$\wedge$(start,end$\in$dates)} \\
+\comment metadata evaluation period is in range and valid\\
+\\
+(2) \textit{$\forall$t$\in$tr$\itholds$t.date$\neq$Void$\wedge$t.mv$\ge$0}\\
+\comment every row has a date and a non-negative market value\\
+\\
+(3) \textit{$\forall$i$\in$2..count$\itholds$tr[i].date$>$tr[i-1].date}\\
+\comment date are unique and ordered\\
+\\
+(4) \textit{$\forall$t$\in$tr$\itholds$t.mv+t.cf$\ge$0}\\
+\comment Cannot withdraw more than the market value\\
+\\
+(5) \textit{$\forall$i$\in$2..count $|$ tr[i-1].mv=0$\wedge$tr[i-1].cf=0$\itholds$tr[i].mv=0}\\
+\comment account coannot grow from zero market value and cash flow\\
+
+\hline
+\end{longtable}
+}
+
+\begin{figure}
+\input{inputs/benchmark_calculation}
+\caption{Benchmark\_calculation}
+\label{fig:benchmark_calculation}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Acceptance Tests}
+
+\noindent {\color{red} Very incomplete. You need a large number of tests including error tests}\bigskip
+
+\noindent
+\begin{tabular}{|p{1in}|p{4in}|}
+\hline
+Test Case ID	 & T1 \\ 
+\hline
+Description & Verify that return on investment (compounded TWR) is calculated correctly\\
+\hline
+Requirement IDs tested & R1? \\ 
+\hline
+Type & Positive \\ 
+\hline
+Initial State & A directory containing the CSV file in Figure~\ref{fig:csv} \\
+\hline 
+Action & Execute the ROI system on the CSV file \\
+\hline 
+Consequences & The ROI system reports the compounded TWR as 144.08\% \\ 
+\hline
+\end{tabular}
+
+\bigskip
+\noindent
+\begin{tabular}{|p{1in}|p{4in}|}
+\hline
+Test Case ID	 & T2 \\ 
+\hline
+Description & Verify that return on investment (compounded TWR) is calculated correctly\\
+\hline
+Requirement IDs tested & R1? \\ 
+\hline
+Type & Positive \\ 
+\hline
+Initial State & A directory containing the CSV file in Figure~\ref{fig:csv} 
+with the evaluation period from 2007-01-01 to 2009-04-01\\
+\hline 
+Action & Execute the ROI system on the CSV file \\
+\hline 
+Consequences & The ROI system reports the compounded TWR as 82.49\% \\ 
+\hline
+\end{tabular}
+
+\section{Requirements Traceability matrix}
+
+\noindent
+\begin{tabular}{|p{1.5in}|p{3.5in}|}
+\hline
+\textbf{Requirement ID}	 & \textbf{Test Case IDs}\\ 
+\hline
+R1 & T1, T2, ...\\
+\hline
+R2 & ...\\ 
+\hline
+R3 & ...\\ 
+\hline
+
+\end{tabular}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bibliographystyle{plain}
+\bibliography{inputs/ref}
+
+\appendix
+
+\section{REGEXP}
+
+\begin{figure}
+\input{inputs/regexp}
+\caption{Type REGEXP for regular expressions over printing characters}
+\end{figure}
+
+A set of strings is used as the model for regular expressions. We use prefix operators for the Kleene closure (e.g. $*x$ where $x$ is a regular expression such as $\{\squote{hello}\}$) and iteration at least one or more (e.g. $\textrm{+}x$) rather than suffix operators. Note that where there is no confusion we use \squote{hello} instead of $\{\squote{hello}\}$ where the set is a singleton. 
+
+We may use type REGEXP to specify a $FLOAT\_STRING$ as follows.
+
+\begin{align}
+FLOAT\_STRING = &\squote{+}Inf\\
+&|\squote{-}Inf\\
+&|NaN\\
+&|(\squote{-}|\squote{+}|\epsilon)\cdot(^*d\cdot\squote{.}|\epsilon)\cdot
+	^*\!\!d\cdot ((\squote{e}\cdot(\squote{-}|\epsilon)\cdot^\textrm{+}d)\,|\,\epsilon)\\
+d = &\squote{0} | \squote{1} | \cdots |\squote{9} 
+\end{align}
+
+In the above we use the convention that \squote{e}, for example, really stands for the single set $\{\squote{e}\}$.
+
+%  x^0
+%=    { definition }
+%   (⊙i : 0 ≤ i < 0 : x)
+%=    { arithmetic }
+%   (⊙i : false : x)
+%=    { identity of ∙ }
+%   1
+
+% w ∈ x∙1
+%=    { definition of ∙ }
+%   (∃u,t:  w = u∙t:  u ∈ x ∧ t ∈ 1)
+%=    { definition of 1 }
+%   (∃u,t:  w = u∙t:  u ∈ x ∧ t ∈ { "" })
+%=    { membership of a singleton set }
+%   (∃u,t:  w = u∙t:  u ∈ x ∧ t = "")
+%=    { one point rule }
+%   (∃u:  w = u∙"":  u ∈ x)
+%=    { identity of string catenation }
+%   (∃u:  w = u:  u ∈ x)
+%=    { one point rule }
+%   w ∈ x
+%%%%%%%%%%%%%%%%%%
+
+\section{Precise calculation of ROI}
+
+The TWR is only an approximation to the real time-weighted return, as in  Fig.~\ref{fig:twr} (where one can see that the infusion of \$500 in cash reduces the ROI). 
+
+Fig.~\ref{fig:bad-twr} shows where the approximation goes badly wrong. In this case, the investment advisor made a huge profit for our client and the gain is 16.19\%, whereas the TWR shows the advisor as making a loss of 5.58\%.
+
+Clearly, a more precise method is called for. 
+
+
+
+\begin{figure}[!]
+\centering
+\includegraphics[scale=0.8]{inputs/twr.pdf}
+\caption{TWR as a good approximation}
+\label{fig:twr}
+\end{figure}
+
+\begin{figure}[!]
+\centering
+\includegraphics[scale=2.3]{inputs/bad-twr.png}
+\caption{TWR as a bad approximation}
+\label{fig:bad-twr}
+\end{figure}
+
+\subsection{Compound interest}
+Suppose you invest \$1000 for 5 years at 10\% per annum. So we know that after the first year we have $1000*R = 1000*1.10 = 1100$ (where $R$ is the rate of return multiplier, i.e. $R=1.1$). For 5 years we have $1000*R^5 = 1610.51$. The general formula is
+
+\[ PV * (1+r)^n = FV\]
+
+\noindent where $r$ is the interest rate as a decimal (e.g. 0.1, i.e. 10\%), and $n$ is the number of periods. If $R=1+r$ then we have $PV * R^n = FV$
+
+
+For the second example in Fig.~\ref{fig:twr}, it is not so simple as we are not adding amounts at regular intervals (cash flow in/out is irregular). We may use $n$ as a day (i.e. $1/365$ of a year) and we get:
+
+\[
+FV = (PV *R^{365/365}) + (500*R^{116/365})
+\]
+
+i.e. we weight the initial money ($PV = 10000$) by the full year (365 days) of daily return. The input of cash in Septmember (which is 116 days to the end of the years) is weighted in that proportion. The equation van be re-written
+
+\[
+(PV *R^{365/365}) + (500*R^{116/365}) -FV = 0
+\]
+
+and we can solve for the root of the polynomial (e.g. using Newton-Raphson) to obtain $R$. This gives us a net gain of $4.923$\%. The TWR calculated it as $5$\%, which is only approximately correct.
+
+The general formulas is
+\begin{align}
+\small
+& tr(1).mv * R^{\Delta days(i)} + \\\nonumber
+& \qquad (\Sigma i: \nat|1 < i < n\itholds tr(i).cf * R^{\Delta days(i)})- tr(n).mv = 0\\
+& \textbf{where } n = \card(tr)& \nonumber \\
+& end = tr(n).date&\\\nonumber
+&\Delta days(i) = (end- tr(i).date)/365&\nonumber
+\end{align}
+
+\end{document}
+
+
