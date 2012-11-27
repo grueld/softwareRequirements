@@ -1,0 +1,74 @@
+\resizebox{\textwidth}{!}
+{
+\begin{tikzpicture}
+\renewcommand\tikzumlfillclasscolor{white}
+\umlclass{type REGEXP}
+{
+\cset $\regexp$\comment set of all regular string expressions\\
+\axiom $\regexp \subseteq \pow(\St)$\\
+\cset $\Sigma \eqdef \{``0", ``1",  ``2", \cdots, ``a", ``b",  \textrm{ etc., all printing characters} \}$\\
+}
+{
+
+\dummy $x,y,z : \regexp$\\
+\dummy $s,t,u : \St$\\
+
+\axiom $\forall s\in\Sigma \itholds \{s\} \in \regexp$\\
+
+\const $0:\regexp \eqdef \{\}$\comment zero is the unit element of alternation\\
+\const $1:\regexp\eqdef \{``"\}$\comment $1$ is the unit element of concatenation\\
+\comment we also use $\epsilon$ instead of $1$\\
+
+\const \infix $``|": \regexp \cprod \regexp \tfun \regexp$\\
+\comment alternation\\
+\const \infix $``\cdot": \regexp \cprod \regexp \tfun \regexp$\\
+\comment concatenation\\
+
+\const \prefix$``*": \regexp \cprod \regexp \tfun \regexp$\\
+\comment iteration zero or more times\\
+\const \prefix$``\textrm{+}": \regexp \cprod \regexp \tfun \regexp$\\
+\comment iteration one or more times\\
+
+\axiom $s \in x|y ~\equiv~ s\in x \,\lor\, s\in y$\\
+\theorem $x | 0 = 0 | x = x$\\
+\axiom $s \in x\cdot y ~\equiv~ (\exists t,u| s=t\cdot u \itholds t\in x \land u\in y)$\\
+\comment note that $t\cdot u$ is concatenation over $SEQ[\St]$\\
+\theorem $1 \cdot x ~=~ x \cdot 1 ~=~ 1$\
+\comment 1 is the identity of concatenation\\
+
+\const \infix ``\^{}"$: \regexp \cprod \nat \tfun \regexp$\\
+\comment use this operator by raising the second argument like an exponent\\
+\axiom $x^n = (\cdot i\suchthat 0 \leq i \leq n \itholds x)$\comment concatenation quantifier\\
+
+\comment e.g. $x^3 = x \cdot x \cdot x$\\
+\theorem $x^0 = 1$\\
+\axiom $s \in *x ~\equiv~ (\exists n : \nat \itholds s \in x^n)$\\
+\axiom $s\in \textrm{+}x \equiv (\exists n : \natn \itholds s \in x^n)$
+}
+\end{tikzpicture}
+}
+
+
+
+%  x^0
+%=    { definition }
+%   (⊙i : 0 ≤ i < 0 : x)
+%=    { arithmetic }
+%   (⊙i : false : x)
+%=    { identity of ∙ }
+%   1
+
+% w ∈ x∙1
+%=    { definition of ∙ }
+%   (∃u,t:  w = u∙t:  u ∈ x ∧ t ∈ 1)
+%=    { definition of 1 }
+%   (∃u,t:  w = u∙t:  u ∈ x ∧ t ∈ { "" })
+%=    { membership of a singleton set }
+%   (∃u,t:  w = u∙t:  u ∈ x ∧ t = "")
+%=    { one point rule }
+%   (∃u:  w = u∙"":  u ∈ x)
+%=    { identity of string catenation }
+%   (∃u:  w = u:  u ∈ x)
+%=    { one point rule }
+%   w ∈ x
+%%%%%%%%%%%%%%%%%%

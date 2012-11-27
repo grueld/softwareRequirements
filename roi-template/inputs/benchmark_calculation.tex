@@ -1,0 +1,78 @@
+\resizebox{\textwidth}{!}{{\begin{tikzpicture}
+\renewcommand\tikzumlfillclasscolor{white}
+\umlclass{BENCHMARK\_CALCULATION}
+{
+%\textbf{\comment input} (\textit{input.csv})\\
+%\\
+%\textit{tr}: SEQ[TUPLE[\textit{date}: DATE, \textit{mv}: VALUE, \textit{cf}: VALUE, \textit{af}: VALUE]]\\
+%\comment sequence of transaction-tuples [\textit{date, market\_value, cash\_flow, agent\_fees}]\\
+%\comment \textit{tr.domain} = \{1,2,...,\textit{tr.count}\}\\
+%\\
+%\textit{count}: INTEGER$\eqdef$\textit{tr.count}\\
+%\\
+%\textit{dates}: SET[DATE]$\eqdef$\{\textit{t $\in$ tr$\itholds$t.date}\}\\
+%\\
+%\textit{start, end}: DATE$\comment$ metadata evaluation period\\
+%\\
+%\textit{duration}: VALUE$\eqdef$ \textit{days(end - start)}$\div$(365.2422) \\
+%\comment years between \textit{start} and \textit{end} calculated by days\\
+%\comment \textit{days}(x) similar to Excel\\
+%
+%\\
+%\\
+%\textbf{\comment output calculation} (\textit{input.out.csv})\\
+%\textit{di (d}:DATE): INTEGER\\
+%\comment index into sequence of transaction for date \textit{d}\\
+%\require \textit{d $\in$ dates} \\
+%\ensure \textit{Result $\in$ tr.domain $\land$ tr[Result].date=d}\\
+%\\
+%
+%\textit{twr (a\_start, a\_end}: DATE): VALUE\\
+%\comment TWR for the period \textit{start .. end}\\
+%\require\\
+%	\textit{a\_start, a\_end $\in$ dates}\\
+%	\textit{a\_end $>$ a\_start}\\
+%	\textit{$\forall$i $\in$ 2..count$\itholds$tr[i-1].mv + tr[i-1].cf $\neq$ 0}\\
+%\ensure\\
+%	\textit{Result $\eqdef$ ($\Pi$i:INTEGER $|$ di(a\_start) $<$i$\le$ di(a\_end)$\itholds$wealth(i)) - 1}\\
+%	where \textit{wealth(i) $\eqdef$ tr(i].mv$\div$(tr[i-1].mv + tr[i-1].cf)}\\
+%\\
+%
+%\textit{compounded\_TWR}: VALUE\\
+%\ensure \textit{Result = twr(start,end)}\\
+%\\
+%
+%\textit{annual\_compounded\_TWR}: VALUE \\
+%\ensure\\
+%\textit{(duration$\ge$1)$\Rightarrow$ Result= (((1+compounded\_TWR) $\hat{~}$ (1$\div$duration) ) -1)* 100}\\
+%\textit{(duration$<$1)$\Rightarrow$ Result= compounded\_TWR * 100}\\
+}
+{}
+\end{tikzpicture}
+}
+%{\begin{tikzpicture}
+%\renewcommand\tikzumlfillclasscolor{white}
+%\umlclass{}
+%{
+%\textbf{Invariants}  -- See (R2, R6  \textbf{A VERIFIER}) \\
+%\\
+%(1) (start$<$end)$\wedge$(start,end$\in$dates) \\
+%\comment metadata evaluation period is in range and valid\\
+%\\
+%(2) $\forall$t$\in$tr$\itholds$t.date$\neq$Void$\wedge$t.mv$\ge$0\\
+%\comment every row has a date and a non-negative market value\\
+%\\
+%(3) $\forall$i$\in$2..count$\itholds$tr[i].date$>$tr[i-1].date\\
+%\comment date are unique and ordered\\
+%\\
+%(4) $\forall$t$\in$tr$\itholds$t.mv+t.cf$\ge$0\\
+%\comment Cannot withdraw more than the market value\\
+%\\
+%(5) $\forall$i$\in$2..count $|$ tr[i-1].mv=0$\wedge$tr[i-1].cf=0$\itholds$tr[i].mv=0\\
+%\comment account coannot grow from zero market value and cash flow\\
+%}
+%{
+%}
+%\end{tikzpicture}
+%}
+}

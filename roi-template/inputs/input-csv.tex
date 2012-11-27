@@ -1,0 +1,56 @@
+\resizebox{\textwidth}{!}{{\begin{tikzpicture}
+\renewcommand\tikzumlfillclasscolor{white}
+\umlclass{type input-csv}
+{
+\use type $REGEXP, DATA, DATE$ 
+\comment we let $\epsilon = \{``"\}$, eol = $\{``\backslash\textrm{n}"\}$ etc.\\
+\cset $DATA \eqdef Data(date: DATE, mv:\Fl, cf:\Fl, af:\Fl,bench: \Fl\bunion\{Void\})$\\
+\textbf{param} $csvfile : \St$\comment input parameter\\
+\query $tr : SEQ[DATA]$\comment sequence of transactions defined by axiom below\\
+\require $csvfile  \in VALID\_FILE$\\
+$\query start, end: DATE$\\
+\require $csvfile  \in VALID\_FILE$\\
+}
+{
+\const $VALID\_FILE : \regexp$\\
+$\eqdef HEADER \cdot PARAMETERS \cdot \textrm{eol} \cdot ROW \cdot \textbf{*}(\textrm{eol} \cdot ROW)\cdot \textbf{*}(``,"|\textrm{eol})$\\
+\const $HEADER: REGEXP$\\
+$\eqdef \textbf{*} (HLINE \cdot eol) $\\
+\const $HLINE:REGEXP$\\
+$\eqdef \textbf{*} (\Sigma \backslash \textrm{eol}) \backslash (EV\_PER\cdot \textbf{*} \Sigma)$\\
+\const $PARAMETERS:REGEXP$\\
+$\eqdef EV\_PER \cdot DATE\_STR \cdot``\_ \textrm{to}\_" \cdot DATE\_STR \cdot \textbf{*}``,"\cdot \textrm{eol}\cdot COL\_HEAD$\\
+\const $COL\_HEAD:REGEXP$\\
+$ \eqdef +``," \cdot eol \cdot$\\ $\qquad``\textrm{Transaction\_Date,Market\_Value,Cash\_Flow,Agent\_Fees,Benchmark}"\cdot\textbf{*} ``,"$\\
+\const $EV\_PER:REGEXP \eqdef ``\textrm{Evaluation\_Period:\_}" $\\
+\const $ROW: \regexp$\\
+$\eqdef (DATE\_STR \cdot ``,"\cdot  FLOAT\cdot ``,"  \cdot (FLOAT|\epsilon) \cdot ``," \cdot (FLOAT|\epsilon)\cdot$\\
+$\qquad ``,"  \cdot (FLOAT\cdot``\%"|\epsilon)\cdot \textbf{*}``,")$\\
+\const $s2d : DATE\_STR \tfun DATE$\comment see birthday book for $DATE$\\
+\const $s2f: FLOAT \tfun \Fl$\comment deferred, $FLOAT$ is the string version of $\Fl$\\
+\const $f2s : \Fl \tfun FLOAT$\comment deferred, see your favourite programming language\\
+\const $d2s : DATE \tfun DATE\_STR$\comment deferred\\
+\const $s2optf[G]: (FLOAT | \epsilon)\cprod G\tfun  \Fl \bunion G$\comment string-to-optional float \\
+\where $\forall G \itholds s2optf \in (FLOAT | \epsilon)\cprod G\tfun  \Fl \bunion G$\\
+\comment parameter $G$ is a set such as $\{Void\}$ or a default value such as $\{0\}$\\
+\const $f : ROW \tfun DATA$\\
+\textbf{dummy} $w:ROW$ and $s_0, s_1, s_2,s_3:\St$\\
+\axiom 1:\comment definition of function $f$ that maps a row string to data\\
+$\qquad\qquad w \in  (d2s(d)\cdot ``,"\cdot s_0 \cdot ``,"\cdot s_1 \cdot ``,"\cdot s_2 \cdot ``," \cdot s_3 \cdot \textbf{*}``,") $ \\ 
+$\qquad ~~\land ~ (s_4 \cdot ``\%" = s_3 \lor s_4 = s_3 = \epsilon)$ \\
+$\qquad \implies   f (w) = Data(d, s2f(s_0), s2optf(s_1,0), s2optf(s_2,0), s2optf(s_4,\text{Void}))$\\
+\query $error : \Bl \eqdef textfile \not\in VALID\_FILE$\comment definition of $tr,start,end$\\
+\axiom 2: \comment definition of $tr,start, end$\\
+$\qquad\qquad csvfile  \in VALID\_FILE \implies$\\
+$\qquad\qquad (\exists h,foot,s,e: \St; data:SEQ[ROW]$\\
+$\qquad\qquad~~|~~~ h\in HEADER \cdot EV\_PER \cdot s \cdot``\_ \textrm{to}\_" \cdot e \cdot \textbf{*}``,"\cdot \textrm{eol}\cdot COL\_HEAD$\\
+$\qquad\qquad~~~ \land data \in SEQ[ROW]$\\
+$\qquad\qquad~~~ \land end \in \textbf{*}(\squote{,}|eol)$\\
+$\qquad\qquad~~~ \land textfile \in h \cdot (\cdot i| 0 \leq i < \#data \itholds eol \cdot data(i)) \cdot foot$\\
+$\qquad\qquad~ \itholds~~~ tr = (\cdot i | 0 \leq i < \#data \itholds <f(data(i))>$\\
+$\qquad\qquad\qquad \land (start=s2d(s)) \land (end = s2d(e))$\\
+$\qquad\qquad)$\\
+}
+\end{tikzpicture}
+}
+}

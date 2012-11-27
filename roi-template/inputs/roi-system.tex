@@ -1,0 +1,76 @@
+%\begin{figure}
+\resizebox{\textwidth}{!}
+{
+\def\data{type DATA}
+\def\input{type input-csv}
+\def\roi{type roi}
+\def\control{module control}
+\renewcommand\tikzumlfillclasscolor{white}
+\def\do{\quad\textbf{do}~} %%Needed
+\centering
+\resizebox{\textwidth}{!}{\begin{tikzpicture}
+
+\umlclass{\data}
+{
+\use DATE\comment see birthday book\\
+\cset $DATA \eqdef$\\
+$\qquad  Data(date: DATE, mv:\Fl, cf:\Fl, af:\Fl,bench: \Fl\bunion\{Void\})$\\
+$\qquad$\require $valid\_date(date)$\\
+
+}
+{
+\comment the above declaration induces an injective function with accessors\\
+$Data: DATE \cprod \Fl \cprod \Fl \cprod \Fl \cprod \Fl\bunion\{Void\} \tinj DATA$\\
+\const $mv,cf,af : DATA \tfun \Fl$\\
+\comment market-value, cash-flow and agent-fees\\
+\const $bench: DATA \tfun \Fl\bunion\{Void\}$\comment benchmark\\
+\axiom $\forall d:DATA \itholds d=Data(date(d),mv(d),cf(d),bench(d))$\\
+\comment e.g. $DATA = \{ Data(\squote{2007-02-11},105000,15000,0,Void), \cdots\}$
+}
+        
+\umlclass[x=-4.5, y=-6.4]{\input}
+{
+\use type $REGEXP, DATA$ \\
+\textbf{param} $csvfile : \St$\\
+\comment input parameter\\
+\query $tr : SEQ[DATA]$\\
+\comment sequence of transactions\\
+\require $csvfile  \in VALID\_FILE$\\
+$\query start, end: DATE$\\
+\require $csvfile  \in VALID\_FILE$\\
+}
+{
+\comment see Fig.~\ref{fig:input} for the details
+}
+        
+\umlclass[x=4.5, y=-6.4]{\roi}
+{
+\use $input(cvsfile)$\\
+\param $cvsfile:\St$\\
+\query $report:\St$
+}
+{
+\comment see function table for outputs\\
+}
+        
+\umlclass[y=-12.4]{\control}
+{
+\comment specification pattern for transfomational programs
+}
+{
+\event $roiReport \leftarrow invoke$\\
+\any $file:\St$\\
+$\quad$\use $roi(file)$ \textbf{as} $r$\\
+\ddo $roiReport := r.report$\\\\
+\comment dynamic use of module \textbf{roi}\\
+\comment instantiate $cvsfile$ as $file$
+
+}
+        
+\umlunicompo{\input}{\data}
+\umlunicompo{\roi}{\data}
+\umlunicompo{\roi}{\input}
+\umlunicompo{\control}{\roi}
+\end{tikzpicture}}
+}
+%\end{figure}
