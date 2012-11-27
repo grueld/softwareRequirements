@@ -1,0 +1,240 @@
+% CalcStyleV8.sty
+%
+% Copyright (c): 2011 Wolfram Kahl
+
+\ProvidesPackage{CalcStyleV8}[2011/11/08]
+
+\def\CalcCheck{{\sc {CalcCheck}}}
+\def\CALCCHECK#1{{\sf {C{#1{\sf ALC}}C{#1{\sf HECK}}}}}
+
+% From Mike Spivey's fuzz.sty:
+%
+% MATHCODES
+%
+% The mathcodes for the letters A, ..., Z, a, ..., z are changed to
+% generate text italic rather than math italic by default. This makes
+% multi-character identifiers look better. The mathcode for 'c'
+% is set to "7000 (variable family) + "?00 (text italic) + c.
+%
+% \setmcodes{begin}{end}{base} -- assign successive mathcode to
+% characters BEGIN thru END, starting at BASE.
+\def\@setmcodes#1#2#3{{\count0=#1 \count1=#3
+  \loop \global\mathcode\count0=\count1 \ifnum \count0<#2
+  \advance\count0 by1 \advance\count1 by1 \repeat}}
+
+\DeclareSymbolFont{italic}{OT1}{\rmdefault}{m}{it}
+\let\mathit\undefined
+\DeclareSymbolFontAlphabet{\mathit}{italic}
+\edef\@tempa{\hexnumber@\symitalic}
+\@setmcodes{`A}{`Z}{"7\@tempa41}
+\@setmcodes{`a}{`z}{"7\@tempa61}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{amsmath,amssymb}
+\usepackage{stmaryrd}
+
+\def\fcmp{\mathop{\fatsemi}}
+\let\comp\fcmp
+
+%%%%%%%%%%%%%%%%%%% Selected symbols:
+
+% Abbreviation definition:
+\def\declequ{\; : \;}
+
+% Boolean constants:
+\def\false{\mathit{false}}
+\def\true{\mathit{true}}
+
+% Conjunction and disjunction:
+\def\land{\mathop{\wedge}}
+\def\lor{\mathop{\vee}}
+
+% Implication
+\def\implies{\mathop{\Rightarrow}}
+\def\follows{\mathop{\Leftarrow}}
+
+% Abbreviation for inequivalence:
+\def\nequiv{\not\equiv}
+
+% Assignment, also in substitution:
+\def\becomes{\mathrel{{:}{=}}}
+
+% Union and intersection of sets (and relations):
+\def\union{\mathop{\cup}}
+\def\intersection{\mathop{\cap}}
+
+% Universe set
+\def\Universe{\mathbf{U}}
+
+% Set complement
+\def\compl{{\sim}\,}
+
+% The identity function:
+\def\id{\mathit{id}}
+
+% The pair projection functions:
+\def\fst{\mathsf{fst}}
+\def\snd{\mathsf{snd}}
+
+% Set type constructor:
+\def\SET#1{\mbox{\it set}({#1})}
+
+% Frequently-used sets:
+\def\BB{\mathbb{B}} % Boolean values \false and \true
+\def\NN{\mathbb{N}} % natural numbers
+\def\ZZ{\mathbb{Z}} % integers
+\def\QQ{\mathbb{Q}} % rational numbers
+\def\RR{\mathbb{R}} % real numbers
+\def\CC{\mathbb{C}} % complex numbers
+
+\def\power{\mathbb{P}} % power set
+
+% Function and relation types:
+\def\tfun{\mathrel{\rightarrow}}
+\def\rel{\mathrel{\leftrightarrow}}
+
+\def\p#1{\mathrel{\ooalign{\hfil$\mapstochar\mkern 5mu$\hfil\cr$#1$}}}
+\def\f#1{\mathrel{\ooalign{\hfil
+        $\mapstochar\mkern 3mu\mapstochar\mkern 5mu$\hfil\cr$#1$}}}
+\def\pfun{\mathrel{\p\rightarrow}}
+\def\tinj{\mathrel{\rightarrowtail}}
+\def\pinj{\p\rightarrowtail}
+\let\inj\tinj
+\def \bij       {\mathrel{\ooalign{$\tinj$\hfil\cr$\mkern5mu\tfun$}}}
+\def \tsur      {\mathrel{\ooalign{$\tfun$\hfil\cr$\mkern4mu\tfun$}}}
+\def \psur      {\p\tsur}
+\let \surj      \tsur
+\let \psurj     \psur
+
+
+
+% Relations:
+\def\converse{{}^{\smallsmile}}
+\def\relDom{\mathsf{Dom}}
+\def\relRan{\mathsf{Ran}}
+\def\relId{\mathbb{I}}
+
+% Conditional expressions
+\def\IF{\mathbf{if\ }}
+\def\THEN{\mathbf{\ then\ }}
+\def\ELSE{\mathbf{\ else\ }}
+\def\WHILE{\mathbf{while\ }}
+\def\FI{\mathbf{\ fi\ }}
+\def\DO{\mathbf{\ do\ }}
+\def\OD{\mathbf{\ od}}
+\def\SEQ{\,\mbox{\bf{;}}\,}
+
+% Maximum and minimum infix operators
+% (symbol will change if we get to these later):
+\def\max{\ \mathbf{max}\ }
+\def\min{\ \mathbf{min}\ }
+
+\def\upto{\,.\,.\,}
+
+% For quantification, e.g.:
+% ( \star x \with R \spot P)
+% ( \forall n : \NN \withspot n \geq 0 )
+\def\spot{\ \bullet\ }
+\def\withrule{\vrule height1.57ex depth0.43ex width0.12em}
+\def\with{\kern0.7em \withrule \kern0.7em }
+\def\withspot{\kern0.7em \withrule \kern-0.15em \bullet \  }
+
+\def\occurs#1#2{\mbox{\textit{occurs}}(\mbox{`}{#1}\mbox{', `}{#2}\mbox{'})}
+\def\exprDom#1{\mbox{\textit{dom}.\mbox{`}{#1}\mbox{'}}}
+
+%%%%%%%%%%%%%%%%%%% {calc} environment %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newdimen\calcindent   \calcindent=\leftmargini
+\newskip\calcskip      \calcskip=0.5\baselineskip plus0.3\baselineskip
+\newskip\calcendskip   \calcskip=1ex plus0.6\baselineskip
+\newskip\calcsep       \calcsep=0.3\baselineskip plus0.2\baselineskip
+
+\def\Cleft{\left\langle}\def\Cright{\right\rangle}
+
+% \@eqncr
+% \@normalcr
+
+% separators for two-column multi-line formulae
+\def\SEPSmultilineL{
+\let\@BREAK\@arraycr
+\def\sepA##1{\@BREAK ##1 &}%
+\def\sepB##1{\@BREAK ##1 &}%
+\def\sepBH##1##2{\@BREAK ##1 &}%
+\def\sepC{\@BREAK[1ex] {} &}%
+\def\sepCH##1{\@BREAK[1ex]}%
+\def\sepX{\@BREAK {} &}%
+\def\sepXO[##1]{\@BREAK[##1] {} &}%
+\def\sepAR##1##2{\@BREAK ##1 & \hskip1em\Cleft ##2 \Cright\@BREAK[0.2ex] {} &}%
+\def\sepBR##1##2{\@BREAK[0.4ex] ##1 & \hskip1em\Cleft ##2 \Cright\@BREAK[0.2ex] {} &}%
+\def\sepBHR##1##2##3{\@BREAK[##2] ##1 & \hskip1em\Cleft ##3 \Cright\@BREAK[##2] {} &}%
+%\def\also{\crcr\vskip\calcskip {} &}%
+\def\also{\@BREAK[1ex] {} &}%
+\def\BREAK{\@ifnextchar[%]
+    \sepXO
+    {\sepX}
+}%
+}
+
+% separators for three-column multi-line formulae
+\def\SEPSmultiline{\def\sepA##1{& ##1 &}%
+\def\sepB##1{\\ {} & ##1 &}%
+\def\sepBH##1##2{\\[##2] {} & ##1 &}%
+\def\sepC{\\[1ex] {} &}%
+\def\sepCH##1{\\[##1]}%
+\def\sepX{\\ {} & {} &}%
+\def\sepAR##1##2{& ##1 & \hskip1em\Cleft ##2 \Cright\\[0.2ex] {} & {} &}%
+\def\sepBR##1##2{\\[0.2ex] {} & ##1 & \hskip1em\Cleft ##2 \Cright\\[0.2ex] {} & {} &}
+\def\sepBHR##1##2##3{\\[##2] {} & ##1 & \hskip1em\Cleft ##3 \Cright\\[##2] {} & {} &}
+}%
+
+\def\CalcStep#1#2{\sepBR{#1}{\mbox{#2}}}
+
+\def\@calc{%
+  \def\ThisIs##1{\quad\mbox{--- \ This is ##1}}
+  \par\vskip\calcskip
+  \@ifnextchar[%]
+    \@icalc
+    {\@Ocalc}
+}
+\def\@icalc[#1, #2]{\ifx#1\empty \else \noindent\textbf{Prove:\; } \hbox{#1} \fi
+					\ifx#2\empty \else \ifx#1\empty \else \\ \fi  \hbox{\quad #2} \fi
+					
+					%\par\vskip\calcskip
+\@Ocalc}                            
+\def\@Ocalc{%
+  \noindent\strut\hskip\calcindent%
+$\SEPSmultilineL\begin{array}[b]{cl}{}&%
+}
+
+\def\@endcalc{\end{array}$\\\vskip\calcendskip}
+
+\newenvironment{calc}{\@calc}{\@endcalc}
+%\def\calc{\@calc}
+%\def\endcalc{\@endcalc}
+
+%\newenvironment{calcProof}[1]{\@calcProof{#1}}{\@endcalc}
+
+\def\RSEP{\qquad}
+
+\def\@decls{\SEPSmultiline
+  \def\declType{& : &}
+  \def\declEquiv{& {:}{\equiv} &}
+  \def\declEqu{& {:}{=} &}
+  \def\declequ{& {:}{=} &}
+  \def\remark##1{\kern2em\hfill \mbox{--- ##1}}
+  \def\also{\\[1ex]}
+  \let\@BREAK\@arraycr
+  \def\sepX{\@BREAK {} & &}%
+  \def\sepXO[##1]{\@BREAK[##1] {} & &}%
+  \def\BREAK{\@ifnextchar[%]
+    \sepXO
+    {\sepX}
+  }%
+\par\vskip\calcskip\noindent
+\strut\hskip1\calcindent$
+  \begin{array}[t]{lcl@{\RSEP}l}
+}
+
+\def\@enddecls{\end{array}$\\[1ex]}
+
+\newenvironment{decls}{\@decls}{\@enddecls}
