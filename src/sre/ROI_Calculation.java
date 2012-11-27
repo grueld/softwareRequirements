@@ -1,6 +1,7 @@
 package sre;
 
 import java.io.*;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 
 public class ROI_Calculation {
@@ -17,6 +18,41 @@ public class ROI_Calculation {
 		}
 	}
 	
+	
+	/**
+	 * Checks if 'start' and 'end' are among the dates of the CSV file
+	 * @param CSVFile
+	 * @return 
+	 */
+	public static boolean checkEvaluationPeriod(csv CSVFile)
+	{
+		Iterator<tuple> i = CSVFile.listTuple.iterator();
+		boolean startInDates = false;
+		boolean endInDates = false;
+		tuple t = new tuple();
+		String date;
+		while(!(startInDates && endInDates) && i.hasNext())
+		{
+			t = i.next();
+			date = t.date;
+			if(date.equals(CSVFile.start))
+			{
+				startInDates = true;
+			}
+			if(date.equals(CSVFile.end))
+			{
+				endInDates = true;
+			}
+		}
+		return (startInDates && endInDates);
+	}
+	
+	
+	/**
+	 * Parse the CSV file
+	 * @param nameFile
+	 * @param CSVFile
+	 */
 	public static void parseFile(String nameFile, csv CSVFile)
 	{
 		try
@@ -28,7 +64,6 @@ public class ROI_Calculation {
 				String line;
 				String word_with_space;
 				String word_without_space;
-				tuple tuple = new tuple();
 				while ((line = CSVFile.file.readLine()) != null) {
 					StringTokenizer stComma = new StringTokenizer(line, ",");
 					if (stComma.hasMoreTokens()) 
@@ -65,6 +100,7 @@ public class ROI_Calculation {
 						    else 
 						    {
 						    	String[] arrayLine = line.split(",",-1); 
+								tuple tuple = new tuple();
 						    	tuple.date = arrayLine[0];
 						    	tuple.marketValue = Float.valueOf(arrayLine[1]);
 						    	
@@ -87,9 +123,8 @@ public class ROI_Calculation {
 						    	}
 
 						    	tuple.benchmark = deletePercentage(arrayLine[4]);
-						    	
-						    	CSVFile.addTuple(tuple);
 						    	System.out.println(tuple.toString());
+						    	CSVFile.addTuple(tuple);						    	
 						    }
 					    }
 					}
@@ -104,8 +139,9 @@ public class ROI_Calculation {
 		{
 			System.out.println("Error --" + ioe.toString());
 		}
-		
-		
+	
+		checkEvaluationPeriod(CSVFile);
+		//System.out.println(checkEvaluationPeriod(CSVFile));
 		
 	}
 	
