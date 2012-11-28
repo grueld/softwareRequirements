@@ -19,22 +19,15 @@ public class ROI_Calculation {
 	}
 	
 	
-	/**
-	 * Checks if 'start' and 'end' are among the dates of the CSV file
-	 * @param CSVFile
-	 * @return 
-	 */
 	public static boolean checkEvaluationPeriod(csv CSVFile)
 	{
 		Iterator<tuple> i = CSVFile.listTuple.iterator();
 		boolean startInDates = false;
 		boolean endInDates = false;
-		tuple t = new tuple();
-		String date;
+		date date;
 		while(!(startInDates && endInDates) && i.hasNext())
 		{
-			t = i.next();
-			date = t.date;
+			date = i.next().date;
 			if(date.equals(CSVFile.start))
 			{
 				startInDates = true;
@@ -48,11 +41,23 @@ public class ROI_Calculation {
 	}
 	
 	
-	/**
-	 * Parse the CSV file
-	 * @param nameFile
-	 * @param CSVFile
-	 */
+	public static boolean checkTupleHasDate(csv CSVFile)
+	{
+		boolean result = true;
+		date date;
+		Iterator<tuple> i = CSVFile.listTuple.iterator();
+		while(result && i.hasNext())
+		{
+			date = i.next().date;
+			if(date.year == 0 || date.month == 0 || date.day == 0)
+			{
+				result = false;
+			}
+		}
+		return result;
+	}
+	
+
 	public static void parseFile(String nameFile, csv CSVFile)
 	{
 		try
@@ -72,7 +77,7 @@ public class ROI_Calculation {
 					    StringTokenizer stSpace = new StringTokenizer(word_with_space);
 					    word_without_space = stSpace.nextToken();
 					    
-					    
+					    //TODO : name obligatoire
 					    if(!word_without_space.equals("Name:") &&
 					    		!word_without_space.equals("Description:") &&
 					    		!word_without_space.equals("Account#:") &&
@@ -89,11 +94,39 @@ public class ROI_Calculation {
 						    	if (word_without_space.equals("Period:"))
 						    	{
 						    		word_without_space = stSpace.nextToken();
-						    		CSVFile.start = word_without_space;
+						    		StringTokenizer stDashStart = new StringTokenizer(word_without_space, "-");
+						    		if (stDashStart.hasMoreTokens())
+						    		{
+						    			CSVFile.start.year = Integer.valueOf(stDashStart.nextToken());
+						    			if (stDashStart.hasMoreTokens())
+						    			{
+						    				CSVFile.start.month = Integer.valueOf(stDashStart.nextToken());
+						    				if (stDashStart.hasMoreTokens())
+							    			{
+						    					CSVFile.start.day = Integer.valueOf(stDashStart.nextToken());
+							    			}
+						    			}
+						    		}
+						    		//CSVFile.start = word_without_space;
 						    		word_without_space = stSpace.nextToken();
 						    		word_without_space = stSpace.nextToken();
-						    		CSVFile.end = word_without_space;
+						    		StringTokenizer stDashEnd = new StringTokenizer(word_without_space, "-");
+						    		if (stDashEnd.hasMoreTokens())
+						    		{
+						    			CSVFile.end.year = Integer.valueOf(stDashEnd.nextToken());
+						    			if (stDashEnd.hasMoreTokens())
+						    			{
+						    				CSVFile.end.month = Integer.valueOf(stDashEnd.nextToken());
+						    				if (stDashEnd.hasMoreTokens())
+							    			{
+						    					CSVFile.end.day = Integer.valueOf(stDashEnd.nextToken());
+							    			}
+						    			}
+						    		}
+						    		//CSVFile.end = word_without_space;
 						    	}
+						    	System.out.println("start : " + CSVFile.start.toString());
+						    	System.out.println("end   : " + CSVFile.end.toString());
 						    }
 						    
 						    //----- TUPLES -----//
@@ -101,7 +134,22 @@ public class ROI_Calculation {
 						    {
 						    	String[] arrayLine = line.split(",",-1); 
 								tuple tuple = new tuple();
-						    	tuple.date = arrayLine[0];
+
+								StringTokenizer stDashDate = new StringTokenizer(arrayLine[0], "-");
+					    		if (stDashDate.hasMoreTokens())
+					    		{
+					    			tuple.date.year = Integer.valueOf(stDashDate.nextToken());
+					    			if (stDashDate.hasMoreTokens())
+					    			{
+					    				tuple.date.month = Integer.valueOf(stDashDate.nextToken());
+					    				if (stDashDate.hasMoreTokens())
+						    			{
+					    					tuple.date.day = Integer.valueOf(stDashDate.nextToken());
+						    			}
+					    			}
+					    		}
+								//tuple.date = arrayLine[0];
+					    		
 						    	tuple.marketValue = Float.valueOf(arrayLine[1]);
 						    	
 						    	if(!arrayLine[2].equals(""))
@@ -129,6 +177,8 @@ public class ROI_Calculation {
 					    }
 					}
 				}
+				System.out.println("Each tuple has a date : " + checkTupleHasDate(CSVFile));
+				System.out.println("Evaluation period dates are in dates : " + checkEvaluationPeriod(CSVFile));
 			}
 			finally 
 			{
@@ -139,23 +189,17 @@ public class ROI_Calculation {
 		{
 			System.out.println("Error --" + ioe.toString());
 		}
-	
-		checkEvaluationPeriod(CSVFile);
-		//System.out.println(checkEvaluationPeriod(CSVFile));
 		
 	}
 	
 	
-	
-	
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		//String nameFile = args[1];
 		//System.out.println(nameFile);
 		csv CSVFile = new csv();
-		parseFile("test.csv", CSVFile);
+		parseFile("sample.csv", CSVFile);
+		//parseFile("test_eval_not_in_dates.csv", CSVFile);
+		//parseFile("test_tuple_without_date.csv", CSVFile);
 	}
 
 }

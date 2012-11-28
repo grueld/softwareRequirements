@@ -6,13 +6,15 @@ import java.util.ArrayList;
 public class csv {
 
 	 public BufferedReader file;
-	 public String start;
-	 public String end;
+	 public date start;
+	 public date end;
 	 public ArrayList<tuple> listTuple;
 	 
 	 public csv()
 	 {
 		 listTuple = new ArrayList<tuple>() ;
+		 start = new date();
+		 end = new date();
 	 }
 	 
 	 public void addTuple(tuple tuple)
