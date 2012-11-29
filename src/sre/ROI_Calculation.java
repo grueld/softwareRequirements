@@ -126,6 +126,35 @@ public class ROI_Calculation {
 	}
 	
 	
+	public static boolean checkDates(csv CSVFile)
+	{
+		boolean result = true;
+		if(!CSVFile.start.validDate())
+		{
+			result = false;
+		}
+		
+		if(result && !CSVFile.end.validDate())
+		{
+			result = false;
+		}
+		if (result)
+		{
+			date date;
+			Iterator<tuple> i = CSVFile.listTuple.iterator();
+			while(result && i.hasNext())
+			{
+				date = i.next().date;
+				if(!date.validDate())
+				{
+					result = false;
+				}
+			}
+		}
+		return result;
+	}
+	
+	
 	public static void parseFile(String nameFile, csv CSVFile)
 	{
 		try
@@ -248,6 +277,7 @@ public class ROI_Calculation {
 					    }
 					}
 				}
+				System.out.println("Dates are valid : " + checkDates(CSVFile));
 				System.out.println("Start before end : " + checkStartBeforeEnd(CSVFile));
 				System.out.println("Evaluation period dates are in dates : " + checkEvaluationPeriod(CSVFile));
 				System.out.println("Each tuple has a date : " + checkTupleHasDate(CSVFile));
@@ -273,6 +303,10 @@ public class ROI_Calculation {
 		//System.out.println(nameFile);
 		csv CSVFile = new csv();
 		parseFile("sample.csv", CSVFile);
+		//parseFile("test_start_invalid.csv", CSVFile);
+		//parseFile("test_end_invalid.csv", CSVFile);
+		//parseFile("test_date_invalid.csv", CSVFile);
+		//parseFile("test_date_invalid_February.csv", CSVFile);
 		//parseFile("test_start_after_end.csv", CSVFile);
 		//parseFile("test_eval_not_in_dates.csv", CSVFile);
 		//parseFile("test_tuple_without_date.csv", CSVFile);
