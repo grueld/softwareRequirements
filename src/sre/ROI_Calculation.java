@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import javax.swing.text.html.CSS;
+
 public class ROI_Calculation {
 	
 	public static float deletePercentage(String benchmark)
@@ -57,7 +59,38 @@ public class ROI_Calculation {
 		return result;
 	}
 	
+	
+	public static boolean checkStartBeforeEnd(csv CSVFile)
+	{
+		if (CSVFile.start.before(CSVFile.end))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		
+	}
+	
+	
+	public static boolean checkNonNegativeMarketValue(csv CSVFile)
+	{
+		boolean result = true;
+		float marketValue;
+		Iterator<tuple> i = CSVFile.listTuple.iterator();
+		while(result && i.hasNext())
+		{
+			marketValue = i.next().marketValue;
+			if(marketValue < 0)
+			{
+				result = false;
+			}
+		}
+		return result;
+	}
 
+	
 	public static void parseFile(String nameFile, csv CSVFile)
 	{
 		try
@@ -77,18 +110,26 @@ public class ROI_Calculation {
 					    StringTokenizer stSpace = new StringTokenizer(word_with_space);
 					    word_without_space = stSpace.nextToken();
 					    
-					    //TODO : name obligatoire
-					    if(!word_without_space.equals("Name:") &&
-					    		!word_without_space.equals("Description:") &&
+					    if(!word_without_space.equals("Description:") &&
 					    		!word_without_space.equals("Account#:") &&
 					    		!word_without_space.equals("Email:") &&
 					    		!word_without_space.equals("Address:") &&
 					    		!word_without_space.equals("Phone:") &&
 					    		!word_without_space.equals("Transaction"))
 					    {
-
+					    	//----- NAME -----//
+						    if(word_without_space.equals("Name:"))
+						    {
+						    	word_without_space = stSpace.nextToken();
+						    	CSVFile.name = word_without_space;
+						    	while (stSpace.hasMoreTokens())
+						    	{
+						    		CSVFile.name += " " + stSpace.nextToken();
+						    	}						    	
+						    }
+					    	
 					    	//----- EVALUATION PERIOD -----//
-						    if(word_without_space.equals("Evaluation"))
+						    else if(word_without_space.equals("Evaluation"))
 						    {
 						    	word_without_space = stSpace.nextToken();
 						    	if (word_without_space.equals("Period:"))
@@ -107,7 +148,6 @@ public class ROI_Calculation {
 							    			}
 						    			}
 						    		}
-						    		//CSVFile.start = word_without_space;
 						    		word_without_space = stSpace.nextToken();
 						    		word_without_space = stSpace.nextToken();
 						    		StringTokenizer stDashEnd = new StringTokenizer(word_without_space, "-");
@@ -123,7 +163,6 @@ public class ROI_Calculation {
 							    			}
 						    			}
 						    		}
-						    		//CSVFile.end = word_without_space;
 						    	}
 						    	System.out.println("start : " + CSVFile.start.toString());
 						    	System.out.println("end   : " + CSVFile.end.toString());
@@ -148,7 +187,6 @@ public class ROI_Calculation {
 						    			}
 					    			}
 					    		}
-								//tuple.date = arrayLine[0];
 					    		
 						    	tuple.marketValue = Float.valueOf(arrayLine[1]);
 						    	
@@ -177,8 +215,10 @@ public class ROI_Calculation {
 					    }
 					}
 				}
-				System.out.println("Each tuple has a date : " + checkTupleHasDate(CSVFile));
+				System.out.println("Start before end : " + checkStartBeforeEnd(CSVFile));
 				System.out.println("Evaluation period dates are in dates : " + checkEvaluationPeriod(CSVFile));
+				System.out.println("Each tuple has a date : " + checkTupleHasDate(CSVFile));
+				System.out.println("Each tuple has a non-negative market value : " + checkNonNegativeMarketValue(CSVFile));
 			}
 			finally 
 			{
@@ -198,8 +238,11 @@ public class ROI_Calculation {
 		//System.out.println(nameFile);
 		csv CSVFile = new csv();
 		parseFile("sample.csv", CSVFile);
+		//parseFile("test_start_after_end.csv", CSVFile);
 		//parseFile("test_eval_not_in_dates.csv", CSVFile);
 		//parseFile("test_tuple_without_date.csv", CSVFile);
+		//parseFile("test_negative_market_value.csv", CSVFile);
+		
 	}
 
 }

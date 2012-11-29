@@ -94,4 +94,44 @@ public class date {
 		}		
 	}
 	
+	
+	public boolean before(date date)
+	{
+		if (this.year < date.year)
+		{
+			return true;
+		}
+		if (this.year > date.year)
+		{
+			return false;
+		}
+		else //same year
+		{
+			if (this.month < date.month)
+			{
+				return true;
+			}
+			if (this.month > date.month)
+			{
+				return false;
+			}
+			else //same month
+			{
+				if(this.day < date.day)
+				{
+					return true;
+				}
+				if (this.day > date.day)
+				{
+					return false;
+				}
+				else //same day
+				{
+					return false;
+				}
+			}
+		}
+		
+	}
+	
 }
