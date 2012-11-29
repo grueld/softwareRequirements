@@ -244,7 +244,7 @@ public class ROI_Calculation {
 		}
 		catch (IOException ioe)
 		{
-			System.out.println("Error --" + ioe.toString());
+			System.out.println("Error -- " + ioe.toString());
 		}
 		
 	}
