@@ -91,6 +91,22 @@ public class ROI_Calculation {
 	}
 
 	
+	public static boolean checkDateUniqueOrdered(csv CSVFile)
+	{
+		boolean result = true;
+		int i = 0;
+		while(result && i<CSVFile.listTuple.size()-1)
+		{
+			if (!CSVFile.listTuple.get(i).date.before(CSVFile.listTuple.get(i+1).date))
+			{
+				result = false;
+			}
+			i++;
+		}
+		return result;
+	}
+		
+	
 	public static void parseFile(String nameFile, csv CSVFile)
 	{
 		try
@@ -219,6 +235,7 @@ public class ROI_Calculation {
 				System.out.println("Evaluation period dates are in dates : " + checkEvaluationPeriod(CSVFile));
 				System.out.println("Each tuple has a date : " + checkTupleHasDate(CSVFile));
 				System.out.println("Each tuple has a non-negative market value : " + checkNonNegativeMarketValue(CSVFile));
+				System.out.println("Dates are unique and ordered : " + checkDateUniqueOrdered(CSVFile));
 			}
 			finally 
 			{
@@ -242,6 +259,8 @@ public class ROI_Calculation {
 		//parseFile("test_eval_not_in_dates.csv", CSVFile);
 		//parseFile("test_tuple_without_date.csv", CSVFile);
 		//parseFile("test_negative_market_value.csv", CSVFile);
+		//parseFile("test_dates_non_unique.csv", CSVFile);
+		//parseFile("test_dates_non_ordered.csv", CSVFile);
 		
 	}
 
