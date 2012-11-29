@@ -107,6 +107,25 @@ public class ROI_Calculation {
 	}
 		
 	
+	public static boolean checkWithdraw(csv CSVFile)
+	{
+		boolean result = true;
+		float addition;
+		tuple tuple = new tuple();
+		Iterator<tuple> i = CSVFile.listTuple.iterator();
+		while(result && i.hasNext())
+		{
+			tuple = i.next();
+			addition = tuple.marketValue + tuple.cashFlow;
+			if (addition < 0)
+			{
+				result = false;
+			}
+		}
+		return result;
+	}
+	
+	
 	public static void parseFile(String nameFile, csv CSVFile)
 	{
 		try
@@ -180,8 +199,6 @@ public class ROI_Calculation {
 						    			}
 						    		}
 						    	}
-						    	System.out.println("start : " + CSVFile.start.toString());
-						    	System.out.println("end   : " + CSVFile.end.toString());
 						    }
 						    
 						    //----- TUPLES -----//
@@ -225,7 +242,7 @@ public class ROI_Calculation {
 						    	}
 
 						    	tuple.benchmark = deletePercentage(arrayLine[4]);
-						    	System.out.println(tuple.toString());
+						    	//System.out.println(tuple.toString());
 						    	CSVFile.addTuple(tuple);						    	
 						    }
 					    }
@@ -236,6 +253,7 @@ public class ROI_Calculation {
 				System.out.println("Each tuple has a date : " + checkTupleHasDate(CSVFile));
 				System.out.println("Each tuple has a non-negative market value : " + checkNonNegativeMarketValue(CSVFile));
 				System.out.println("Dates are unique and ordered : " + checkDateUniqueOrdered(CSVFile));
+				System.out.println("Withdraws are less important than the market value : " + checkWithdraw(CSVFile));
 			}
 			finally 
 			{
@@ -261,6 +279,7 @@ public class ROI_Calculation {
 		//parseFile("test_negative_market_value.csv", CSVFile);
 		//parseFile("test_dates_non_unique.csv", CSVFile);
 		//parseFile("test_dates_non_ordered.csv", CSVFile);
+		//parseFile("test_withdraw.csv", CSVFile);
 		
 	}
 
