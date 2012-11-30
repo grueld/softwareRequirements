@@ -126,7 +126,7 @@ public class ROI_Calculation {
 	}
 	
 	
-	public static boolean checkDates(csv CSVFile)
+	public static boolean checkEvaluationPeriodDates(csv CSVFile)
 	{
 		boolean result = true;
 		if(!CSVFile.start.validDate())
@@ -138,20 +138,49 @@ public class ROI_Calculation {
 		{
 			result = false;
 		}
-		if (result)
+		return result;
+	}
+	
+	
+	public static boolean checkTuplesDates(csv CSVFile)
+	{
+		boolean result = true;	
+		date date;
+		Iterator<tuple> i = CSVFile.listTuple.iterator();
+		while(result && i.hasNext())
 		{
-			date date;
-			Iterator<tuple> i = CSVFile.listTuple.iterator();
-			while(result && i.hasNext())
+			date = i.next().date;
+			if(!date.validDate())
 			{
-				date = i.next().date;
-				if(!date.validDate())
-				{
-					result = false;
-				}
+				result = false;
 			}
 		}
 		return result;
+	}
+	
+	
+	public static boolean checkAccountGrow(csv CSVFile)
+	{
+		if(CSVFile.listTuple.size()>1)
+		{
+			boolean result = true;
+			int i = 0;
+			while(result && i<CSVFile.listTuple.size()-1)
+			{
+				if (CSVFile.listTuple.get(i).marketValue == 0 &&
+						CSVFile.listTuple.get(i).cashFlow == 0 && 
+						CSVFile.listTuple.get(i+1).marketValue != 0)
+				{
+					result = false;
+				}
+				i++;
+			}
+			return result;
+		}
+		else
+		{
+			return true;
+		}
 	}
 	
 	
@@ -198,35 +227,44 @@ public class ROI_Calculation {
 						    	word_without_space = stSpace.nextToken();
 						    	if (word_without_space.equals("Period:"))
 						    	{
-						    		word_without_space = stSpace.nextToken();
-						    		StringTokenizer stDashStart = new StringTokenizer(word_without_space, "-");
-						    		if (stDashStart.hasMoreTokens())
+						    		if(stSpace.hasMoreTokens())
 						    		{
-						    			CSVFile.start.year = Integer.valueOf(stDashStart.nextToken());
-						    			if (stDashStart.hasMoreTokens())
-						    			{
-						    				CSVFile.start.month = Integer.valueOf(stDashStart.nextToken());
-						    				if (stDashStart.hasMoreTokens())
+							    		word_without_space = stSpace.nextToken();
+							    		StringTokenizer stDashStart = new StringTokenizer(word_without_space, "-");
+							    		if (stDashStart.hasMoreTokens())
+							    		{
+							    			CSVFile.start.year = Integer.valueOf(stDashStart.nextToken());
+							    			if (stDashStart.hasMoreTokens())
 							    			{
-						    					CSVFile.start.day = Integer.valueOf(stDashStart.nextToken());
+							    				CSVFile.start.month = Integer.valueOf(stDashStart.nextToken());
+							    				if (stDashStart.hasMoreTokens())
+								    			{
+							    					CSVFile.start.day = Integer.valueOf(stDashStart.nextToken());
+								    			}
 							    			}
-						    			}
-						    		}
-						    		word_without_space = stSpace.nextToken();
-						    		word_without_space = stSpace.nextToken();
-						    		StringTokenizer stDashEnd = new StringTokenizer(word_without_space, "-");
-						    		if (stDashEnd.hasMoreTokens())
-						    		{
-						    			CSVFile.end.year = Integer.valueOf(stDashEnd.nextToken());
-						    			if (stDashEnd.hasMoreTokens())
-						    			{
-						    				CSVFile.end.month = Integer.valueOf(stDashEnd.nextToken());
-						    				if (stDashEnd.hasMoreTokens())
-							    			{
-						    					CSVFile.end.day = Integer.valueOf(stDashEnd.nextToken());
-							    			}
-						    			}
-						    		}
+							    		}
+							    		if(stSpace.hasMoreTokens())
+							    		{
+								    		word_without_space = stSpace.nextToken();
+								    		if(stSpace.hasMoreTokens())
+								    		{
+									    		word_without_space = stSpace.nextToken();
+									    		StringTokenizer stDashEnd = new StringTokenizer(word_without_space, "-");
+									    		if (stDashEnd.hasMoreTokens())
+									    		{
+									    			CSVFile.end.year = Integer.valueOf(stDashEnd.nextToken());
+									    			if (stDashEnd.hasMoreTokens())
+									    			{
+									    				CSVFile.end.month = Integer.valueOf(stDashEnd.nextToken());
+									    				if (stDashEnd.hasMoreTokens())
+										    			{
+									    					CSVFile.end.day = Integer.valueOf(stDashEnd.nextToken());
+										    			}
+									    			}
+									    		}
+								    		}
+							    		}
+							    	}
 						    	}
 						    }
 						    
@@ -277,13 +315,15 @@ public class ROI_Calculation {
 					    }
 					}
 				}
-				System.out.println("Dates are valid : " + checkDates(CSVFile));
-				System.out.println("Start before end : " + checkStartBeforeEnd(CSVFile));
-				System.out.println("Evaluation period dates are in dates : " + checkEvaluationPeriod(CSVFile));
-				System.out.println("Each tuple has a date : " + checkTupleHasDate(CSVFile));
-				System.out.println("Each tuple has a non-negative market value : " + checkNonNegativeMarketValue(CSVFile));
-				System.out.println("Dates are unique and ordered : " + checkDateUniqueOrdered(CSVFile));
+				System.out.println("Tuple dates are valid :                              " + checkTuplesDates(CSVFile));
+				System.out.println("Evaluation period dates are valid :                  " + checkEvaluationPeriodDates(CSVFile));
+				System.out.println("Start before end :                                   " + checkStartBeforeEnd(CSVFile));
+				System.out.println("Evaluation period dates are in dates :               " + checkEvaluationPeriod(CSVFile));
+				System.out.println("Each tuple has a date :                              " + checkTupleHasDate(CSVFile));
+				System.out.println("Each tuple has a non-negative market value :         " + checkNonNegativeMarketValue(CSVFile));
+				System.out.println("Dates are unique and ordered :                       " + checkDateUniqueOrdered(CSVFile));
 				System.out.println("Withdraws are less important than the market value : " + checkWithdraw(CSVFile));
+				System.out.println("Account does not grow  :                             " + checkAccountGrow(CSVFile));
 			}
 			finally 
 			{
@@ -303,10 +343,11 @@ public class ROI_Calculation {
 		//System.out.println(nameFile);
 		csv CSVFile = new csv();
 		parseFile("sample.csv", CSVFile);
-		//parseFile("test_start_invalid.csv", CSVFile);
-		//parseFile("test_end_invalid.csv", CSVFile);
 		//parseFile("test_date_invalid.csv", CSVFile);
 		//parseFile("test_date_invalid_February.csv", CSVFile);
+		//parseFile("test_without_evaluation_period.csv", CSVFile);
+		//parseFile("test_start_invalid.csv", CSVFile);
+		//parseFile("test_end_invalid.csv", CSVFile);
 		//parseFile("test_start_after_end.csv", CSVFile);
 		//parseFile("test_eval_not_in_dates.csv", CSVFile);
 		//parseFile("test_tuple_without_date.csv", CSVFile);
@@ -314,7 +355,7 @@ public class ROI_Calculation {
 		//parseFile("test_dates_non_unique.csv", CSVFile);
 		//parseFile("test_dates_non_ordered.csv", CSVFile);
 		//parseFile("test_withdraw.csv", CSVFile);
-		
+		//parseFile("test1.csv", CSVFile);
 	}
 
 }
