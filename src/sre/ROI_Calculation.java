@@ -184,6 +184,19 @@ public class ROI_Calculation {
 	}
 	
 	
+	public static boolean checkNameNotNull(csv CSVFile)
+	{
+		if(CSVFile.name == null)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	
 	public static void parseFile(String nameFile, csv CSVFile)
 	{
 		try
@@ -213,12 +226,16 @@ public class ROI_Calculation {
 					    	//----- NAME -----//
 						    if(word_without_space.equals("Name:"))
 						    {
-						    	word_without_space = stSpace.nextToken();
-						    	CSVFile.name = word_without_space;
-						    	while (stSpace.hasMoreTokens())
-						    	{
-						    		CSVFile.name += " " + stSpace.nextToken();
-						    	}						    	
+						    	if(stSpace.hasMoreTokens())
+					    		{
+							    	word_without_space = stSpace.nextToken();
+							    	CSVFile.name = word_without_space;
+							    	while (stSpace.hasMoreTokens())
+							    	{
+							    		CSVFile.name += " " + stSpace.nextToken();
+							    	}	
+							    	
+					    		}
 						    }
 					    	
 					    	//----- EVALUATION PERIOD -----//
@@ -315,6 +332,7 @@ public class ROI_Calculation {
 					    }
 					}
 				}
+				System.out.println("The name is not null :                               " + checkNameNotNull(CSVFile));
 				System.out.println("Tuple dates are valid :                              " + checkTuplesDates(CSVFile));
 				System.out.println("Evaluation period dates are valid :                  " + checkEvaluationPeriodDates(CSVFile));
 				System.out.println("Start before end :                                   " + checkStartBeforeEnd(CSVFile));
@@ -343,6 +361,7 @@ public class ROI_Calculation {
 		//System.out.println(nameFile);
 		csv CSVFile = new csv();
 		parseFile("sample.csv", CSVFile);
+		//parseFile("test_without_name.csv", CSVFile);
 		//parseFile("test_date_invalid.csv", CSVFile);
 		//parseFile("test_date_invalid_February.csv", CSVFile);
 		//parseFile("test_without_evaluation_period.csv", CSVFile);
@@ -355,7 +374,7 @@ public class ROI_Calculation {
 		//parseFile("test_dates_non_unique.csv", CSVFile);
 		//parseFile("test_dates_non_ordered.csv", CSVFile);
 		//parseFile("test_withdraw.csv", CSVFile);
-		//parseFile("test1.csv", CSVFile);
+		//parseFile("test_grow.csv", CSVFile);
 	}
 
 }
