@@ -214,122 +214,233 @@ public class ROI_Calculation {
 					{
 						word_with_space = stComma.nextToken();
 					    StringTokenizer stSpace = new StringTokenizer(word_with_space);
-					    word_without_space = stSpace.nextToken();
-					    
-					    if(!word_without_space.equals("Description:") &&
-					    		!word_without_space.equals("Account#:") &&
-					    		!word_without_space.equals("Email:") &&
-					    		!word_without_space.equals("Address:") &&
-					    		!word_without_space.equals("Phone:") &&
-					    		!word_without_space.equals("Transaction"))
+					    if(stSpace.hasMoreTokens())
 					    {
-					    	//----- NAME -----//
-						    if(word_without_space.equals("Name:"))
+						    word_without_space = stSpace.nextToken();
+						    
+						    if(!word_without_space.equals("Description:") &&
+						    		!word_without_space.equals("Account#:") &&
+						    		!word_without_space.equals("Email:") &&
+						    		!word_without_space.equals("Address:") &&
+						    		!word_without_space.equals("Phone:") &&
+						    		!word_without_space.equals("Transaction") &&
+						    		!word_without_space.equals("Description") &&
+						    		!word_without_space.equals("Account#") &&
+						    		!word_without_space.equals("Email") &&
+						    		!word_without_space.equals("Address") &&
+						    		!word_without_space.equals("Phone"))
 						    {
-						    	if(stSpace.hasMoreTokens())
-					    		{
-							    	word_without_space = stSpace.nextToken();
-							    	CSVFile.name = word_without_space;
-							    	while (stSpace.hasMoreTokens())
-							    	{
-							    		CSVFile.name += " " + stSpace.nextToken();
-							    	}	
-							    	
-					    		}
-						    }
-					    	
-					    	//----- EVALUATION PERIOD -----//
-						    else if(word_without_space.equals("Evaluation"))
-						    {
-						    	word_without_space = stSpace.nextToken();
-						    	if (word_without_space.equals("Period:"))
-						    	{
-						    		if(stSpace.hasMoreTokens())
+						    	//----- NAME -----//
+							    if(word_without_space.equals("Name:"))
+							    {
+							    	if(stSpace.hasMoreTokens())
 						    		{
-							    		word_without_space = stSpace.nextToken();
-							    		StringTokenizer stDashStart = new StringTokenizer(word_without_space, "-");
-							    		if (stDashStart.hasMoreTokens())
+								    	word_without_space = stSpace.nextToken();
+								    	CSVFile.name = word_without_space;
+								    	while (stSpace.hasMoreTokens())
+								    	{
+								    		CSVFile.name += " " + stSpace.nextToken();
+								    	}	
+								    	
+						    		}
+							    }
+							    else if(word_without_space.equals("Name"))
+							    {
+							    	if(stSpace.hasMoreTokens())
+						    		{
+								    	word_without_space = stSpace.nextToken();
+								    	if(stSpace.hasMoreTokens())
 							    		{
-							    			CSVFile.start.year = Integer.valueOf(stDashStart.nextToken());
-							    			if (stDashStart.hasMoreTokens())
-							    			{
-							    				CSVFile.start.month = Integer.valueOf(stDashStart.nextToken());
-							    				if (stDashStart.hasMoreTokens())
-								    			{
-							    					CSVFile.start.day = Integer.valueOf(stDashStart.nextToken());
-								    			}
-							    			}
+									    	word_without_space = stSpace.nextToken();
+									    	CSVFile.name = word_without_space;
+									    	while (stSpace.hasMoreTokens())
+									    	{
+									    		CSVFile.name += " " + stSpace.nextToken();
+									    	}	
 							    		}
-							    		if(stSpace.hasMoreTokens())
-							    		{
-								    		word_without_space = stSpace.nextToken();
+						    		}
+							    }
+						    	
+						    	//----- EVALUATION PERIOD -----//
+							    else if(word_without_space.equals("Evaluation"))
+							    {
+							    	try
+							    	{
+								    	word_without_space = stSpace.nextToken();
+								    	if (word_without_space.equals("Period:"))
+								    	{
 								    		if(stSpace.hasMoreTokens())
 								    		{
 									    		word_without_space = stSpace.nextToken();
-									    		StringTokenizer stDashEnd = new StringTokenizer(word_without_space, "-");
-									    		if (stDashEnd.hasMoreTokens())
+									    		StringTokenizer stDashStart = new StringTokenizer(word_without_space, "-");
+									    		if (stDashStart.hasMoreTokens())
 									    		{
-									    			CSVFile.end.year = Integer.valueOf(stDashEnd.nextToken());
-									    			if (stDashEnd.hasMoreTokens())
+									    			CSVFile.start.year = Integer.valueOf(stDashStart.nextToken());
+									    			if (stDashStart.hasMoreTokens())
 									    			{
-									    				CSVFile.end.month = Integer.valueOf(stDashEnd.nextToken());
-									    				if (stDashEnd.hasMoreTokens())
+									    				CSVFile.start.month = Integer.valueOf(stDashStart.nextToken());
+									    				if (stDashStart.hasMoreTokens())
 										    			{
-									    					CSVFile.end.day = Integer.valueOf(stDashEnd.nextToken());
+									    					CSVFile.start.day = Integer.valueOf(stDashStart.nextToken());
 										    			}
 									    			}
 									    		}
+									    		if(stSpace.hasMoreTokens())
+									    		{
+										    		word_without_space = stSpace.nextToken();
+										    		if(stSpace.hasMoreTokens())
+										    		{
+											    		word_without_space = stSpace.nextToken();
+											    		StringTokenizer stDashEnd = new StringTokenizer(word_without_space, "-");
+											    		if (stDashEnd.hasMoreTokens())
+											    		{
+											    			CSVFile.end.year = Integer.valueOf(stDashEnd.nextToken());
+											    			if (stDashEnd.hasMoreTokens())
+											    			{
+											    				CSVFile.end.month = Integer.valueOf(stDashEnd.nextToken());
+											    				if (stDashEnd.hasMoreTokens())
+												    			{
+											    					CSVFile.end.day = Integer.valueOf(stDashEnd.nextToken());
+												    			}
+											    			}
+											    		}
+										    		}
+									    		}
+									    	}
+								    	}
+								    	else if (word_without_space.equals("Period"))
+								    	{
+								    		if(stSpace.hasMoreTokens())
+								    		{
+									    		word_without_space = stSpace.nextToken();
+									    		if(stSpace.hasMoreTokens())
+									    		{
+										    		word_without_space = stSpace.nextToken();
+										    		StringTokenizer stDashStart = new StringTokenizer(word_without_space, "-");
+										    		if (stDashStart.hasMoreTokens())
+										    		{
+										    			CSVFile.start.year = Integer.valueOf(stDashStart.nextToken());
+										    			if (stDashStart.hasMoreTokens())
+										    			{
+										    				CSVFile.start.month = Integer.valueOf(stDashStart.nextToken());
+										    				if (stDashStart.hasMoreTokens())
+											    			{
+										    					CSVFile.start.day = Integer.valueOf(stDashStart.nextToken());
+											    			}
+										    			}
+										    		}
+										    		if(stSpace.hasMoreTokens())
+										    		{
+											    		word_without_space = stSpace.nextToken();
+											    		if(stSpace.hasMoreTokens())
+											    		{
+												    		word_without_space = stSpace.nextToken();
+												    		StringTokenizer stDashEnd = new StringTokenizer(word_without_space, "-");
+												    		if (stDashEnd.hasMoreTokens())
+												    		{
+												    			CSVFile.end.year = Integer.valueOf(stDashEnd.nextToken());
+												    			if (stDashEnd.hasMoreTokens())
+												    			{
+												    				CSVFile.end.month = Integer.valueOf(stDashEnd.nextToken());
+												    				if (stDashEnd.hasMoreTokens())
+													    			{
+												    					CSVFile.end.day = Integer.valueOf(stDashEnd.nextToken());
+													    			}
+												    			}
+												    		}
+											    		}
+										    		}
+										    	}
 								    		}
+								    	}
+							    	}
+							    	catch (NumberFormatException e)
+							    	{
+							    		System.out.println("The format of Evaluation period is not right.");
+							    	}
+							    }
+							    
+							    //----- TUPLES -----//
+							    else 
+							    {
+							    	String[] arrayLine = line.split(",",-1); 
+									tuple tuple = new tuple();
+									try
+							    	{
+										StringTokenizer stDashDate = new StringTokenizer(arrayLine[0], "-");
+							    		if (stDashDate.hasMoreTokens())
+							    		{
+							    			tuple.date.year = Integer.valueOf(stDashDate.nextToken());
+							    			if (stDashDate.hasMoreTokens())
+							    			{
+							    				tuple.date.month = Integer.valueOf(stDashDate.nextToken());
+							    				if (stDashDate.hasMoreTokens())
+								    			{
+							    					tuple.date.day = Integer.valueOf(stDashDate.nextToken());
+								    			}
+							    			}
 							    		}
 							    	}
-						    	}
+									catch (NumberFormatException e)
+							    	{
+							    		System.out.println("The format of Date is not right.");
+							    	}
+						    		
+							    	try
+							    	{
+							    		tuple.marketValue = Float.valueOf(arrayLine[1]);
+							    	}
+							    	catch (NumberFormatException e)
+							    	{
+							    		System.out.println("The format of Market Value is not right.");
+							    	}
+							    	
+							    	try
+								    {
+							    		if(!arrayLine[2].equals(""))
+								    	{
+								    		tuple.cashFlow = Float.valueOf(arrayLine[2]);
+								    	}
+								    	else
+								    	{
+								    		tuple.cashFlow = 0;
+								    	}
+							    	}
+							    	catch (NumberFormatException e)
+							    	{
+							    		System.out.println("The format of Cash Flow is not right.");
+							    	}
+							    	
+							    	try
+								    {
+							    		if(!arrayLine[3].equals(""))
+								    	{
+								    		tuple.agentFees = Float.valueOf(arrayLine[3]);
+								    	}
+								    	else
+								    	{
+								    		tuple.agentFees = 0;
+								    	}
+								    }
+							    	catch (NumberFormatException e)
+							    	{
+							    		System.out.println("The format of Agent Fees is not right.");
+							    	}
+	
+							    	try
+								    {
+							    		tuple.benchmark = deletePercentage(arrayLine[4]);
+								    }
+							    	catch (NumberFormatException e)
+							    	{
+							    		System.out.println("The format of Benchmark is not right.");
+							    	}
+							    	
+							    	//System.out.println(tuple.toString());
+							    	CSVFile.addTuple(tuple);						    	
+							    }
 						    }
-						    
-						    //----- TUPLES -----//
-						    else 
-						    {
-						    	String[] arrayLine = line.split(",",-1); 
-								tuple tuple = new tuple();
-
-								StringTokenizer stDashDate = new StringTokenizer(arrayLine[0], "-");
-					    		if (stDashDate.hasMoreTokens())
-					    		{
-					    			tuple.date.year = Integer.valueOf(stDashDate.nextToken());
-					    			if (stDashDate.hasMoreTokens())
-					    			{
-					    				tuple.date.month = Integer.valueOf(stDashDate.nextToken());
-					    				if (stDashDate.hasMoreTokens())
-						    			{
-					    					tuple.date.day = Integer.valueOf(stDashDate.nextToken());
-						    			}
-					    			}
-					    		}
-					    		
-						    	tuple.marketValue = Float.valueOf(arrayLine[1]);
-						    	
-						    	if(!arrayLine[2].equals(""))
-						    	{
-						    		tuple.cashFlow = Float.valueOf(arrayLine[2]);
-						    	}
-						    	else
-						    	{
-						    		tuple.cashFlow = 0;
-						    	}
-						    	
-						    	if(!arrayLine[3].equals(""))
-						    	{
-						    		tuple.agentFees = Float.valueOf(arrayLine[3]);
-						    	}
-						    	else
-						    	{
-						    		tuple.agentFees = 0;
-						    	}
-
-						    	tuple.benchmark = deletePercentage(arrayLine[4]);
-						    	//System.out.println(tuple.toString());
-						    	CSVFile.addTuple(tuple);						    	
-						    }
-					    }
+						}
 					}
 				}
 				System.out.println("The name is not null :                               " + checkNameNotNull(CSVFile));
