@@ -371,17 +371,17 @@ R6.4 & Warning message: If the benchmark is not calculable, then a warning messa
 \hline
 \textbf{\comment input} (\textit{input.csv})\\
 \\
-\textit{tr}: SEQ[TUPLE[\textit{date}: DATE, \textit{mv}: VALUE, \textit{cf}: VALUE, \textit{af}: VALUE, \\
-\textit{bm}: VALUE $\bunion$ \{void\}]]\\
-\comment sequence of transaction-tuples [\textit{date, market\_value, cash\_flow, agent\_fees,}\\
-\comment \textit{benchmark}]\\
+\textit{tr}: SEQ[DATA]\\
+\comment sequence of data [\textit{date, market\_value, cash\_flow, agent\_fees, benchmark}]\\
 \comment \textit{tr.domain} = \{1,2,...,\textit{tr.count}\}\\
 \\
 \textit{count}: INTEGER$\eqdef$\textit{tr.count}\\
 \\
 \textit{dates}: SET[DATE]$\eqdef$\{\textit{t $\in$ tr$\itholds$t.date}\}\\
 \\
-\textit{start, end}: DATE$\comment$ metadata evaluation period\\
+TODO: VOIR POUR LES DEFINIR MATHEMATIQUEMENT\\
+\textit{start, end}: DATE \comment first and last date of the file\\
+\textit{$a\_start, a\_end$}: DATE \comment metadata evaluation period\\
 \\
 \textit{duration}: VALUE$\eqdef$ \textit{days(end - start)}$\div$(365.2422) \\
 \comment years between \textit{start} and \textit{end} calculated by days\\
@@ -414,6 +414,8 @@ R6.4 & Warning message: If the benchmark is not calculable, then a warning messa
 	\tab \textit{(duration$<$1)$\Rightarrow$ Result= twr(a\_start, a\_end) * 100}\\
 \\
 
+TODO: IL FAUT RETIRER DES E-R DESCRIPTION QUE\\
+ AF EST UN DEPOSIT AILLEUR QUE POUR LE TWR\\
 \textit{roi (a\_start, a\_end}: DATE): VALUE\\
 \require\\
 	\tab \textit{a\_start, a\_end $\in$ dates}\\
@@ -422,47 +424,111 @@ R6.4 & Warning message: If the benchmark is not calculable, then a warning messa
 	\tab \textit{(tr[m].mv+tr[m].cf) $\ast (1+Result\div 100)^{days(a\_end - a\_start)\div365.2422}$ }\\
 	\tab \tab \textit{+ ($\Sigma i:\nat  |  m <i<n\itholds (tr[i].cf + tr[i].af) \ast $}\\
 	\tab \tab \textit{$(1+Result\div 100)^{days(a\_end - tr[i].date)\div365.2422}) - tr[n].mv = 0$}\\
-	\tab where \textit{m = di(a\_start)}\\ 
-	\tab \tab \hspace*{1em} \textit{n = di(a\_end)}\\
+\where \\
+	\tab \textit{m = di(a\_start)}\\ 
+	\tab \textit{n = di(a\_end)}\\
+\\
 \\
 
-\textit{benchmark\_calculable (a\_start, a\_end}: DATE): $\Bool$\\
+$year(d:$ DATE): INTEGER\\
 \require\\
-	\tab \textit{\{$\forall t \in tr  |  t.date="yyyy-01-01" \itholds t.bench \neq void$\}}\\
-	\tab \textit {$\bunion \{tr[di(a\_end)].bench \neq void\}$}\\
+	\tab $d = "yyyy - mm - dd"$\\
 \ensure\\
-	\tab \textit {Result = $\True$} \\
-\\
+	\tab $Result = yyyy$\\
+\\	
 
-\comment the function below return a set of index corresponding to the date with\\
-\comment a benchmark\\
-\textit{bench\_seq (a\_start, a\_end}: DATE): SEQ[INTEGER]\\
+$mon(d:$ DATE): INTEGER\\
 \require\\
-	\tab \textit{benchmark\_calculable(a\_start, a\_end) }\\
+	\tab $d = "yyyy - mm - dd"$\\
 \ensure\\
-	\tab \textit{$\{\forall i \in Result \itholds tr[i].bench \neq void \wedge (di(a\_start)<i\le di(a\_end))\}$}\\
-	\tab \comment \textit{ Result.domain = \{1,2..Result.count\}}\\
-\\
+	\tab $Result = mm$\\
+\\	
 
-\textit{benchmark (a\_start, a\_end}: DATE): VALUE\\
+$day(d:$ DATE): INTEGER\\
 \require\\
-	\tab \textit{benchmark\_calculable(a\_start, a\_end) }\\
+	\tab$ d = "yyyy - mm - dd"$\\
 \ensure\\
+	\tab $Result = dd$\\
+\\	
 
-	\tab \textit{$(tr[m].mv+tr[m].cf) \ast (Result+1)^{days(a\_end - a\_start)\div365.2422} $}\\
-	\tab \textit{$+ (\Sigma k: VALUE | m+1 \le k \le n \itholds tr[k].cf \ast$}\\
-	\tab \tab \textit{$(Result+1)^{days(a\_end - tr[k].date)\div365.2422} = FV$}\\
+TODO FAIRE LES FONCTION TABLE POUR MIN ET MAX\\
+TODO VOIR POUR LE REQUIRE DE MIN ET MAX\\
+$\uparrow$ ($f, s$: DATE): DATE\\
+\require\\
+\ensure\\
+	\tab $<<$ see table...$>>$\\
+\\
+$\downarrow$ ($f, s$: DATE): DATE\\
+\require\\
+\ensure\\
+	\tab $<<$ see table...$>>$\\
+\\
+TODO FAIRE ET NUMEROTER LA FUNCTION TABLE\\
+ DE LA FCT SUIVANTE\\
+\textit{at (d}: DATE): DATA\\
+\ensure\\
+	\tab $<<see$ $table ... >>$ \\
 \\
 
-	\tab where \textit{m = di(a\_start)}\\ 
-	\tab \tab \hspace*{1em} \textit{n = di(a\_end)}\\
-	\tab \tab \hspace*{1em} \textit{$FV \eqdef  $}\\
-	\tab \textit{$(tr[m].mv+tr[m].cf) \ast (\Pi i: VALUE | s = bench\_seq(a\_start, a\_end) $} \\
-	\tab \tab \textit{$ \wedge s[0] = m\wedge i \in s \wedge i \ge 1 \wedge i = s(j) \itholds $}\\
- 	\tab \tab \textit{$tr[i].bench^{days(tr[i].date - tr[s(j-1)].date)\div365.2422} )$}\\
-	\tab \textit{$+ (\Sigma k: VALUE | m+1 \le k \le n \itholds (tr[k].cf - tr[k].af) \ast$}\\
-	\tab \tab \textit{$(\Pi i: VALUE | s = bench\_seq(tr[k].date, a\_end) \wedge s[0] = k \wedge i \in s$}\\
-	\tab \tab \textit{$\wedge  i \ge 1 \wedge i = s(j) \itholds tr[k].bench^{days(tr[i].date-tr[s(j-1)].date)\div365.2422}))$}\\
+\textit{bm\_calculable (s, e}: DATE): $\Bool$\\
+\require\\
+\ensure\\
+	\tab $Result =  at[end\downarrow a].bench \neq void $\\
+	\tab \tab $\wedge (\forall d \in DATE | mon(d) = day(d) = 1 \wedge year(s) \le year(d) \le year(e)$\\
+	\tab \tab \tab $\itholds at[d].bench \neq void)$\\
+	\tab \tab $\wedge ((C \wedge at[s].bench \neq void) \vee (\neg C \wedge at[end \downarrow b].bench \neq void))$\\
+\where\\
+	\tab  $a = "year(s)+1 - 01 - 01"$\\
+	\tab  $b = "year(e)+1 - 01 - 01"$\\
+	\tab  $C = mon(e) = 1 \wedge day(e) = 1$\\
+\\
+
+TODO RAJOUTER LA FUNCTION TABLE\\
+\comment the function below return a set of DATA with a benchmark $\neq$ void\\
+\textit{bm\_seq (s, e}: DATE): SEQ[DATA]\\
+\require\\
+	\tab $s,e\in$ $dates$\\
+	\tab \textit{bm\_calculable(s, e) }\\
+\ensure\\
+	\tab $Result = (\oplus i | di(s)<i < di(e) \wedge tr[i].bench \neq void \itholds <tr[i]>) \oplus <t>$\\
+
+\where\\
+	\tab t = $<<$ see table ...$>>$\\
+\\
+
+TODO DEFINIR LA FONCTION PO()\\
+$bm\_final\_value(s,e:$ DATE): VALUE\\
+\require\\
+	\tab $s, e \in dates$\\
+	\tab $bm\_calculable(s,e) $\\
+\ensure\\
+	\tab $Result \eqdef$\\
+	\tab $tr[m].mv \ast (\Pi i, seq, t| seq = bm\_seq(s, e) \wedge a \oplus seq[0] \wedge i \ge 1$\\
+ 	\tab \tab $\wedge t = seq[i] \itholds t.bench^{po(s, e, seq[i-1].date, t.date)} )$\\
+	\tab $+ (\Sigma k | m \le k \le n \itholds (tr[k].cf - tr[k].af) \ast$\\
+	\tab \tab $(\Pi i,seq,t | seq = bm\_seq(tr[k].date, e) \wedge b(k) \oplus seq \wedge  i \ge 1 $\\
+	\tab \tab $\wedge t = seq[i] \itholds t.bench^{po(s, e, seq[i-1].date, t.date)}))$\\
+\where\\
+	\tab $m = di(s)$\\ 
+	\tab $n = di(e)$\\
+	{\hspace*{1em}} \comment $a$ defines seq[0] in the first product\\ 
+	{\hspace*{1em}} \comment $b(k)$ defines seq[0] in the second product\\
+	\tab$a = <("year(s) - 01 - 01", 0, 0, 0, void)>$\\
+	\tab$b(k) = <("year(tr[k].date) - 01 - 01", 0, 0, 0, void)>$ \\
+\\
+
+$benchmark (s, e$: DATE): VALUE\\
+\require\\
+	\tab $s, e \in dates$\\
+	\tab $bm\_calculable(s, e)$\\
+\ensure\\
+	\tab $tr[m].mv \ast (Result+1)^{days(e-s)\div365.2422}) $\\
+	\tab $+ (\Sigma k | m \le k \le n \itholds tr[k].cf \ast$\\
+	\tab \tab $(Result+1)^{days(e - tr[k].date)\div365.2422}) - FV= 0$\\
+\where\\
+	\tab $m = di(s)$\\ 
+	\tab $n = di(e)$\\
+	\tab $FV \eqdef bm\_final\_value(s,e) $\\
 \\
 
 
