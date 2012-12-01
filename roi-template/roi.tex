@@ -61,19 +61,19 @@ The following diagram is the context diagram for the ROI system.\\
 \\
 The monitored variables (which are the content of the CSV file, provided by the user), are :
 \begin{itemize}
-\item an optional header, which is composed of a description of the file and information about the customer (account number, email, address and phone number)
+\item an header, which is composed of a required name, an optional description of the file and optional information about the customer (account number, email, address and phone number)
 \item the evaluation dates (\textit{start} and \textit{end})
 \item the tuple data (\textit{date}, \textit{market value}, \textit{cash flow}, \textit{agent fees} and \textit{benchmark}).
 \end{itemize}
 \bigskip
 The format of the output is the following (whole input = everything between the earliest date and the latest date in the sequence of tuple data):\\
 \\
+Name: ??\\
 --------------------------------------------\\
 Whole input: yyyy-mm-dd to yyyy-mm-dd\\
 TWR: ?? \%\\
 ROI: ?? \%\\
 Benchmark: ?? \%\\
---------------------------------------------\\
 --------------------------------------------\\
 Evaluation Period: yyyy-mm-dd to yyyy-mm-dd\\
 TWR: ?? \%\\
@@ -82,7 +82,7 @@ Benchmark: ?? \%\\
 --------------------------------------------\\
 \\
 \\
-The controlled variables are also a warning (if a calculation is not possible) and an error (if the CSV file is not valid).\\
+The controlled variables are also a warning (if a calculation is not possible, or if there is no name) and an error (if the CSV file is not valid).\\
 
 \begin{figure}
 \centering
@@ -138,68 +138,88 @@ E1 & Customers create and store a portfolio history, i.e. the historical data of
 E2 & Customers store their portfolio history as a CSV text file. CSV files may be prepared on editors of any operating system and encoded as ANSI or UTF-8. & \\
 
 \hline
-E3 & Optionally, every portfolio history has a description, account number, email, address, and phone number fields. & \\
+\end{longtable}
+%%%
+
+
+%%%
+\centering
+\begin{longtable}{|l|p{9cm}|p{5cm}|}
 
 \hline
-E4 & A portfolio history records investment performance in a non-empty sequence of tuple data, each tuple having the fields: date (required), market value (required), cash flow (optional), agent fees (optional) and benchmark (optional). & See \textit{tr} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+\multicolumn{3}{|c|}{\textbf{Header of the CSV file}} \\
+
 
 \hline
-E5 & When there is a customer contribution, the cash flow is a positive number. For a withdrawal, the number is negative. & \\
+E3.1 & Every portfolio history has a name. & \\
 
 \hline
-E6 & Agent fees can be internal (deducted from within the portfolio) or external (additional amounts paid by the customer to the investment broker). The portfolio history reflects only external agent fees, always reported as a non-negative amount. & \\
+E3.2 & Optionally, every portfolio history has a description, account number, email, address, and phone number fields. & \\
 
 \hline
-E7 & Optionally, every portfolio has an evaluation period that is between the start and end date of the historical performance data. & See Invariant 1 of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+\end{longtable}
+%%%
+
+%%%
+\centering
+\begin{longtable}{|l|p{9cm}|p{5cm}|}
+
+\hline
+\multicolumn{3}{|c|}{\textbf{Evaluation period in the CSV file}} \\
+
+\hline
+E4.1 & Optionally, every portfolio has an evaluation period that is between the start and end date of the historical performance data. & See Invariant 1 of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+E4.2 & The start date and the end date must be in ISO format (yyyy-mm-dd). & \\
+
+\hline
+E4.3 & The evaluation period is in range. & See Invariant 1 of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+\end{longtable}
+%%%
+
+%%%
+\centering
+\begin{longtable}{|l|p{9cm}|p{5cm}|}
+
+\hline
+\multicolumn{3}{|c|}{\textbf{Data in the CSV file}} \\
+
+\hline
+E5.1 & A portfolio history records investment performance in a non-empty sequence of tuple data, each tuple having the fields: date (required), market value (required), cash flow (optional), agent fees (optional) and benchmark (optional). & See \textit{tr} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+E5.2 &  For each tuple, the dates must be in ISO format (yyyy-mm-dd). & \\
+
+\hline
+E5.3 & When there is a customer contribution, the cash flow is a positive number. For a withdrawal, the number is negative. & \\
+
+\hline
+E5.4 & Agent fees can be internal (deducted from within the portfolio) or external (additional amounts paid by the customer to the investment broker). The portfolio history reflects only external agent fees, always reported as a non-negative amount. & \\
+
+\hline
+E5.5 & Every data tuple (row in the CSV file) has a date and a non-negative market value. & See Invariant 2 of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+E5.6 &  Dates in the tuples are unique and ordered. & See Invariant 3 of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+E5.7 & No withdrawal in the tuple data can be greater than the market value. & See Invariant 4 of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+E5.8 & An account cannot grow from zero market value and cash flow. & See Invariant 5 of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+E5.9 &  For each tuple, the market value plus cash-flow plus agent-fees must be non-zero. & See precondition 3 of feature \textit{twr} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
 
 \hline
 \end{longtable}
 }
-%%%
-\centering
-\begin{longtable}{|l|p{9cm}|p{5cm}|}
-\hline
-\multicolumn{3}{|c|}{\textbf{Evaluation period}} \\
 
-\hline
-E8 & The evaluation period is in range. & See Invariant 1 of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
-
-\hline
-\end{longtable}
-%%%
-
-
-%%%
-\centering
-\begin{longtable}{|l|p{9cm}|p{5cm}|}
-
-\hline
-\multicolumn{3}{|c|}{\textbf{CSV file}} \\
-
-\hline
-E.1 & Every data tuple (row in the CSV file) has a date and a non-negative market value. & See Invariant 2 of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
-
-\hline
-E.2 &  Dates in the tuples are unique and ordered. & See Invariant 3 of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
-
-\hline
-E.3 & No withdrawal in the tuple data can be greater than the market value. & See Invariant 4 of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
-
-\hline
-E.4 & An account cannot grow from zero market value and cash flow. & See Invariant 5 of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
-
-\hline
-E.5 &  For each tuple, the market value plus cash-flow plus agent-fees must be non-zero. & See precondition 3 of feature \textit{twr} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
-
-\hline
-E.6 &  All dates must be in ISO format (yyyy-mm-dd). & \\
-
-\hline
-\end{longtable}
-%%%
 
 %%%%%%%%%%%%%%%%
-\newpage
 \subsection{R-descriptions}
 
 {\centering
@@ -222,7 +242,7 @@ R1 & All return on investment calculations shall follow the GIPS standard. & See
 R2.1 & If no evaluation period is provided, then the start date is the earliest date and the end date the latest date in the sequence of tuple data. & See Start\_Valid and End\_Valid in Function Table\\
 
 \hline
-R2.2 &  Error message: If the evaluation dates are not valid, then the following error message shall be displayed to the user: "Invalid\_Evaluation\_Period" & See Function Table \\
+R2.2 &  Warning message: If the evaluation dates are not valid, then the following error message shall be displayed to the user: "Invalid evaluation period" & See Function Table \\
 
 \hline
 \end{longtable}
@@ -234,7 +254,11 @@ R2.2 &  Error message: If the evaluation dates are not valid, then the following
 \multicolumn{3}{|c|}{\textbf{CSV file}} \\
 
 \hline
-R3.1 &  Error message: If the CSV file is not valid (i.e. if any of the conditions mentioned above do not hold), then the following error message shall be displayed to the user: "Invalid\_file". & See Function table\\
+R3.1 &  Error message: If the CSV file is not valid (i.e. if any of the conditions mentioned above do not hold), then the following error message shall be displayed to the user: "Invalid file". & See Function table\\
+
+\hline
+R3.2 &  Warning message: If the CSV file does not contain a name, then the following error message shall be displayed to the user: "Incomplete file: absence of name". & See Function table\\
+
 \hline
 \end{longtable}
 %%%
@@ -245,19 +269,22 @@ R3.1 &  Error message: If the CSV file is not valid (i.e. if any of the conditio
 \multicolumn{3}{|c|}{\textbf{Calculation of the TWR}} \\
 
 \hline
-R4.1 & The system must provide two TWRs (if each one is calculable) : one for the evaluation period, and one for the whole input. & See Function Table \\
+R4.1 & The system shall provide two TWRs (if each one is calculable) : one for the evaluation period, and one for the whole input. & See Function Table \\
 
 \hline
-R4.2 & If the evaluation period is less than a year, then the TWR shall be reported in absolute terms as a percentage return (i.e. it is not annualized). If the evaluation period is a year or more, then the TWR is annualized to a percentage per year. & See postcondition of  \textit{annual\_compounded\_TWR} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+R4.2 &  The TWRs shall be rounded to two decimal places. & \\
 
 \hline
-R4.3 & The annualized TWR shall be reported as a percentage. & See \textit{annual\_compounded\_TWR} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+R4.3 & If the evaluation period is less than a year, then the TWR shall be reported in absolute terms as a percentage return (i.e. it is not annualized). If the evaluation period is a year or more, then the TWR is annualized to a percentage per year. & See postcondition of  \textit{annual\_compounded\_TWR} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
 
 \hline
-R4.4 & Agent fees are treated like a deposit (the agent fees are \underline{added} to the market value and the cash flow). & See \textit{twr} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+R4.4 & The annualized TWR shall be reported as a percentage. & See \textit{annual\_compounded\_TWR} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
 
 \hline
-R4.5 & Warning message: If the TWR is not calculable, then a warning message shall be displayed to the user. & See Function Table\\
+R4.5 & Agent fees are treated like a deposit (the agent fees are \underline{added} to the market value and the cash flow). & See \textit{twr} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+R4.6 & Warning message: If the TWR is not calculable, then a warning message shall be displayed to the user. & See Function Table\\
 
 \hline
 \end{longtable}
@@ -269,13 +296,16 @@ R4.5 & Warning message: If the TWR is not calculable, then a warning message sha
 \multicolumn{3}{|c|}{\textbf{Calculation of the ROI}} \\
 
 \hline
-R5.1 & The system must provide two ROIs : one for the evaluation period, and one for the whole input. & See Function Table\\
+R5.1 & The system shall provide two ROIs : one for the evaluation period, and one for the whole input. & See Function Table\\
 
 \hline
-R5.2 & The ROI shall be reported as a percentage. & See \textit{roi} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+R5.2 &  The ROIs shall be rounded to two decimal places. & \\
 
 \hline
-R5.3 & Agent fees are treated like a deposit (the agent fees are \underline{added} to the cash flow). & See \textit{roi} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+R5.3 & The ROI shall be reported as a percentage. & See \textit{roi} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+R5.4 & Agent fees are treated like a deposit (the agent fees are \underline{added} to the cash flow). & See \textit{roi} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
 
 \hline
 \end{longtable}
@@ -287,13 +317,16 @@ R5.3 & Agent fees are treated like a deposit (the agent fees are \underline{adde
 \multicolumn{3}{|c|}{\textbf{Calculation of the Benchmark}} \\
 
 \hline
-R6.1 & The system must provide two benchmarks (if each one is calculable) : one for the evaluation period, and one for the whole input. & See Function Table\\
+R6.1 & The system shall provide two benchmarks (if each one is calculable) : one for the evaluation period, and one for the whole input. & See Function Table\\
 
 \hline
-R6.2 & The benchmark shall be reported as a compounded ROI, if the benchmark figures are available for the evaluation period. & See \textit{benchmark} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+R6.2 &  The benchmarks shall be rounded to two decimal places. & \\
 
 \hline
-R6.3 & Warning message: If the benchmark is not calculable, then a warning message shall be displayed to the user. & See Function Table\\
+R6.3 & The benchmark shall be reported as a compounded ROI, if the benchmark figures are available for the evaluation period. & See \textit{benchmark} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
+
+\hline
+R6.4 & Warning message: If the benchmark is not calculable, then a warning message shall be displayed to the user. & See Function Table\\
 
 
 

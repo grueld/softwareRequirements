@@ -39,7 +39,11 @@ public class ROI_Calculation {
 				endInDates = true;
 			}
 		}
-		return (startInDates && endInDates);
+		if (!(startInDates && endInDates))
+		{
+			CSVFile.warningInvalidEvaluationPeriod = true;
+		}
+		return (startInDates && endInDates);		
 	}
 	
 	
@@ -56,6 +60,10 @@ public class ROI_Calculation {
 				result = false;
 			}
 		}
+		if (!result)
+		{
+			CSVFile.errorInvalidFile = true;
+		}
 		return result;
 	}
 	
@@ -68,6 +76,7 @@ public class ROI_Calculation {
 		}
 		else
 		{
+			CSVFile.warningInvalidEvaluationPeriod = true;
 			return false;
 		}
 		
@@ -87,6 +96,10 @@ public class ROI_Calculation {
 				result = false;
 			}
 		}
+		if (!result)
+		{
+			CSVFile.errorInvalidFile = true;
+		}
 		return result;
 	}
 
@@ -102,6 +115,10 @@ public class ROI_Calculation {
 				result = false;
 			}
 			i++;
+		}
+		if (!result)
+		{
+			CSVFile.errorInvalidFile = true;
 		}
 		return result;
 	}
@@ -122,6 +139,10 @@ public class ROI_Calculation {
 				result = false;
 			}
 		}
+		if (!result)
+		{
+			CSVFile.errorInvalidFile = true;
+		}
 		return result;
 	}
 	
@@ -137,6 +158,10 @@ public class ROI_Calculation {
 		if(result && !CSVFile.end.validDate())
 		{
 			result = false;
+		}
+		if (!result)
+		{
+			CSVFile.warningInvalidEvaluationPeriod = true;
 		}
 		return result;
 	}
@@ -154,6 +179,10 @@ public class ROI_Calculation {
 			{
 				result = false;
 			}
+		}
+		if (!result)
+		{
+			CSVFile.errorInvalidFile = true;
 		}
 		return result;
 	}
@@ -175,6 +204,10 @@ public class ROI_Calculation {
 				}
 				i++;
 			}
+			if (!result)
+			{
+				CSVFile.errorInvalidFile = true;
+			}
 			return result;
 		}
 		else
@@ -188,6 +221,7 @@ public class ROI_Calculation {
 	{
 		if(CSVFile.name == null)
 		{
+			CSVFile.warningNoName = true;
 			return false;
 		}
 		else
@@ -468,8 +502,6 @@ public class ROI_Calculation {
 	
 	
 	public static void main(String[] args) {
-		//String nameFile = args[1];
-		//System.out.println(nameFile);
 		csv CSVFile = new csv();
 		parseFile("sample.csv", CSVFile);
 		//parseFile("test_without_name.csv", CSVFile);
@@ -486,6 +518,8 @@ public class ROI_Calculation {
 		//parseFile("test_dates_non_ordered.csv", CSVFile);
 		//parseFile("test_withdraw.csv", CSVFile);
 		//parseFile("test_grow.csv", CSVFile);
+		
+		CSVFile.printWarningsErrors();
 	}
 
 }
