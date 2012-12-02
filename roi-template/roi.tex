@@ -579,188 +579,114 @@ $benchmark (s, e$: DATE): VALUE\\
 
 
 \newpage
-\begin{landscape}
-\begin{table}
-
-\centering
-
-\begin{tabular}{|l|l|l|l|l|l||l|l|l|l|l|}
-\hline
-\multicolumn{6}{|c||}{} & $Error$ & $Warning$ & \multicolumn{3}{|c|}{Whole input}\\ 
-
-
-\multicolumn{6}{|c||}{} & & & TWR & ROI & B\\ 
-
-
-\hline
-Valid$\_$CSV & \multicolumn{5}{|l||}{Start$\_$Invalid $\vee$ } & E1 & | & | & | & |\\ 
-& \multicolumn{5}{|l||}{End$\_$Invalid $\vee$}& & & &&\\
-& \multicolumn{5}{|l||}{end $\le$ start}& & & &&\\
-
-\cline{2-11}
-& Start$\_$Valid  $\wedge$ & C1 & \multicolumn{3}{|l||}{C2} & | & | & a$\_$c$\_$TWR(all) & roi(all) & b(all)\\
-& End$\_$Valid $\wedge$& &\multicolumn{3}{|l||}{}&&&&&\\
-& end$>$start &&\multicolumn{3}{|l||}{}&&&&&\\
-
-\cline{4-11}
-& & & $\lnot$C2 &\multicolumn{2}{|l||}{C4} & | & W1 & a$\_$c$\_$TWR(all) & roi(all) & |\\
-
-\cline{5-11}
-& & & &\multicolumn{2}{|l||}{$\lnot$C4} & | & W2 & a$\_$c$\_$TWR(all) & roi(all) & |\\
-
-\cline{3-11}
-& & $\lnot$C1 & C3 &\multicolumn{2}{|l||}{C2} & | & W3 & | & roi(all) & b(all)\\
-
-\cline{5-11}
-& & & & $\lnot$C2 & C4 & | & W4 & | & roi(all) & |\\
-
-\cline{6-11}
-& & & & & $\lnot$C4 & | & W5 & | & roi(all) & |\\
-
-\cline{4-11}
-& & & $\lnot$C3 &\multicolumn{2}{|l||}{C2} & | & W6 & | & roi(all) & b(all)\\
-
-\cline{5-11}
-& & & & $\lnot$C2 & C4 & | & W7 & | & roi(all) & |\\
-
-\cline{6-11}
-& & & & & $\lnot$C4 & | & W8 & | & roi(all) & |\\
-
-\hline
-\multicolumn{6}{|l||}{Invalid$\_$CSV} & E2 & | & | & | & |\\ 
-
-
-\hline
-\end{tabular}
-\caption{Function table for ROI system (error, warning and whole input)}
-\label{table:table_ROI}
-\end{table}
-\end{landscape}
-
-
-
-
-\newpage
-\begin{landscape}
-\begin{table}
-\centering
-
-\begin{tabular}{|l|l|l|l|l|l||l|l|l|}
-\hline
-\multicolumn{6}{|c||}{} & \multicolumn{3}{|c|}{Evaluation period}\\ 
-
-\multicolumn{6}{|c||}{} & TWR & ROI & B\\ 
-
-
-\hline
-Valid$\_$CSV & \multicolumn{5}{|l||}{Start$\_$Invalid $\vee$ } & | & | & |\\ 
-& \multicolumn{5}{|l||}{End$\_$Invalid $\vee$} & &&\\
-& \multicolumn{5}{|l||}{end $\le$ start}& & &\\
-
-\cline{2-9}
-& Start$\_$Valid  $\wedge$ & C1 & \multicolumn{3}{|l||}{C2} & a$\_$c$\_$TWR(start,end) & roi(start,end) & b(start,end)\\
-& End$\_$Valid $\wedge$& &\multicolumn{3}{|l||}{}&&&\\
-& end$>$start &&\multicolumn{3}{|l||}{}&&&\\
-
-\cline{4-9}
-& & & $\lnot$C2 &\multicolumn{2}{|l||}{C4} & a$\_$c$\_$TWR(start,end) & roi(start,end) & b(start,end)\\
-
-\cline{5-9}
-& & & &\multicolumn{2}{|l||}{$\lnot$C4} & a$\_$c$\_$TWR(start,end) & roi(start,end) & |\\
-
-\cline{3-9}
-& & $\lnot$C1 & C3 &\multicolumn{2}{|l||}{C2} & a$\_$c$\_$TWR(start,end) & roi(start,end) & b(start,end)\\
-
-\cline{5-9}
-& & & & $\lnot$C2 & C4 & a$\_$c$\_$TWR(start,end) & roi(start,end) & b(start,end)\\
-
-\cline{6-9}
-& & & & & $\lnot$C4 & a$\_$c$\_$TWR(start,end) & roi(start,end) & |\\
-
-\cline{4-9}
-& & & $\lnot$C3 &\multicolumn{2}{|l||}{C2} & | & roi(start,end) & b(start,end)\\
-
-\cline{5-9}
-& & & & $\lnot$C2 & C4 & | & roi(start,end) & b(start,end)\\
-
-\cline{6-9}
-& & & & & $\lnot$C4 & | & roi(start,end) & |\\
-
-
-\hline
-\multicolumn{6}{|l||}{Invalid$\_$CSV} & | & | & |\\ 
-
-
-\hline
-\end{tabular}
-
-
-
-
-\caption{Function table for ROI system (evaluation period)}
-\label{table:table_ROI_2}
-\end{table}
-\end{landscape}
-
-
-
-
-
-
-
-\bigskip
-The function tables use some abbreviations:\\
-\begin{itemize}
-\item a\_c\_TWR = annual\_compounded\_TWR (see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation}))\\
-\item b = benchmark (see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation}))\\
-\item function(all) = function(tr[1].date, tr[tr.count].date)\\
-\end{itemize}
-\bigskip
-\bigskip
-The function tables use also conditions:\\
-\begin{itemize}
-\item C1 = \textit{$\forall$i $\in$ 2..count$\itholds$tr[i-1].mv + tr[i-1].cf + tr[i-1].af $\neq$ 0}\\
-\item C2 = benchmark\_calculable(all) (see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation}))\\
-\item C3 = \textit{$\forall$i $\in$ di(start)+1..di(end)$\itholds$tr[i-1].mv + tr[i-1].cf + tr[i-1].af $\neq$ 0}\\
-\item C4 = benchmark\_calculable(start,end) (see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation}))\\
-\item Start\_Valid = $\lnot$ (Start\_Invalid) = (start $\in$ dates$\cup$\{null\}) $\wedge$ (start in ISO format)\\
-(if Start\_Valid $\wedge$ start=null, then start=tr[1].date)\\
-\item End\_Valid = $\lnot$ (End\_Invalid) = (end $\in$ dates$\cup$\{null\}) $\wedge$ (end in ISO format)\\
-(if End\_Valid $\wedge$ end=null, then end=tr[tr.count].date)\\
-
-
-\end{itemize}
-\bigskip
-\bigskip
-The function tables provide errors and warnings messages:\\
-\begin{itemize}
-\item E1 = "Invalid\_Evaluation\_Period"
-\item E2 = "Invalid\_file"
-\item W1 =  "Benchmark for the whole input is not calculable"
-\item W2 = "The benchmarks are not calculable"
-\item W3 = "The TWR for the whole input is not calculable"
-\item W4 = W1+W3
-\item W5 = W1+W2+W3
-\item W6 = "The TWR's are not calculable"
-\item W7 = W1+W6
-\item W8 = W2+W6
-\end{itemize}
-
-\newpage
 
 %%%%%%%%%%%%%%%%%%%
 \subsection{Function tables}
 
-\subsubsection{Function table for the TWRs}
+\subsubsection{Abbreviations, conditions and messages}
+{\centering
+\begin{longtable}{|l|p{11cm}|}
+\hline
+\textbf{Abbreviation} & \textbf{Description}\\
+
+\hline
+first & tr[1].date \\
+
+\hline
+last & tr[tr.count].date\\
+
+\hline
+ a\_c\_TWR & annual\_compounded\_TWR\\
+& (see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})) \\
+
+\hline
+ b & benchmark (see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation}))\\
+
+
+
+\hline
+\end{longtable}
+
+\centering
+\begin{longtable}{|l|p{12cm}|}
+\hline
+\textbf{Condition} & \textbf{Description}\\
+
+\hline
+C1 & \textit{$\forall$i $\in$ 2..count$\itholds$tr[i-1].mv + tr[i-1].cf + tr[i-1].af $\neq$ 0}\\
+
+\hline
+C2 & \textit{$\forall$i $\in$ di(start)+1..di(end)$\itholds$tr[i-1].mv + tr[i-1].cf + tr[i-1].af $\neq$ 0}\\
+
+\hline
+C3 & benchmark\_calculable(first,last)\\
+& (see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation}))\\
+
+\hline
+C4 & benchmark\_calculable(start,end)\\
+&(see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation}))\\
+
+\hline
+ Start\_Valid & (start $\in$ dates$\cup$\{null\}) $\wedge$ (start in ISO format)\\
+& (if Start\_Valid $\wedge$ start=null, then start=tr[1].date)\\
+
+\hline
+ End\_Valid & (end $\in$ dates$\cup$\{null\}) $\wedge$ (end in ISO format)\\
+&(if End\_Valid $\wedge$ end=null, then end=tr[tr.count].date)\\
+
+\hline
+Name & (csvfile.name = null)\\
+
+\hline
+\end{longtable}
+
+\centering
+\begin{longtable}{|l|p{13cm}|}
+\hline
+\textbf{Message} & \textbf{Description}\\
+
+\hline
+ E & "Invalid file"\\
+
+\hline
+W & "Invalid evaluation period"\\
+
+\hline
+W1 & "The TWR for the whole input is not calculable"\\
+
+\hline
+W2 & "The TWR's are not calculable"\\
+
+\hline
+W3 & W + W1\\
+
+\hline
+W4 &  "Benchmark for the whole input is not calculable"\\
+
+\hline
+W5 & "The benchmarks are not calculable"\\
+
+\hline
+W6 & W + W4\\
+
+\hline
+W7 & "Incomplete file: absence of name"\\
+
+\hline
+
+\end{longtable}
+}
 
 \begin{landscape}
+\subsubsection{Calculation of the TWRs}
+
 \begin{table}[H]
 {
 \centering
-
 \begin{tabular}{|l|l|l|l||l|l|l|l|}
 \hline
-\multicolumn{4}{|c||}{} & Error & Warning &TWR (whole input) & TWR (evaluation period)\\ 
+\multicolumn{4}{|c||}{} & Error & Warning &TWR & TWR\\ 
+\multicolumn{4}{|l||}{}&&& (whole input) & (evaluation period)\\
 
 \hline
 Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & \multicolumn{2}{|l||}{C1} & | & W & a\_c\_TWR(first,last) & |\\ 
@@ -768,7 +694,7 @@ Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & \multicolumn{2}{|l||}{C1} & | & 
 & end $\le$ start & \multicolumn{2}{|l||}{} &&& &\\
 
 \cline{3-8}
-& & \multicolumn{2}{|l||}{$\lnot$C1} & | & W9 & | & |\\ 
+& & \multicolumn{2}{|l||}{$\lnot$C1} & | & W3 & | & |\\ 
 
 
 \cline{2-8}
@@ -777,10 +703,10 @@ Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & \multicolumn{2}{|l||}{C1} & | & 
 & end$>$start   & \multicolumn{2}{|l||}{}&&&&\\
 
 \cline{3-8}
-&& $\lnot$C1 & C3 & | & W3 & | & a\_c\_TWR(start,end)\\
+&& $\lnot$C1 & C2 & | & W1 & | & a\_c\_TWR(start,end)\\
 
 \cline{4-8}
-&& & $\lnot$C3 & | & W6 & | & |\\
+&& & $\lnot$C2 & | & W2 & | & |\\
 
 \hline
 \multicolumn{4}{|l||}{Invalid$\_$CSV} & E & | & | & |\\ 
@@ -798,9 +724,9 @@ Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & \multicolumn{2}{|l||}{C1} & | & 
 %%%
 
 
-\subsubsection{Function table for the ROIs}
 
 \begin{landscape}
+\subsubsection{Calculation of the ROIs}
 
 \begin{table}[H]
 {
@@ -834,9 +760,9 @@ Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & |& W & | & |\\
 
 %%%
 
-\subsubsection{Function table for the benchmarks}
 
 \begin{landscape}
+\subsubsection{Calculation of the benchmarks}
 
 \begin{table}[H]
 {
@@ -844,26 +770,28 @@ Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & |& W & | & |\\
 
 \begin{tabular}{|l|l|l|l||l|l|l|l|}
 \hline
-\multicolumn{4}{|c||}{} & Error & Warning & Benchmark (whole input) & Benchmark (evaluation period)\\ 
+\multicolumn{4}{|c||}{} & Error & Warning & Benchmark & Benchmark\\ 
+\multicolumn{4}{|l||}{}&&&(whole input) & (evaluation period)\\
+
 
 \hline
-Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & \multicolumn{2}{|l||}{C2} & | & W & b(first,last) & |\\ 
+Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & \multicolumn{2}{|l||}{C3} & | & W & b(first,last) & |\\ 
 & $\lnot$(End$\_$Valid) $\vee$& \multicolumn{2}{|l||}{} &&& &\\
 & end $\le$ start & \multicolumn{2}{|l||}{} & &&&\\
 
 \cline{3-8}
-& & \multicolumn{2}{|l||}{$\lnot$C2}& | & W10 & | & |\\ 
+& & \multicolumn{2}{|l||}{$\lnot$C3}& | & W6 & | & |\\ 
 
 \cline{2-8}
-& Start$\_$Valid  $\wedge$  & \multicolumn{2}{|l||}{C2} & | & | & b(first,last) & b(start,end)\\ 
+& Start$\_$Valid  $\wedge$  & \multicolumn{2}{|l||}{C3} & | & | & b(first,last) & b(start,end)\\ 
 & End$\_$Valid $\wedge$  & \multicolumn{2}{|l||}{} &&&&\\
 & end$>$start   & \multicolumn{2}{|l||}{}&&&&\\
 
 \cline{3-8}
-&& $\lnot$C2 & C4 & | & W1 & | & b(start,end)\\
+&& $\lnot$C3 & C4 & | & W4 & | & b(start,end)\\
 
 \cline{4-8}
-&& & $\lnot$C4 & | & W2 & | & |\\
+&& & $\lnot$C4 & | & W5 & | & |\\
 
 \hline
 \multicolumn{4}{|l||}{Invalid$\_$CSV} & E & |& |& |\\ 
@@ -877,7 +805,33 @@ Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & \multicolumn{2}{|l||}{C2} & | & 
 \end{table}
 \end{landscape}
 
+%%%
 
+\begin{landscape}
+\subsubsection{Name of the portfolio history}
+
+\begin{table}[H]
+{
+\centering
+
+\begin{tabular}{|l||l|}
+\hline
+ & Warning\\ 
+
+\hline
+Name  & |\\ 
+
+\hline
+$\lnot$Name & W7 \\ 
+
+\hline
+\end{tabular}
+
+\caption{Function table for ROI system (name of the portfolio history)}
+\label{table:ftable_name}
+}
+\end{table}
+\end{landscape}
 
 
 
