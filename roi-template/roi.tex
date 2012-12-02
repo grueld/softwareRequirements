@@ -860,6 +860,7 @@ d = &\squote{0} | \squote{1} | \cdots |\squote{9}
 
 In the above we use the convention that \squote{e}, for example, really stands for the single set $\{\squote{e}\}$.
 
+
 %  x^0
 %=    { definition }
 %   (⊙i : 0 ≤ i < 0 : x)
@@ -882,6 +883,111 @@ In the above we use the convention that \squote{e}, for example, really stands f
 %=    { one point rule }
 %   w ∈ x
 %%%%%%%%%%%%%%%%%%
+
+
+\section{DATE}
+The specification of the date module is provided on the following page.
+\newpage
+
+\centering 
+%\begin{mdframed}%%Put a frame around the figure
+%\subfigure[Module for DATE]{
+    
+%\begin{tikzpicture}
+%\begin{class}[text width=11cm]{type DATE}{0, 0}
+%\attribute{$\cset DATE$\newlineindent
+%$\qquad \eqdef date(year,month,day:\nat)$\comment injective constructor\newlineindent 
+%$\qquad\qquad \require valid\_date(year,month,date)$}
+%\attribute{\const $year,month,day\in DATE \tfun \nat$}
+%\attribute{\axiom $\forall d \in DATE \itholds d = date(year(d), month(d), day(d))$}
+%\attribute{\query
+%$valid\_date(y,m, d:\nat):\Bl$\newlineindent
+%$\quad\qquad\eqdef$ $\ll$Table in Fig.~\ref{tabexp:valid-date}$\gg$ \newlineindent
+%\comment is $(y,m,d)$ a valid date?}
+%\attribute{\query $leap\_year(y:\nat): \Bl$\newlineindent
+%$\qquad\eqdef mod(y,4)=0 ~\land~ mod(y,400) \notin \{100, 200, 300\}$\newlineindent
+%\require $y \ge 1583$}
+%\attribute{\query $to\_string(d:DATE): \St$ \newlineindent
+%$\qquad\eqdef d.year.to\_string + ``-"$\newlineindent 
+%$\qquad\qquad + d.month.to\_string + ``-"$\newlineindent
+%$\qquad\qquad + d.day.to\_string$}
+%
+%\attribute{\query $\textbf{~infix~} ``\cong" (d1,d2: DATE): \Bl$\newlineindent
+%$\qquad\eqdef d1.month = d2.month \land d1.day=d2.day$\newlineindent
+%\comment $``\cong"$ has higher precedence\newlineindent
+%$\qquad\qquad$ than predicate logic operators 
+%}
+%\end{class}
+%\end{tikzpicture}
+%\label{subfig:date}
+
+\begin{table}[H]
+{
+\centering
+\begin{tabular}{|l|}
+
+\hline
+\multicolumn{1}{|c|}{\textbf{type DATE}}\\
+
+\hline
+\textbf{carrier set} DATE\\
+$\qquad$date $\eqdef$ (year, month, day : $\mathbb{N}$)    -- injective constructor\\
+$\qquad$$\qquad$\textbf{require} valid\_date(year, month, day)\\
+\textbf{const} year, month, day $\in$ DATE -$\rightarrow$  $\mathbb{N}$\\
+\textbf{axiom} $\forall$ d $\in$ DATE $ \itholds$d = date(year(d), month(d), day(d))\\
+\textbf{query} valid\_date(y,m, d:$\mathbb{N}$) : $\mathbb{B}$\\
+$\qquad$$\eqdef$ $<$$<$Table below$>$$>$\\
+\textbf{query} leap\_year(y : $\mathbb{N}$) : $\mathbb{B}$\\
+$\qquad$$\eqdef$ mod(y, 4) = 0 $\land$ mod(y, 400) $\notin$ {100,200,300)}\\
+$\qquad$$\qquad$\textbf{require} y $\ge$ 1583\\
+
+
+\hline
+\end{tabular}
+}
+\end{table}
+
+
+%%%%%%%%%%%%%%%
+%\subfigure[Tabular expression for query: $valid\_date(y,m,d:\nat):\Bl$]{
+%\small
+%%%Stuff
+\begin{table}[H]
+{
+\centering
+\begin{tabular}{|l|l|l|l|l|}
+\multicolumn{5}{l}{Below: $ly$ abbreviates $leap\_year$}\\
+\hline
+\multicolumn{4}{|c|}{} & $valid\_date$ \\ 
+\hline
+$~~ (1583 \leq y \leq 9999)$ & \multicolumn{3}{l|}{$m\in \{1,3,5,7,8,10,12\}$} &true\\ 
+\cline{2-5}
+
+$\land (1 \leq m \leq  12)$ & $m\in \{4,6,9,11\}$ & \multicolumn{2}{c|}{$d \leq 30$} &true \\ 
+\cline{3-5}
+$\land (1 \leq d \leq 31)$ &  & \multicolumn{2}{c|}{$d>30$} &false\\ 
+\cline{2-5}
+
+& $m=2$ & $ly(y)$ & $d\leq 29$ &true\\ 
+\cline{4-5}
+&  &  & $d>29$ &false\\ 
+\cline{3-5}
+&  & $\lnot ly(y)$ & $d\leq 28$ &true\\ 
+\cline{4-5}
+&  &  & $d>28$ &false\\ 
+\cline{1-5}
+\multicolumn{4}{|l|}{not the above } &false\\ 
+\hline
+\end{tabular}
+}
+\end{table}
+%%\caption{Tabular expression for query $valid\_date$}
+%\label{tabexp:valid-date}
+%\normalsize
+%}
+%\end{mdframed}%%Put a frame around the figure
+
+%%%%%%%%%%%%%%%
 
 
 
