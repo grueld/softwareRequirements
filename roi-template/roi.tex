@@ -1,6 +1,7 @@
 % !TEX TS-program = pdflatex   
 \documentclass[runningheads,12pt]{article} 
-\usepackage{textcomp,color,longtable,landscape}
+\usepackage{textcomp,color,longtable,landscape,float}
+\restylefloat{table}
 \def\headerTitle{CSE4312F12 Project -- ROI Solution}
 \input{defns.tex} 
 \hyphenpenalty 10000
@@ -400,55 +401,55 @@ TODO: VOIR POUR LES DEFINIR MATHEMATIQUEMENT\\
 \comment TWR for the period \textit{start .. end}\\
 \textit{twr (a\_start, a\_end}: DATE): VALUE\\
 \require\\
-	\tab \textit{a\_start, a\_end $\in$ dates}\\
-	\tab \textit{a\_end $>$ a\_start}\\
-	\tab \textit{$\forall$i $\in$ 2..count$\itholds$tr[i-1].mv + tr[i-1].cf + tr[i-1].af $\neq$ 0}\\
+\tab \textit{a\_start, a\_end $\in$ dates}\\
+\tab \textit{a\_end $>$ a\_start}\\
+\tab \textit{$\forall$i $\in$ 2..count$\itholds$tr[i-1].mv + tr[i-1].cf + tr[i-1].af $\neq$ 0}\\
 \ensure\\
-	\tab \textit{Result $\eqdef$ ($\Pi$i:INTEGER $|$ di(a\_start) $<$i$\le$ di(a\_end)$\itholds$wealth(i)) - 1}\\
-	\tab where \textit{wealth(i) $\eqdef$ tr(i].mv$\div$(tr[i-1].mv + tr[i-1].cf + tr[i-1].af)}\\
+\tab \textit{Result $\eqdef$ ($\Pi$i:INTEGER $|$ di(a\_start) $<$i$\le$ di(a\_end)$\itholds$wealth(i)) - 1}\\
+\tab where \textit{wealth(i) $\eqdef$ tr(i].mv$\div$(tr[i-1].mv + tr[i-1].cf + tr[i-1].af)}\\
 \\
 
 \textit{annual\_compounded\_TWR (a\_start, a\_end}: DATE): VALUE \\
 \ensure \\
-	\tab \textit{(duration$\ge 1)\Rightarrow Result=((1+twr(a\_start, a\_end))^{1\div duration}-1)*100$}\\
-	\tab \textit{(duration$<$1)$\Rightarrow$ Result= twr(a\_start, a\_end) * 100}\\
+\tab \textit{(duration$\ge 1)\Rightarrow Result=((1+twr(a\_start, a\_end))^{1\div duration}-1)*100$}\\
+\tab \textit{(duration$<$1)$\Rightarrow$ Result= twr(a\_start, a\_end) * 100}\\
 \\
 
 TODO: IL FAUT RETIRER DES E-R DESCRIPTION QUE\\
  AF EST UN DEPOSIT AILLEUR QUE POUR LE TWR\\
 \textit{roi (a\_start, a\_end}: DATE): VALUE\\
 \require\\
-	\tab \textit{a\_start, a\_end $\in$ dates}\\
-	\tab\textit{a\_end $>$ a\_start}\\
+\tab \textit{a\_start, a\_end $\in$ dates}\\
+\tab\textit{a\_end $>$ a\_start}\\
 \ensure\\
-	\tab \textit{(tr[m].mv+tr[m].cf) $\ast (1+Result\div 100)^{days(a\_end - a\_start)\div365.2422}$ }\\
-	\tab \tab \textit{+ ($\Sigma i:\nat  |  m <i<n\itholds (tr[i].cf + tr[i].af) \ast $}\\
-	\tab \tab \textit{$(1+Result\div 100)^{days(a\_end - tr[i].date)\div365.2422}) - tr[n].mv = 0$}\\
+\tab \textit{(tr[m].mv+tr[m].cf) $\ast (1+Result\div 100)^{days(a\_end - a\_start)\div365.2422}$ }\\
+\tab \tab \textit{+ ($\Sigma i:\nat | m <i<n\itholds (tr[i].cf + tr[i].af) \ast $}\\
+\tab \tab \textit{$(1+Result\div 100)^{days(a\_end - tr[i].date)\div365.2422}) - tr[n].mv = 0$}\\
 \where \\
-	\tab \textit{m = di(a\_start)}\\ 
-	\tab \textit{n = di(a\_end)}\\
+\tab \textit{m = di(a\_start)}\\
+\tab \textit{n = di(a\_end)}\\
 \\
 \\
 
 $year(d:$ DATE): INTEGER\\
 \require\\
-	\tab $d = "yyyy - mm - dd"$\\
+\tab $d = "yyyy - mm - dd"$\\
 \ensure\\
-	\tab $Result = yyyy$\\
+\tab $Result = yyyy$\\
 \\	
 
 $mon(d:$ DATE): INTEGER\\
 \require\\
-	\tab $d = "yyyy - mm - dd"$\\
+\tab $d = "yyyy - mm - dd"$\\
 \ensure\\
-	\tab $Result = mm$\\
+\tab $Result = mm$\\
 \\	
 
 $day(d:$ DATE): INTEGER\\
 \require\\
-	\tab$ d = "yyyy - mm - dd"$\\
+\tab$ d = "yyyy - mm - dd"$\\
 \ensure\\
-	\tab $Result = dd$\\
+\tab $Result = dd$\\
 \\	
 
 TODO FAIRE LES FONCTION TABLE POUR MIN ET MAX\\
@@ -456,79 +457,79 @@ TODO VOIR POUR LE REQUIRE DE MIN ET MAX\\
 $\uparrow$ ($f, s$: DATE): DATE\\
 \require\\
 \ensure\\
-	\tab $<<$ see table...$>>$\\
+\tab $<<$ see table...$>>$\\
 \\
 $\downarrow$ ($f, s$: DATE): DATE\\
 \require\\
 \ensure\\
-	\tab $<<$ see table...$>>$\\
+\tab $<<$ see table...$>>$\\
 \\
 TODO FAIRE ET NUMEROTER LA FUNCTION TABLE\\
  DE LA FCT SUIVANTE\\
 \textit{at (d}: DATE): DATA\\
 \ensure\\
-	\tab $<<see$ $table ... >>$ \\
+\tab $<<see$ $table ... >>$ \\
 \\
 
 \textit{bm\_calculable (s, e}: DATE): $\Bool$\\
 \require\\
 \ensure\\
-	\tab $Result =  at[end\downarrow a].bench \neq void $\\
-	\tab \tab $\wedge (\forall d \in DATE | mon(d) = day(d) = 1 \wedge year(s) \le year(d) \le year(e)$\\
-	\tab \tab \tab $\itholds at[d].bench \neq void)$\\
-	\tab \tab $\wedge ((C \wedge at[s].bench \neq void) \vee (\neg C \wedge at[end \downarrow b].bench \neq void))$\\
+\tab $Result = at[end\downarrow a].bench \neq void $\\
+\tab \tab $\wedge (\forall d \in DATE | mon(d) = day(d) = 1 \wedge year(s) \le year(d) \le year(e)$\\
+\tab \tab \tab $\itholds at[d].bench \neq void)$\\
+\tab \tab $\wedge ((C \wedge at[s].bench \neq void) \vee (\neg C \wedge at[end \downarrow b].bench \neq void))$\\
 \where\\
-	\tab  $a = "year(s)+1 - 01 - 01"$\\
-	\tab  $b = "year(e)+1 - 01 - 01"$\\
-	\tab  $C = mon(e) = 1 \wedge day(e) = 1$\\
+\tab $a = "year(s)+1 - 01 - 01"$\\
+\tab $b = "year(e)+1 - 01 - 01"$\\
+\tab $C = mon(e) = 1 \wedge day(e) = 1$\\
 \\
 
 TODO RAJOUTER LA FUNCTION TABLE\\
 \comment the function below return a set of DATA with a benchmark $\neq$ void\\
 \textit{bm\_seq (s, e}: DATE): SEQ[DATA]\\
 \require\\
-	\tab $s,e\in$ $dates$\\
-	\tab \textit{bm\_calculable(s, e) }\\
+\tab $s,e\in$ $dates$\\
+\tab \textit{bm\_calculable(s, e) }\\
 \ensure\\
-	\tab $Result = (\oplus i | di(s)<i < di(e) \wedge tr[i].bench \neq void \itholds <tr[i]>) \oplus <t>$\\
+\tab $Result = (\oplus i | di(s)<i < di(e) \wedge tr[i].bench \neq void \itholds <tr[i]>) \oplus <t>$\\
 
 \where\\
-	\tab t = $<<$ see table ...$>>$\\
+\tab t = $<<$ see table ...$>>$\\
 \\
 
 TODO DEFINIR LA FONCTION PO()\\
 $bm\_final\_value(s,e:$ DATE): VALUE\\
 \require\\
-	\tab $s, e \in dates$\\
-	\tab $bm\_calculable(s,e) $\\
+\tab $s, e \in dates$\\
+\tab $bm\_calculable(s,e) $\\
 \ensure\\
-	\tab $Result \eqdef$\\
-	\tab $tr[m].mv \ast (\Pi i, seq, t| seq = bm\_seq(s, e) \wedge a \oplus seq[0] \wedge i \ge 1$\\
- 	\tab \tab $\wedge t = seq[i] \itholds t.bench^{po(s, e, seq[i-1].date, t.date)} )$\\
-	\tab $+ (\Sigma k | m \le k \le n \itholds (tr[k].cf - tr[k].af) \ast$\\
-	\tab \tab $(\Pi i,seq,t | seq = bm\_seq(tr[k].date, e) \wedge b(k) \oplus seq \wedge  i \ge 1 $\\
-	\tab \tab $\wedge t = seq[i] \itholds t.bench^{po(s, e, seq[i-1].date, t.date)}))$\\
+\tab $Result \eqdef$\\
+\tab $tr[m].mv \ast (\Pi i, seq, t| seq = bm\_seq(s, e) \wedge a \oplus seq[0] \wedge i \ge 1$\\
+  \tab \tab $\wedge t = seq[i] \itholds t.bench^{po(s, e, seq[i-1].date, t.date)} )$\\
+\tab $+ (\Sigma k | m \le k \le n \itholds (tr[k].cf - tr[k].af) \ast$\\
+\tab \tab $(\Pi i,seq,t | seq = bm\_seq(tr[k].date, e) \wedge b(k) \oplus seq \wedge i \ge 1 $\\
+\tab \tab $\wedge t = seq[i] \itholds t.bench^{po(s, e, seq[i-1].date, t.date)}))$\\
 \where\\
-	\tab $m = di(s)$\\ 
-	\tab $n = di(e)$\\
-	{\hspace*{1em}} \comment $a$ defines seq[0] in the first product\\ 
-	{\hspace*{1em}} \comment $b(k)$ defines seq[0] in the second product\\
-	\tab$a = <("year(s) - 01 - 01", 0, 0, 0, void)>$\\
-	\tab$b(k) = <("year(tr[k].date) - 01 - 01", 0, 0, 0, void)>$ \\
+\tab $m = di(s)$\\
+\tab $n = di(e)$\\
+{\hspace*{1em}} \comment $a$ defines seq[0] in the first product\\
+{\hspace*{1em}} \comment $b(k)$ defines seq[0] in the second product\\
+\tab$a = <("year(s) - 01 - 01", 0, 0, 0, void)>$\\
+\tab$b(k) = <("year(tr[k].date) - 01 - 01", 0, 0, 0, void)>$ \\
 \\
 
 $benchmark (s, e$: DATE): VALUE\\
 \require\\
-	\tab $s, e \in dates$\\
-	\tab $bm\_calculable(s, e)$\\
+\tab $s, e \in dates$\\
+\tab $bm\_calculable(s, e)$\\
 \ensure\\
-	\tab $tr[m].mv \ast (Result+1)^{days(e-s)\div365.2422}) $\\
-	\tab $+ (\Sigma k | m \le k \le n \itholds tr[k].cf \ast$\\
-	\tab \tab $(Result+1)^{days(e - tr[k].date)\div365.2422}) - FV= 0$\\
+\tab $tr[m].mv \ast (Result+1)^{days(e-s)\div365.2422}) $\\
+\tab $+ (\Sigma k | m \le k \le n \itholds tr[k].cf \ast$\\
+\tab \tab $(Result+1)^{days(e - tr[k].date)\div365.2422}) - FV= 0$\\
 \where\\
-	\tab $m = di(s)$\\ 
-	\tab $n = di(e)$\\
-	\tab $FV \eqdef bm\_final\_value(s,e) $\\
+\tab $m = di(s)$\\
+\tab $n = di(e)$\\
+\tab $FV \eqdef bm\_final\_value(s,e) $\\
 \\
 
 
@@ -561,7 +562,6 @@ $benchmark (s, e$: DATE): VALUE\\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -700,6 +700,11 @@ Valid$\_$CSV & \multicolumn{5}{|l||}{Start$\_$Invalid $\vee$ } & | & | & |\\
 \end{landscape}
 
 
+
+
+
+
+
 \bigskip
 The function tables use some abbreviations:\\
 \begin{itemize}
@@ -737,6 +742,139 @@ The function tables provide errors and warnings messages:\\
 \item W7 = W1+W6
 \item W8 = W2+W6
 \end{itemize}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%
+\subsection{Function tables}
+
+\subsubsection{Function table for the TWRs}
+
+\begin{landscape}
+\begin{table}[H]
+{
+\centering
+
+\begin{tabular}{|l|l|l|l||l|l|l|l|}
+\hline
+\multicolumn{4}{|c||}{} & Error & Warning &TWR (whole input) & TWR (evaluation period)\\ 
+
+\hline
+Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & \multicolumn{2}{|l||}{C1} & | & W & a\_c\_TWR(first,last) & |\\ 
+& $\lnot$(End$\_$Valid) $\vee$& \multicolumn{2}{|l||}{} &&& &\\
+& end $\le$ start & \multicolumn{2}{|l||}{} &&& &\\
+
+\cline{3-8}
+& & \multicolumn{2}{|l||}{$\lnot$C1} & | & W9 & | & |\\ 
+
+
+\cline{2-8}
+& Start$\_$Valid  $\wedge$  & \multicolumn{2}{|l||}{C1} & | & | & a\_c\_TWR(first,last) & a\_c\_TWR(start,end)\\ 
+& End$\_$Valid $\wedge$  & \multicolumn{2}{|l||}{} &&&&\\
+& end$>$start   & \multicolumn{2}{|l||}{}&&&&\\
+
+\cline{3-8}
+&& $\lnot$C1 & C3 & | & W3 & | & a\_c\_TWR(start,end)\\
+
+\cline{4-8}
+&& & $\lnot$C3 & | & W6 & | & |\\
+
+\hline
+\multicolumn{4}{|l||}{Invalid$\_$CSV} & E & | & | & |\\ 
+
+\hline
+\end{tabular}
+
+\caption{Function table for ROI system (calculation of the TWRs)}
+\label{table:ftable_TWR}
+}
+\end{table}
+\end{landscape}
+
+
+%%%
+
+
+\subsubsection{Function table for the ROIs}
+
+\begin{landscape}
+
+\begin{table}[H]
+{
+\centering
+
+\begin{tabular}{|l|l||l|l|l|l|}
+\hline
+\multicolumn{2}{|c||}{} & Error & Warning & ROI (whole input) & ROI (evaluation period)\\ 
+
+\hline
+Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & |& W & | & |\\ 
+& $\lnot$(End$\_$Valid) $\vee$ &&&&\\
+& end $\le$ start &&& &\\
+
+\cline{2-6}
+& Start$\_$Valid  $\wedge$ & |& | & roi(first,last) & roi(start,end)\\
+& End$\_$Valid $\wedge$ &&&&\\
+& end$>$start &&&&\\
+
+\hline
+\multicolumn{2}{|l||}{Invalid$\_$CSV} & E & |& | & |\\ 
+
+\hline
+\end{tabular}
+
+\caption{Function table for ROI system (calculation of the ROIs)}
+\label{table:ftable_ROI}
+}
+\end{table}
+\end{landscape}
+
+%%%
+
+\subsubsection{Function table for the benchmarks}
+
+\begin{landscape}
+
+\begin{table}[H]
+{
+\centering
+
+\begin{tabular}{|l|l|l|l||l|l|l|l|}
+\hline
+\multicolumn{4}{|c||}{} & Error & Warning & Benchmark (whole input) & Benchmark (evaluation period)\\ 
+
+\hline
+Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & \multicolumn{2}{|l||}{C2} & | & W & b(first,last) & |\\ 
+& $\lnot$(End$\_$Valid) $\vee$& \multicolumn{2}{|l||}{} &&& &\\
+& end $\le$ start & \multicolumn{2}{|l||}{} & &&&\\
+
+\cline{3-8}
+& & \multicolumn{2}{|l||}{$\lnot$C2}& | & W10 & | & |\\ 
+
+\cline{2-8}
+& Start$\_$Valid  $\wedge$  & \multicolumn{2}{|l||}{C2} & | & | & b(first,last) & b(start,end)\\ 
+& End$\_$Valid $\wedge$  & \multicolumn{2}{|l||}{} &&&&\\
+& end$>$start   & \multicolumn{2}{|l||}{}&&&&\\
+
+\cline{3-8}
+&& $\lnot$C2 & C4 & | & W1 & | & b(start,end)\\
+
+\cline{4-8}
+&& & $\lnot$C4 & | & W2 & | & |\\
+
+\hline
+\multicolumn{4}{|l||}{Invalid$\_$CSV} & E & |& |& |\\ 
+
+\hline
+\end{tabular}
+
+\caption{Function table for ROI system (calculation of the benchmarks)}
+\label{table:ftable_bench}
+}
+\end{table}
+\end{landscape}
+
+
 
 
 

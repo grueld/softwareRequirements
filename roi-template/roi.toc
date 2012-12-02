@@ -4,4 +4,8 @@
 \contentsline {subsection}{\numberline {3.1}E-descriptions}{5}
 \contentsline {subsection}{\numberline {3.2}R-descriptions}{7}
 \contentsline {section}{\numberline {4}Mathematical model}{10}
-\contentsline {section}{\numberline {A}REGEXP}{22}
+\contentsline {subsection}{\numberline {4.1}Function tables}{22}
+\contentsline {subsubsection}{\numberline {4.1.1}Function table for the TWRs}{22}
+\contentsline {subsubsection}{\numberline {4.1.2}Function table for the ROIs}{24}
+\contentsline {subsubsection}{\numberline {4.1.3}Function table for the benchmarks}{26}
+\contentsline {section}{\numberline {A}REGEXP}{28}
