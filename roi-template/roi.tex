@@ -807,7 +807,6 @@ Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & \multicolumn{2}{|l||}{C3} & | & 
 
 %%%
 
-\begin{landscape}
 \subsubsection{Name of the portfolio history}
 
 \begin{table}[H]
@@ -831,7 +830,6 @@ $\lnot$Name & W7 \\
 \label{table:ftable_name}
 }
 \end{table}
-\end{landscape}
 
 
 
@@ -840,10 +838,6 @@ $\lnot$Name & W7 \\
 
 \section{REGEXP}
 
-\begin{figure}
-\input{inputs/regexp}
-\caption{Type REGEXP for regular expressions over printing characters}
-\end{figure}
 
 A set of strings is used as the model for regular expressions. We use prefix operators for the Kleene closure (e.g. $*x$ where $x$ is a regular expression such as $\{\squote{hello}\}$) and iteration at least one or more (e.g. $\textrm{+}x$) rather than suffix operators. Note that where there is no confusion we use \squote{hello} instead of $\{\squote{hello}\}$ where the set is a singleton. 
 
@@ -860,6 +854,11 @@ d = &\squote{0} | \squote{1} | \cdots |\squote{9}
 
 In the above we use the convention that \squote{e}, for example, really stands for the single set $\{\squote{e}\}$.
 
+
+\begin{figure} [H]
+\input{inputs/regexp}
+\caption{Type REGEXP for regular expressions over printing characters}
+\end{figure}
 
 %  x^0
 %=    { definition }
