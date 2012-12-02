@@ -379,9 +379,8 @@ R6.4 & Warning message: If the benchmark is not calculable, then a warning messa
 \\
 \textit{dates}: SET[DATE]$\eqdef$\{\textit{t $\in$ tr$\itholds$t.date}\}\\
 \\
-TODO: VOIR POUR LES DEFINIR MATHEMATIQUEMENT\\
-\textit{start, end}: DATE \comment first and last date of the file\\
-\textit{$a\_start, a\_end$}: DATE \comment metadata evaluation period\\
+$start:$ DATE $\eqdef tr[1]$ \comment first date of the file\\
+$end:$ DATE $\eqdef tr[count]$ \comment last date of the file\\ 
 \\
 \textit{duration}: VALUE$\eqdef$ \textit{days(end - start)}$\div$(365.2422) \\
 \comment years between \textit{start} and \textit{end} calculated by days\\
@@ -397,36 +396,40 @@ TODO: VOIR POUR LES DEFINIR MATHEMATIQUEMENT\\
 \ensure \textit{Result $\in$ tr.domain $\land$ tr[Result].date=d}\\
 \\
 
-\comment TWR for the period \textit{start .. end}\\
-\textit{twr (a\_start, a\_end}: DATE): VALUE\\
+TODO: DANS REQUIRE I VARIE DANS L'INTERVALLE D'INDICE DEFINIT PAR S ET E\\
+IL FAUT VERIFIER QUE CE SOIT BIEN CA DANS LES E/R DESCRIPTIONS\\
+\comment TWR for the period \textit{s .. e}\\
+\textit{twr (s, e}: DATE): VALUE\\
 \require\\
-	\tab \textit{a\_start, a\_end $\in$ dates}\\
-	\tab \textit{a\_end $>$ a\_start}\\
-	\tab \textit{$\forall$i $\in$ 2..count$\itholds$tr[i-1].mv + tr[i-1].cf + tr[i-1].af $\neq$ 0}\\
+	\tab \textit{s, e $\in$ dates}\\
+	\tab \textit{e $>$ s}\\
+	\tab \textit{$\forall$i $\in$ di(s)+1..di(e)$\itholds$tr[i-1].mv + tr[i-1].cf + tr[i-1].af $\neq$ 0}\\
 \ensure\\
-	\tab \textit{Result $\eqdef$ ($\Pi$i:INTEGER $|$ di(a\_start) $<$i$\le$ di(a\_end)$\itholds$wealth(i)) - 1}\\
-	\tab where \textit{wealth(i) $\eqdef$ tr(i].mv$\div$(tr[i-1].mv + tr[i-1].cf + tr[i-1].af)}\\
+	\tab \textit{Result $\eqdef$ ($\Pi$i:INTEGER $|$ di(s) $<$i$\le$ di(e)$\itholds$wealth(i)) - 1}\\
+	\tab where \textit{wealth(i) $\eqdef$ tr[i].mv$\div$(tr[i-1].mv + tr[i-1].cf + tr[i-1].af)}\\
 \\
 
-\textit{annual\_compounded\_TWR (a\_start, a\_end}: DATE): VALUE \\
+\textit{annual\_compounded\_TWR (s, e}: DATE): VALUE \\
 \ensure \\
-	\tab \textit{(duration$\ge 1)\Rightarrow Result=((1+twr(a\_start, a\_end))^{1\div duration}-1)*100$}\\
-	\tab \textit{(duration$<$1)$\Rightarrow$ Result= twr(a\_start, a\_end) * 100}\\
+	\tab \textit{(duration$\ge 1)\Rightarrow Result=((1+twr(s, e))^{1\div duration}-1)*100$}\\
+	\tab \textit{(duration$<$1)$\Rightarrow$ Result= twr(s, e) * 100}\\
 \\
 
 TODO: IL FAUT RETIRER DES E-R DESCRIPTION QUE\\
  AF EST UN DEPOSIT AILLEUR QUE POUR LE TWR\\
-\textit{roi (a\_start, a\_end}: DATE): VALUE\\
+TODO:VERIFIER QUE LE + POUR LES AGENT FEES\\
+ CI DESSOUS EST CORRECT\\
+\textit{roi (s, e}: DATE): VALUE\\
 \require\\
-	\tab \textit{a\_start, a\_end $\in$ dates}\\
-	\tab\textit{a\_end $>$ a\_start}\\
+	\tab \textit{s, e $\in$ dates}\\
+	\tab\textit{e $>$ s}\\
 \ensure\\
-	\tab \textit{(tr[m].mv+tr[m].cf) $\ast (1+Result\div 100)^{days(a\_end - a\_start)\div365.2422}$ }\\
+	\tab \textit{(tr[m].mv+tr[m].cf) $\ast (1+Result\div 100)^{days(e - s)\div365.2422}$ }\\
 	\tab \tab \textit{+ ($\Sigma i:\nat  |  m <i<n\itholds (tr[i].cf + tr[i].af) \ast $}\\
-	\tab \tab \textit{$(1+Result\div 100)^{days(a\_end - tr[i].date)\div365.2422}) - tr[n].mv = 0$}\\
+	\tab \tab \textit{$(1+Result\div 100)^{days(e - tr[i].date)\div365.2422}) - tr[n].mv = 0$}\\
 \where \\
-	\tab \textit{m = di(a\_start)}\\ 
-	\tab \textit{n = di(a\_end)}\\
+	\tab \textit{m = di(s)}\\ 
+	\tab \textit{n = di(e)}\\
 \\
 \\
 

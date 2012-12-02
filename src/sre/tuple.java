@@ -2,10 +2,10 @@ package sre;
 
 public class tuple {
 	public date date;
-	public float marketValue;
-	public float cashFlow;
-	public float agentFees;
-	public float benchmark;
+	public float mv;
+	public float cf;
+	public float af;
+	public float bm;
 	
 	public tuple()
 	{
@@ -16,10 +16,10 @@ public class tuple {
 	{
 		String s = null;
 		s = "tuple : date = " + date.toString() + "\n";
-		s += "        market value = " + marketValue + "\n";
-		s += "        cash flow = " + cashFlow + "\n";
-		s += "        agent fees = " + agentFees + "\n";
-		s += "        benchmark = " + benchmark + "\n";
+		s += "        market value = " + mv + "\n";
+		s += "        cash flow = " + cf + "\n";
+		s += "        agent fees = " + af + "\n";
+		s += "        benchmark = " + bm + "\n";
 		return s;
 	}
 }

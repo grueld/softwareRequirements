@@ -3,6 +3,14 @@ package sre;
 public class date {
 	int year, month, day;
 	
+	public date () {}
+	
+	public date (int y, int m, int d) {
+		year = y ;
+		month = m ;
+		day = d ;
+	}
+	
 	public boolean leapYear(int year)
 	{
 		if(year >= 1583 &&
@@ -76,7 +84,7 @@ public class date {
 	
 	public String toString()
 	{
-		return "year = " + year + ", month = " + month + ", day = " + day;
+		return "date: " + year + "-" + month + "-" + day;
 	}
 	
 	

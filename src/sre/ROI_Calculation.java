@@ -90,7 +90,7 @@ public class ROI_Calculation {
 		Iterator<tuple> i = CSVFile.listTuple.iterator();
 		while(result && i.hasNext())
 		{
-			marketValue = i.next().marketValue;
+			marketValue = i.next().mv;
 			if(marketValue < 0)
 			{
 				result = false;
@@ -133,7 +133,7 @@ public class ROI_Calculation {
 		while(result && i.hasNext())
 		{
 			tuple = i.next();
-			addition = tuple.marketValue + tuple.cashFlow;
+			addition = tuple.mv + tuple.cf;
 			if (addition < 0)
 			{
 				result = false;
@@ -196,9 +196,9 @@ public class ROI_Calculation {
 			int i = 0;
 			while(result && i<CSVFile.listTuple.size()-1)
 			{
-				if (CSVFile.listTuple.get(i).marketValue == 0 &&
-						CSVFile.listTuple.get(i).cashFlow == 0 && 
-						CSVFile.listTuple.get(i+1).marketValue != 0)
+				if (CSVFile.listTuple.get(i).mv == 0 &&
+						CSVFile.listTuple.get(i).cf == 0 && 
+						CSVFile.listTuple.get(i+1).mv != 0)
 				{
 					result = false;
 				}
@@ -422,7 +422,7 @@ public class ROI_Calculation {
 						    		
 							    	try
 							    	{
-							    		tuple.marketValue = Float.valueOf(arrayLine[1]);
+							    		tuple.mv = Float.valueOf(arrayLine[1]);
 							    	}
 							    	catch (NumberFormatException e)
 							    	{
@@ -433,11 +433,11 @@ public class ROI_Calculation {
 								    {
 							    		if(!arrayLine[2].equals(""))
 								    	{
-								    		tuple.cashFlow = Float.valueOf(arrayLine[2]);
+								    		tuple.cf = Float.valueOf(arrayLine[2]);
 								    	}
 								    	else
 								    	{
-								    		tuple.cashFlow = 0;
+								    		tuple.cf = 0;
 								    	}
 							    	}
 							    	catch (NumberFormatException e)
@@ -449,11 +449,11 @@ public class ROI_Calculation {
 								    {
 							    		if(!arrayLine[3].equals(""))
 								    	{
-								    		tuple.agentFees = Float.valueOf(arrayLine[3]);
+								    		tuple.af = Float.valueOf(arrayLine[3]);
 								    	}
 								    	else
 								    	{
-								    		tuple.agentFees = 0;
+								    		tuple.af = 0;
 								    	}
 								    }
 							    	catch (NumberFormatException e)
@@ -463,7 +463,7 @@ public class ROI_Calculation {
 	
 							    	try
 								    {
-							    		tuple.benchmark = deletePercentage(arrayLine[4]);
+							    		tuple.bm = deletePercentage(arrayLine[4]);
 								    }
 							    	catch (NumberFormatException e)
 							    	{
@@ -487,6 +487,7 @@ public class ROI_Calculation {
 				System.out.println("Dates are unique and ordered :                       " + checkDateUniqueOrdered(CSVFile));
 				System.out.println("Withdraws are less important than the market value : " + checkWithdraw(CSVFile));
 				System.out.println("Account does not grow  :                             " + checkAccountGrow(CSVFile));
+				System.out.println("") ;
 			}
 			finally 
 			{
@@ -520,6 +521,9 @@ public class ROI_Calculation {
 		//parseFile("test_grow.csv", CSVFile);
 		
 		CSVFile.printWarningsErrors();
+		
+		math m = new math(CSVFile.listTuple) ;
+		
 	}
 
 }
