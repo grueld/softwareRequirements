@@ -25,11 +25,15 @@ public class math {
 		}
 		start = dates.get(0) ;
 		end = dates.get(count-1) ;
-		////////////////duration = ;///////////
+		duration = days(start, end) / 365.2422 ;
 	}
 
 	// pour les fonctions suivantes voir la def correspondante dans le module
 
+	public int days (date begin, date end) {
+		return begin.differenceDate(end) ;
+	}
+	
 	// retourne -1 si la date n'est pas def
 	public int di (date d) {
 		int i = 0 ;

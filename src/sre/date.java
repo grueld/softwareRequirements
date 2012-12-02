@@ -1,5 +1,7 @@
 package sre;
 
+import java.util.GregorianCalendar;
+
 public class date {
 	int year, month, day;
 	
@@ -140,6 +142,15 @@ public class date {
 			}
 		}
 		
+	}
+	
+	//appel : dateBegin.differenceDate(dateEnd)
+	public int differenceDate(date date)
+	{
+		long MILISECOND_PER_DAY = 24 * 60 * 60 * 1000;	
+		GregorianCalendar dateBegin= new java.util.GregorianCalendar(this.year, this.month, this.day);
+		GregorianCalendar dateEnd= new java.util.GregorianCalendar(date.year, date.month, date.day);
+		return Math.round(Math.abs((dateEnd.getTimeInMillis()- dateBegin.getTimeInMillis())/MILISECOND_PER_DAY));
 	}
 	
 }
