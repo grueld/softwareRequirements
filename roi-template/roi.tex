@@ -240,10 +240,10 @@ R1 & All return on investment calculations shall follow the GIPS standard. & See
 \multicolumn{3}{|c|}{\textbf{Evaluation period}} \\
 
 \hline
-R2.1 & If no evaluation period is provided, then the start date is the earliest date and the end date the latest date in the sequence of tuple data. & See Start\_Valid and End\_Valid in Function Table\\
+R2.1 & If no evaluation period is provided, then the start date is the earliest date and the end date the latest date in the sequence of tuple data. & See Start\_Valid and End\_Valid conditions of the function tables\\
 
 \hline
-R2.2 &  Warning message: If the evaluation dates are not valid, then the following error message shall be displayed to the user: "Invalid evaluation period" & See Function Table \\
+R2.2 &  Warning message: If the evaluation dates are not valid, then the following error message shall be displayed to the user: "Invalid evaluation period" & See Function tables \\
 
 \hline
 \end{longtable}
@@ -255,10 +255,10 @@ R2.2 &  Warning message: If the evaluation dates are not valid, then the followi
 \multicolumn{3}{|c|}{\textbf{CSV file}} \\
 
 \hline
-R3.1 &  Error message: If the CSV file is not valid (i.e. if any of the conditions mentioned above do not hold), then the following error message shall be displayed to the user: "Invalid file". & See Function table\\
+R3.1 &  Error message: If the CSV file is not valid (i.e. if any of the conditions mentioned above do not hold), then the following error message shall be displayed to the user: "Invalid file". & See Function tables\\
 
 \hline
-R3.2 &  Warning message: If the CSV file does not contain a name, then the following error message shall be displayed to the user: "Incomplete file: absence of name". & See Function table\\
+R3.2 &  Warning message: If the CSV file does not contain a name, then the following error message shall be displayed to the user: "Incomplete file: absence of name". & See Function table~\ref{table:ftable_name}\\
 
 \hline
 \end{longtable}
@@ -270,7 +270,7 @@ R3.2 &  Warning message: If the CSV file does not contain a name, then the follo
 \multicolumn{3}{|c|}{\textbf{Calculation of the TWR}} \\
 
 \hline
-R4.1 & The system shall provide two TWRs (if each one is calculable) : one for the evaluation period, and one for the whole input. & See Function Table \\
+R4.1 & The system shall provide two TWRs (if each one is calculable) : one for the evaluation period, and one for the whole input. & See Function table~\ref{table:ftable_TWR} \\
 
 \hline
 R4.2 &  The TWRs shall be rounded to two decimal places. & \\
@@ -285,7 +285,7 @@ R4.4 & The annualized TWR shall be reported as a percentage. & See \textit{annua
 R4.5 & Agent fees are treated like a deposit (the agent fees are \underline{added} to the market value and the cash flow). & See \textit{twr} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
 
 \hline
-R4.6 & Warning message: If the TWR is not calculable, then a warning message shall be displayed to the user. & See Function Table\\
+R4.6 & Warning message: If the TWR is not calculable, then a warning message shall be displayed to the user. & See Function table~\ref{table:ftable_TWR}\\
 
 \hline
 \end{longtable}
@@ -297,7 +297,7 @@ R4.6 & Warning message: If the TWR is not calculable, then a warning message sha
 \multicolumn{3}{|c|}{\textbf{Calculation of the ROI}} \\
 
 \hline
-R5.1 & The system shall provide two ROIs : one for the evaluation period, and one for the whole input. & See Function Table\\
+R5.1 & The system shall provide two ROIs : one for the evaluation period, and one for the whole input. & See Function table~\ref{table:ftable_ROI}\\
 
 \hline
 R5.2 &  The ROIs shall be rounded to two decimal places. & \\
@@ -318,7 +318,7 @@ R5.4 & Agent fees are treated like a deposit (the agent fees are \underline{adde
 \multicolumn{3}{|c|}{\textbf{Calculation of the Benchmark}} \\
 
 \hline
-R6.1 & The system shall provide two benchmarks (if each one is calculable) : one for the evaluation period, and one for the whole input. & See Function Table\\
+R6.1 & The system shall provide two benchmarks (if each one is calculable) : one for the evaluation period, and one for the whole input. & See Function table~\ref{table:ftable_bench}\\
 
 \hline
 R6.2 &  The benchmarks shall be rounded to two decimal places. & \\
@@ -327,7 +327,7 @@ R6.2 &  The benchmarks shall be rounded to two decimal places. & \\
 R6.3 & The benchmark shall be reported as a compounded ROI, if the benchmark figures are available for the evaluation period. & See \textit{benchmark} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
 
 \hline
-R6.4 & Warning message: If the benchmark is not calculable, then a warning message shall be displayed to the user. & See Function Table\\
+R6.4 & Warning message: If the benchmark is not calculable, then a warning message shall be displayed to the user. & See Function table~\ref{table:ftable_bench}\\
 
 
 
