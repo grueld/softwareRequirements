@@ -651,18 +651,35 @@ public class ROI_Calculation {
 			if (m.twr_calculable(start, end)) {
 				TWR_WI   = m.annual_compounded_TWR(start, end) ; 
 			}
+			else
+			{
+				System.out.println("Warning: The TWR for the whole input is not calculable.");
+			}
 			ROI_WI   = m.roi(start, end) ;
 			if (m.bm_calculable(start, end)) {
 				bench_WI = m.benchmark(start, end)	;
 			}
+			else
+			{
+				System.out.println("Warning: The benchmark for the whole input is not calculable.");
+			}
+			
 	
 			if (!CSVFile.warningInvalidEvaluationPeriod) {
 				if (m.twr_calculable(start, end)) {
 					TWR_EP   = m.annual_compounded_TWR(a_start, a_end) ; 
 				}
+				else
+				{
+					System.out.println("Warning: The TWRs are not calculable.");
+				}
 				ROI_EP   = m.roi(a_start, a_end) ; 
 				if (m.bm_calculable(a_start, a_end)) {
 					bench_EP = m.benchmark(a_start, a_end)	;
+				}
+				else
+				{
+					System.out.println("Warning: The benchmarks are not calculable.");
 				}
 			}	
 		}
