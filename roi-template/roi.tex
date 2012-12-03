@@ -241,10 +241,7 @@ R1 & All return on investment calculations shall follow the GIPS standard. & See
 \multicolumn{3}{|c|}{\textbf{Evaluation period}} \\
 
 \hline
-R2.1 & If no evaluation period is provided, then the start date is the earliest date and the end date the latest date in the sequence of tuple data. & See Start\_Valid and End\_Valid conditions of the function tables\\
-
-\hline
-R2.2 &  Warning message: If the evaluation dates are not valid, then the following error message shall be displayed to the user: "Invalid evaluation period" & See Function tables \\
+R2 &  Warning message: If no evaluation is provided or if the evaluation dates are not valid, then the following error message shall be displayed to the user: "Invalid evaluation period" & See Function tables \\
 
 \hline
 \end{longtable}
@@ -723,11 +720,9 @@ C4 & benchmark\_calculable(start,end)\\
 
 \hline
  Start\_Valid & (start $\in$ dates$\cup$\{null\}) $\wedge$ (start in ISO format)\\
-& (if Start\_Valid $\wedge$ start=null, then start=tr[1].date)\\
 
 \hline
  End\_Valid & (end $\in$ dates$\cup$\{null\}) $\wedge$ (end in ISO format)\\
-&(if End\_Valid $\wedge$ end=null, then end=tr[tr.count].date)\\
 
 \hline
 Name & (csvfile.name = null)\\
@@ -1123,11 +1118,11 @@ $\lnot$Name & W7 \\
 \centering
 \begin{tabular}{|p{1.2in}|p{4in}|}
 \hline
-\textbf{Test Case ID} & T10 - sample\_warning\_eval\_period.csv \\ 
+\textbf{Test Case ID} & T10 - sample\_warning\_invalid\_eval\_period.csv \\ 
 \hline
 \textbf{Description} & Verify that the system provides the calculations for the whole input but not for the evaluation period (evaluation period not valid).\\
 \hline
-\textbf{Requirement IDs tested} & R1, R2.2, R4.1, R4.2, R4.3, R4.4, R5.1, R5.2, R5.3, R6.1, R6.2, R6.3 \\ 
+\textbf{Requirement IDs tested} & R1, R2, R4.1, R4.2, R4.3, R4.4, R5.1, R5.2, R5.3, R6.1, R6.2, R6.3 \\ 
 \hline
 \textbf{Type} & Negative \\ 
 \hline
@@ -1176,6 +1171,35 @@ $\lnot$Name & W7 \\
 & Benchmark: 15.01$\%$ \\ 
 \hline
 \end{tabular}
+%%%
+\bigskip
+\centering
+\begin{tabular}{|p{1.2in}|p{4in}|}
+\hline
+\textbf{Test Case ID} & T12 - sample\_warning\_no\_eval\_period.csv \\ 
+\hline
+\textbf{Description} & Verify that the system provides the calculations for the whole input but not for the evaluation period (evaluation period not given).\\
+\hline
+\textbf{Requirement IDs tested} & R1, R2, R4.1, R4.2, R4.3, R4.4, R5.1, R5.2, R5.3, R6.1, R6.2, R6.3 \\ 
+\hline
+\textbf{Type} & Negative \\ 
+\hline
+\textbf{Initial State} & A directory containing the CSV file.\\
+\hline 
+\textbf{Action} & Execute the ROI system on the CSV file \\
+\hline 
+\textbf{Consequences} & Warning: Invalid evaluation period\\
+& Name: Roy Bostock\\
+& Whole input: 2007-01-01 to 2009-04-01\\
+& TWR:  $\%$\\
+& ROI: $\%$\\
+& Benchmark: $\%$ \\ 
+& Evaluation Period: undefined\\
+& TWR: undefined\\
+& ROI: undefined\\
+& Benchmark: undefined \\ 
+\hline
+\end{tabular}
 }
 
 
@@ -1189,41 +1213,39 @@ $\lnot$Name & W7 \\
 \hline
 \textbf{Requirement ID}	 & \textbf{Test Case IDs}\\ 
 \hline
-R1 & T9, T10, T11\\
+R1 & T9, T10, T11, T12\\
 \hline
-R2.1 & \\
-\hline
-R2.2 & T10\\
+R2 & T10, T12\\
 \hline
 R3.1 & T1, T2, T3, T4, T5, T6, T7, T8\\
 \hline
 R3.2 & T11\\
 \hline
-R4.1 & T9, T10, T11\\
+R4.1 & T9, T10, T11, T12\\
 \hline
-R4.2 & T9, T10, T11\\
+R4.2 & T9, T10, T11, T12\\
 \hline
-R4.3 & T9, T10, T11\\
+R4.3 & T9, T10, T11, T12\\
 \hline
-R4.4 & T9, T10, T11\\
+R4.4 & T9, T10, T11, T12\\
 \hline
 R4.5 & \\
 \hline
 R4.6 & \\
 \hline
-R5.1 & T9, T10, T11\\
+R5.1 & T9, T10, T11, T12\\
 \hline
-R5.2 & T9, T10, T11\\
+R5.2 & T9, T10, T11, T12\\
 \hline
-R5.3 & T9, T10, T11\\
+R5.3 & T9, T10, T11, T12\\
 \hline
 R5.4 & \\
 \hline
-R6.1 & T9, T10, T11\\
+R6.1 & T9, T10, T11, T12\\
 \hline
-R6.2 & T9, T10, T11\\
+R6.2 & T9, T10, T11, T12\\
 \hline
-R6.3 & T9, T10, T11\\
+R6.3 & T9, T10, T11, T12\\
 \hline
 R6.4 & \\
 \hline

@@ -610,6 +610,9 @@ public class ROI_Calculation {
 		//parseFile("test_dates_non_ordered.csv", CSVFile);
 		//parseFile("test_withdraw.csv", CSVFile);
 		//parseFile("test_grow.csv", CSVFile);
+		//parseFile("sample_warning_invalid_eval_period.csv", CSVFile);
+		//parseFile("sample_warning_name.csv", CSVFile);
+		//parseFile("sample_warning_no_eval_period.csv", CSVFile);
 		
 		CSVFile.printWarningsErrors();
 
@@ -623,15 +626,6 @@ public class ROI_Calculation {
 		double twr = m.annual_compounded_TWR(a_start, a_end) ;
 		double roi = m.roi(a_start, a_end) ;
 		double bench = m.benchmark(a_start, a_end) ;
-		
-		public static void printOutput(
-				CSVFile,
-				TWR_WI, 
-				ROI_WI, 
-				bench_WI,
-				TWR_EP, 
-				ROI_EP, 
-				bench_EP) ;
 
 		System.out.println("nbr jour " + m.days(a_start, a_end)) ;
 	}
