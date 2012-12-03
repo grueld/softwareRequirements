@@ -4,8 +4,6 @@ import java.io.*;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import javax.swing.text.html.CSS;
-
 public class ROI_Calculation {
 	
 	public static float deletePercentage(String benchmark)
@@ -523,7 +521,14 @@ public class ROI_Calculation {
 		CSVFile.printWarningsErrors();
 		
 		math m = new math(CSVFile.listTuple) ;
+		date a_start = new date(2007,1,1) ;
+		date a_end = new date(2008,1,1);
+		double twr = m.annual_compounded_TWR(a_start, a_end) ;
+		double roi = m.roi(a_start, a_end) ;
+		double bench = m.benchmark(a_start, a_end) ;
 		
+		System.out.println("twr, roi et benchmark: " + twr + " " + roi + " " + bench) ;
+		System.out.println("nbr jour " + m.days(new date(2007,2,11), new date(2008,1,1))) ;
 	}
 
 }

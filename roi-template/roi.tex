@@ -397,8 +397,9 @@ $end:$ DATE $\eqdef tr[count]$ \comment last date of the file\\
 \ensure \textit{Result $\in$ tr.domain $\land$ tr[Result].date=d}\\
 \\
 
-TODO: DANS REQUIRE I VARIE DANS L'INTERVALLE D'INDICE DEFINIT PAR S ET E\\
-IL FAUT VERIFIER QUE CE SOIT BIEN CA DANS LES E/R DESCRIPTIONS\\
+TODO: DANS REQUIRE I VARIE DANS L'INTERVALLE D'INDICE\\
+ DEFINIT PAR S ET E\\
+IL FAUT VERIFIER QUE CE SOIT BIEN CA DANS LES E/R\\
 \comment TWR for the period \textit{s .. e}\\
 \textit{twr (s, e}: DATE): VALUE\\
 \require\\
@@ -410,6 +411,8 @@ IL FAUT VERIFIER QUE CE SOIT BIEN CA DANS LES E/R DESCRIPTIONS\\
 	\tab where \textit{wealth(i) $\eqdef$ tr[i].mv$\div$(tr[i-1].mv + tr[i-1].cf + tr[i-1].af)}\\
 \\
 
+TODO: SUPPRIMER LA VARIABLE DURATION ET\\
+ REMPLACER PAR LA BONNE CHOSE\\
 \textit{annual\_compounded\_TWR (s, e}: DATE): VALUE \\
 \ensure \\
 	\tab \textit{(duration$\ge 1)\Rightarrow Result=((1+twr(s, e))^{1\div duration}-1)*100$}\\
@@ -419,14 +422,15 @@ IL FAUT VERIFIER QUE CE SOIT BIEN CA DANS LES E/R DESCRIPTIONS\\
 TODO: IL FAUT RETIRER DES E-R DESCRIPTION QUE\\
  AF EST UN DEPOSIT AILLEUR QUE POUR LE TWR\\
 TODO:VERIFIER QUE LE + POUR LES AGENT FEES\\
- CI DESSOUS EST CORRECT\\
+ CI DESSOUS EST CORRECT,DANS LE CODE JE L'AI\\
+CHANGE EN -\\
 \textit{roi (s, e}: DATE): VALUE\\
 \require\\
 	\tab \textit{s, e $\in$ dates}\\
 	\tab\textit{e $>$ s}\\
 \ensure\\
 	\tab \textit{(tr[m].mv+tr[m].cf) $\ast (1+Result\div 100)^{days(e - s)\div365.2422}$ }\\
-	\tab \tab \textit{+ ($\Sigma i:\nat  |  m <i<n\itholds (tr[i].cf + tr[i].af) \ast $}\\
+	\tab \tab \textit{+ ($\Sigma i  |  m <i<n\itholds (tr[i].cf + tr[i].af) \ast $}\\
 	\tab \tab \textit{$(1+Result\div 100)^{days(e - tr[i].date)\div365.2422}) - tr[n].mv = 0$}\\
 \where \\
 	\tab \textit{m = di(s)}\\ 
@@ -474,17 +478,22 @@ TODO FAIRE ET NUMEROTER LA FUNCTION TABLE\\
 \tab $<<see$ $table ... >>$ \\
 \\
 
+TODO: FAIRE UN CHECK AVANT (DANS LE MAIN)\\
+POUR SAVOIR SI S ET E SONT DANS DATES\\
 \textit{bm\_calculable (s, e}: DATE): $\Bool$\\
 \require\\
+	\tab $s, e \in dates$\\ 
+	\tab $s \neq e$\\
+	\tab $s < e$\\
 \ensure\\
 \tab $Result = at[end\downarrow a].bench \neq void $\\
-\tab \tab $\wedge (\forall d \in DATE | mon(d) = day(d) = 1 \wedge year(s) \le year(d) \le year(e)$\\
+\tab \tab $\wedge (\forall d \in DATE | mon(d) = day(d) = 1 \wedge year(s) < year(d) \le year(e)$\\
 \tab \tab \tab $\itholds at[d].bench \neq void)$\\
-\tab \tab $\wedge ((C \wedge at[s].bench \neq void) \vee (\neg C \wedge at[end \downarrow b].bench \neq void))$\\
+\tab \tab $\wedge ((C \wedge at[e].bench \neq void) \vee (\neg C \wedge at[end \downarrow b].bench \neq void))$\\
 \where\\
 \tab $a = "year(s)+1 - 01 - 01"$\\
 \tab $b = "year(e)+1 - 01 - 01"$\\
-\tab $C = mon(e) = 1 \wedge day(e) = 1$\\
+\tab $C = (mon(e) = 1 \wedge day(e) = 1)$\\
 \\
 
 TODO RAJOUTER LA FUNCTION TABLE\\
@@ -494,23 +503,30 @@ TODO RAJOUTER LA FUNCTION TABLE\\
 \tab $s,e\in$ $dates$\\
 \tab \textit{bm\_calculable(s, e) }\\
 \ensure\\
-\tab $Result = (\oplus i | di(s)<i < di(e) \wedge tr[i].bench \neq void \itholds <tr[i]>) \oplus <t>$\\
+	\tab $Result = (\oplus i | di(s)<i < di(e) \wedge tr[i].bench \neq void \itholds <tr[i]>)$\\
+	\tab \tab $ \oplus <t>$\\
 
 \where\\
 \tab t = $<<$ see table ...$>>$\\
 \\
 
-TODO DEFINIR LA FONCTION PO()\\
+$po(s,e, d1, d2:$ DATE) : VALUE\\
+\require\\
+	\tab $d1 \neq d2 $ \\
+\ensure\\
+	\tab $Result \eqdef days(d2 \downarrow e - d1 \uparrow s) \div days(d2 - d1)$\\
+\\
+ 
 $bm\_final\_value(s,e:$ DATE): VALUE\\
 \require\\
 \tab $s, e \in dates$\\
 \tab $bm\_calculable(s,e) $\\
 \ensure\\
 \tab $Result \eqdef$\\
-\tab $tr[m].mv \ast (\Pi i, seq, t| seq = bm\_seq(s, e) \wedge a \oplus seq[0] \wedge i \ge 1$\\
+\tab $tr[m].mv \ast (\Pi i, seq, t| seq = bm\_seq(s, e) \wedge a \oplus seq \wedge 1 \le i \le \# seq$\\
   \tab \tab $\wedge t = seq[i] \itholds t.bench^{po(s, e, seq[i-1].date, t.date)} )$\\
-\tab $+ (\Sigma k | m \le k \le n \itholds (tr[k].cf - tr[k].af) \ast$\\
-\tab \tab $(\Pi i,seq,t | seq = bm\_seq(tr[k].date, e) \wedge b(k) \oplus seq \wedge i \ge 1 $\\
+\tab $+ (\Sigma k | m \le k < n \itholds (tr[k].cf - tr[k].af) \ast$\\
+\tab \tab $(\Pi i,seq,t | seq = bm\_seq(tr[k].date, e) \wedge b(k) \oplus seq \wedge1 \le i \le \# seq$\\
 \tab \tab $\wedge t = seq[i] \itholds t.bench^{po(s, e, seq[i-1].date, t.date)}))$\\
 \where\\
 \tab $m = di(s)$\\
@@ -521,14 +537,16 @@ $bm\_final\_value(s,e:$ DATE): VALUE\\
 \tab$b(k) = <("year(tr[k].date) - 01 - 01", 0, 0, 0, void)>$ \\
 \\
 
+EST-CE QUE C'EST NORMAL QU'IL N'Y AI PAS DE AF DANS \\
+BENCHMARK?\\
 $benchmark (s, e$: DATE): VALUE\\
 \require\\
 \tab $s, e \in dates$\\
 \tab $bm\_calculable(s, e)$\\
 \ensure\\
-\tab $tr[m].mv \ast (Result+1)^{days(e-s)\div365.2422}) $\\
-\tab $+ (\Sigma k | m \le k \le n \itholds tr[k].cf \ast$\\
-\tab \tab $(Result+1)^{days(e - tr[k].date)\div365.2422}) - FV= 0$\\
+\tab $tr[m].mv \ast (1+Result \div 100)^{days(e-s)\div365.2422}) $\\
+\tab $+ (\Sigma k | m \le k < n \itholds tr[k].cf \ast$\\
+\tab \tab $(1+Result \div 100)^{days(e - tr[k].date)\div365.2422}) - FV= 0$\\
 \where\\
 \tab $m = di(s)$\\
 \tab $n = di(e)$\\

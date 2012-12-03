@@ -12,6 +12,14 @@ public class tuple {
 		date = new date();
 	}
 	
+	public tuple (date d) {
+		date = d ;
+		mv = 0 ;
+		cf = 0 ; 
+		af = 0 ;
+		bm = 0 ; 
+	}
+	
 	public String toString()
 	{
 		String s = null;
