@@ -53,6 +53,14 @@ public class math {
 
 
 	/*************************** TWR ***********************************/
+	
+	public boolean twr_calculable(date s, date e) {
+		for ( int i = di(s) + 1 ; i <= di(e) ; i++ ) {
+			if (tr.get(i).mv + tr.get(i-1).cf + tr.get(i-1).af == 0) return false ;
+		}
+		return true ;
+	}
+	
 	// retourne -1 en cas d'erreur
 	public double twr (date s, date e) {
 		int m = di(s) ;
@@ -133,7 +141,7 @@ public class math {
 
 		for (int i = m + 1 ; i < n ; i++) {
 			dur = days (tr.get(i).date, e)/365.2422 ;
-			result += (tr.get(i).cf - tr.get(i).af) * Math.pow(1+x/100, dur) ;
+			result += (tr.get(i).cf + tr.get(i).af) * Math.pow(1+x/100, dur) ;
 		}
 		result -= tr.get(n).mv ;
 
@@ -149,7 +157,7 @@ public class math {
 
 		for (int i = m + 1 ; i < n ; i++) {
 			dur = days (tr.get(i).date, e)/365.2422 ;
-			result += (tr.get(i).cf - tr.get(i).af) * dur/100 * Math.pow(1+x/100, dur - 1) ;
+			result += (tr.get(i).cf + tr.get(i).af) * dur/100 * Math.pow(1+x/100, dur - 1) ;
 		}
 
 		return result ;

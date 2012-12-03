@@ -193,7 +193,7 @@ E4.3 & The evaluation period is in range. & See Invariant 1 of TWR\_ROI\_CALCULA
 E5.1 & A portfolio history records investment performance in a non-empty sequence of tuple data, each tuple having the fields: date (required), market value (required), cash flow (optional), agent fees (optional) and benchmark (optional). & See \textit{tr} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
 
 \hline
-E5.2 &  For each tuple, the dates must be in ISO format (yyyy-mm-dd). & \\
+E5.2 &  For each tuple, the dates must be in ISO format (yyyy-mm-dd). & See appendix B \\
 
 \hline
 E5.3 & When there is a customer contribution, the cash flow is a positive number. For a withdrawal, the number is negative. & \\
@@ -408,11 +408,6 @@ $end:$ DATE $\eqdef tr[count]$ \comment last date of the file\\
 	\tab \textit{(days(e-s)/365.2422$<$1)$\Rightarrow$ Result= twr(s, e) * 100}\\
 \\
 
-TODO: IL FAUT RETIRER DES E-R DESCRIPTION QUE\\
- AF EST UN DEPOSIT AILLEUR QUE POUR LE TWR\\
-TODO:VERIFIER QUE LE + POUR LES AGENT FEES\\
- CI DESSOUS EST CORRECT,DANS LE CODE JE L'AI\\
-CHANGE EN -\\
 \textit{roi (s, e}: DATE): VALUE\\
 \require\\
 	\tab \textit{s, e $\in$ dates}\\
@@ -461,8 +456,6 @@ $\downarrow$ ($f, s$: DATE): DATE\\
 \tab $<<see$ $table  ~\ref{table:table_ROI} >>$ \\
 \\
 
-TODO: FAIRE UN CHECK AVANT (DANS LE MAIN)\\
-POUR SAVOIR SI S ET E SONT DANS DATES\\
 \textit{bm\_calculable (s, e}: DATE): $\Bool$\\
 \require\\
 	\tab $s, e \in dates$\\ 
@@ -571,8 +564,6 @@ $benchmark (s, e$: DATE): VALUE\\
 \bibliographystyle{plain}
 \bibliography{inputs/ref}
 
-TODO : A CHECKER !!! 
-
 \begin{table}[H]
 {
 \centering
@@ -669,6 +660,12 @@ first & tr[1].date \\
 
 \hline
 last & tr[tr.count].date\\
+
+\hline
+start & first date of the evaluation periode \\
+
+\hline
+end & last date of the evaluation periode \\
 
 \hline
  a\_c\_TWR & annual\_compounded\_TWR\\
