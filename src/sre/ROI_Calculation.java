@@ -475,17 +475,17 @@ public class ROI_Calculation {
 						}
 					}
 				}
-				System.out.println("The name is not null :                               " + checkNameNotNull(CSVFile));
-				System.out.println("Tuple dates are valid :                              " + checkTuplesDates(CSVFile));
-				System.out.println("Evaluation period dates are valid :                  " + checkEvaluationPeriodDates(CSVFile));
-				System.out.println("Start before end :                                   " + checkStartBeforeEnd(CSVFile));
-				System.out.println("Evaluation period dates are in dates :               " + checkEvaluationPeriod(CSVFile));
-				System.out.println("Each tuple has a date :                              " + checkTupleHasDate(CSVFile));
-				System.out.println("Each tuple has a non-negative market value :         " + checkNonNegativeMarketValue(CSVFile));
-				System.out.println("Dates are unique and ordered :                       " + checkDateUniqueOrdered(CSVFile));
-				System.out.println("Withdraws are less important than the market value : " + checkWithdraw(CSVFile));
-				System.out.println("Account does not grow  :                             " + checkAccountGrow(CSVFile));
-				System.out.println("") ;
+//				System.out.println("The name is not null :                               " + checkNameNotNull(CSVFile));
+//				System.out.println("Tuple dates are valid :                              " + checkTuplesDates(CSVFile));
+//				System.out.println("Evaluation period dates are valid :                  " + checkEvaluationPeriodDates(CSVFile));
+//				System.out.println("Start before end :                                   " + checkStartBeforeEnd(CSVFile));
+//				System.out.println("Evaluation period dates are in dates :               " + checkEvaluationPeriod(CSVFile));
+//				System.out.println("Each tuple has a date :                              " + checkTupleHasDate(CSVFile));
+//				System.out.println("Each tuple has a non-negative market value :         " + checkNonNegativeMarketValue(CSVFile));
+//				System.out.println("Dates are unique and ordered :                       " + checkDateUniqueOrdered(CSVFile));
+//				System.out.println("Withdraws are less important than the market value : " + checkWithdraw(CSVFile));
+//				System.out.println("Account does not grow  :                             " + checkAccountGrow(CSVFile));
+//				System.out.println("") ;
 			}
 			finally 
 			{
@@ -550,22 +550,36 @@ public class ROI_Calculation {
 		math m = new math(CSVFile.listTuple) ;
 		
 		// whole input
+		date start = CSVFile.listTuple.get(0).date ;
+		date end = CSVFile.listTuple.get (CSVFile.listTuple.size()- 1).date ;
 		
 		// evaluation periode
-		date a_start = new date(2007,1,1) ;
-		date a_end = new date(2008,1,1);
-		double twr = m.annual_compounded_TWR(a_start, a_end) ;
-		double roi = m.roi(a_start, a_end) ;
-		double bench = m.benchmark(a_start, a_end) ;
+		date a_start = CSVFile.start ;
+		date a_end = CSVFile.end ;
 		
-		public static void printOutput(
+		double TWR_WI   = 0 ;
+		double ROI_WI   = 0 ;
+		double bench_WI = 0 ;
+		double TWR_EP   = 0 ;
+		double ROI_EP   = 0 ;
+		double bench_EP = 0 ;
+		
+		TWR_WI   = m.annual_compounded_TWR(start, end) ; 
+		ROI_WI   = m.roi(start, end) ;
+		bench_WI = m.benchmark(start, end)	;
+		TWR_EP   = m.annual_compounded_TWR(a_start, a_end) ; 
+		ROI_EP   = m.roi(a_start, a_end) ; 
+		bench_EP = m.benchmark(a_start, a_end)	;
+		
+		printOutput(
 				CSVFile,
-				TWR_WI, 
-				ROI_WI, 
-				bench_WI,
-				TWR_EP, 
-				ROI_EP, 
-				bench_EP) ;
+				TWR_WI ,  
+				ROI_WI ,	
+				bench_WI , 
+				TWR_EP ,
+				ROI_EP ,
+				bench_EP
+				) ;
 
 		System.out.println("nbr jour " + m.days(a_start, a_end)) ;
 	}

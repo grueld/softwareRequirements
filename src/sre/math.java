@@ -29,6 +29,7 @@ public class math {
 	// pour les fonctions suivantes voir la def correspondante dans le module
 
 	public int days (date begin, date end) {
+		if (begin.equals(end)) return 0 ;
 		if (end.before(begin)) {
 			System.err.println("error: in days end is before begin") ;
 			return -1 ;
@@ -221,18 +222,18 @@ public class math {
 	public ArrayList<tuple> bm_seq (date s, date e) {
 		int m = di(s) ;
 		int n = di(e) ;
-		date b = new date(s.year + 1 , 1, 1) ;
+		date b = new date(e.year + 1 , 1, 1) ;
 		tuple t ;
 		ArrayList<tuple> res = new ArrayList<tuple>() ;
 
-		for ( int i = m ; i < n ; i++ ) {
+		for ( int i = m + 1 ; i < n ; i++ ) {
 			if (tr.get(i).bm != 0) res.add(tr.get(i)) ;
 		}
 
 		if (e.month == 1 && e.day == 1) t = at(e) ;
 		else t = at(min(end, b)) ;
 
-		res.add(t) ;
+		res.add(res.size(), t) ;
 
 		return res ;
 	}
@@ -277,7 +278,7 @@ public class math {
 			System.err.println("benchmark not calculable") ;
 			return -1 ;
 		}
-
+		
 		double x0 = 0 ;
 		double x1 = x0 - g(s,e,x0)/ gPrime(s, e, x0) ;
 		double x2 = x1 - g(s,e,x1)/ gPrime(s, e, x1) ;
@@ -286,7 +287,6 @@ public class math {
 
 		return x4 ;
 	}
-
 
 	public double g (date s, date e, double x) {
 		int m = di(s) ;
@@ -318,8 +318,6 @@ public class math {
 
 		return result ;
 	}
-
-
 
 }
 
