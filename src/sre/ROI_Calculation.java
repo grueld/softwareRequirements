@@ -233,7 +233,7 @@ public class ROI_Calculation {
 	{
 		try
 		{
-			CSVFile.file = new BufferedReader(new FileReader("csv/" + nameFile)); 
+			CSVFile.file = new BufferedReader(new FileReader(nameFile)); 
 
 			try 
 			{
