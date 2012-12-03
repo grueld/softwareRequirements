@@ -128,7 +128,6 @@ public class math {
 		double x3 = x2 - f(s,e,x2)/ fPrime(s, e, x2) ;
 		double x4 = x3 - f(s,e,x3)/ fPrime(s, e, x3) ;
 
-
 		return x4 ;
 	}
 
@@ -159,7 +158,6 @@ public class math {
 			dur = days (tr.get(i).date, e)/365.2422 ;
 			result += (tr.get(i).cf + tr.get(i).af) * dur/100 * Math.pow(1+x/100, dur - 1) ;
 		}
-
 		return result ;
 	}
 
