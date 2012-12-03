@@ -1254,7 +1254,66 @@ $\lnot$Name & W7 \\
 & Benchmark: undefined \\ 
 \hline
 \end{tabular}
+%%%
+\bigskip
+\centering
+\begin{tabular}{|p{1.2in}|p{4in}|}
+\hline
+\textbf{Test Case ID} & T15 - sample\_agent\_fees.csv \\ 
+\hline
+\textbf{Description} & Verify that the system provides the calculations for the evaluation period and for the whole input.\\
+\hline
+\textbf{Requirement IDs tested} & R1, R4.1, R4.2, R4.3, R4.4, R4.5, R5.1, R5.2, R5.3, R6.1, R6.2, R6.3 \\ 
+\hline
+\textbf{Type} & Positive \\ 
+\hline
+\textbf{Initial State} & A directory containing the CSV file.\\
+\hline 
+\textbf{Action} & Execute the ROI system on the CSV file \\
+\hline 
+\textbf{Consequences} & Name: Roy Bostock\\
+& Whole input: 2007-01-01 to 2009-04-01\\
+& TWR:  82.62 $\%$\\
+& ROI: 76.26 $\%$\\
+& Benchmark: 40.45 $\%$ \\ 
+& Evaluation Period: 2007-01-01 to 2008-01-01\\
+& TWR: 26.88 $\%$\\
+& ROI: 26.54$\%$\\
+& Benchmark: 15.01$\%$ \\ 
+\hline
+\end{tabular}
+%%%
+\bigskip
+\centering
+\begin{tabular}{|p{1.2in}|p{4in}|}
+\hline
+\textbf{Test Case ID} & T16 - sample\_twr\_not\_calculable.csv \\ 
+\hline
+\textbf{Description} & Verify that the system provides the calculations for the evaluation period and for the whole input, except for the TWR of the whole input (not calculable.\\
+\hline
+\textbf{Requirement IDs tested} & R1, R4.1, R4.2, R4.3, R4.4, R4.5, R4.6, R5.1, R5.2, R5.3, R6.1, R6.2, R6.3 \\ 
+\hline
+\textbf{Type} & Negative \\ 
+\hline
+\textbf{Initial State} & A directory containing the CSV file.\\
+\hline 
+\textbf{Action} & Execute the ROI system on the CSV file \\
+\hline 
+\textbf{Consequences} & Warning: The TWR for the whole input is not calculable\\
+& Name: Roy Bostock\\
+& Whole input: 2007-01-01 to 2009-04-01\\
+& TWR:  undefined\\
+& ROI: 76.26 $\%$\\
+& Benchmark: 40.45 $\%$ \\ 
+& Evaluation Period: 2007-01-01 to 2008-01-01\\
+& TWR: 26.88 $\%$\\
+& ROI: 26.54$\%$\\
+& Benchmark: 15.01$\%$ \\ 
+\hline
+\end{tabular}
 }
+
+
 
 
 
@@ -1264,7 +1323,7 @@ $\lnot$Name & W7 \\
 \hline
 \textbf{Requirement ID}	 & \textbf{Test Case IDs}\\ 
 \hline
-R1 & T9, T10, T11, T12, T13, T14\\
+R1 & T9, T10, T11, T12, T13, T14, T15, T16\\
 \hline
 R2 & T10, T12\\
 \hline
@@ -1272,29 +1331,29 @@ R3.1 & T1, T2, T3, T4, T5, T6, T7, T8\\
 \hline
 R3.2 & T11\\
 \hline
-R4.1 & T9, T10, T11, T12, T13, T14\\
+R4.1 & T9, T10, T11, T12, T13, T14, T15, T16\\
 \hline
-R4.2 & T9, T10, T11, T12, T13, T14\\
+R4.2 & T9, T10, T11, T12, T13, T14, T15, T16\\
 \hline
-R4.3 & T9, T10, T11, T12, T13, T14\\
+R4.3 & T9, T10, T11, T12, T13, T14, T15, T16\\
 \hline
-R4.4 & T9, T10, T11, T12, T13, T14\\
+R4.4 & T9, T10, T11, T12, T13, T14, T15, T16\\
 \hline
-R4.5 & \\
+R4.5 & T15, T16\\
 \hline
-R4.6 & \\
+R4.6 & T16\\
 \hline
-R5.1 & T9, T10, T11, T12, T13, T14\\
+R5.1 & T9, T10, T11, T12, T13, T14, T15, T16\\
 \hline
-R5.2 & T9, T10, T11, T12, T13, T14\\
+R5.2 & T9, T10, T11, T12, T13, T14, T15, T16\\
 \hline
-R5.3 & T9, T10, T11, T12, T13, T14\\
+R5.3 & T9, T10, T11, T12, T13, T14, T15, T16\\
 \hline
-R6.1 & T9, T10, T11, T12, T13, T14\\
+R6.1 & T9, T10, T11, T12, T13, T14, T15, T16\\
 \hline
-R6.2 & T9, T10, T11, T12, T13, T14\\
+R6.2 & T9, T10, T11, T12, T13, T14, T15, T16\\
 \hline
-R6.3 & T9, T10, T11, T12, T13, T14\\
+R6.3 & T9, T10, T11, T12, T13, T14, T15, T16\\
 \hline
 R6.4 & T13, T14\\
 \hline
