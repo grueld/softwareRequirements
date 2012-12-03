@@ -500,11 +500,11 @@ public class ROI_Calculation {
 	}
 	
 	
-	public static void printOutput(String name, csv CSVFile,
+	public static void printOutput(csv CSVFile,
 			double TWR_WI, double ROI_WI, double bench_WI,
 			double TWR_EP, double ROI_EP, double bench_EP)
 	{
-		System.out.println("Name: " + name);
+		System.out.println("Name: " + CSVFile.name);
 		System.out.println("--------------------------------------------");
 		date first = CSVFile.listTuple.get(0).date;
 		date last = CSVFile.listTuple.get(CSVFile.listTuple.size()-1).date;
