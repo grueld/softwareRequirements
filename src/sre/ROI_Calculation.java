@@ -500,6 +500,33 @@ public class ROI_Calculation {
 	}
 	
 	
+	public static void printOutput(String name, csv CSVFile,
+			double TWR_WI, double ROI_WI, double bench_WI,
+			double TWR_EP, double ROI_EP, double bench_EP)
+	{
+		System.out.println("Name: " + name);
+		System.out.println("--------------------------------------------");
+		date first = CSVFile.listTuple.get(0).date;
+		date last = CSVFile.listTuple.get(CSVFile.listTuple.size()-1).date;
+		System.out.println("Whole input: " + first.toString() + " to " + last.toString());
+		double newTWR_WI = (double) Math.round(TWR_WI * 100) / 100;
+		System.out.println("TWR: " + newTWR_WI + " %");
+		double newROI_WI = (double) Math.round(ROI_WI * 100) / 100;
+		System.out.println("ROI: " + newROI_WI + " %");
+		double newBench_WI = (double) Math.round(bench_WI * 100) / 100;
+		System.out.println("Benchmark: " + newBench_WI + " %");
+		System.out.println("--------------------------------------------");
+		System.out.println("Evaluation period: " + CSVFile.start.toString() + " to " + CSVFile.end.toString());
+		double newTWR_EP = (double) Math.round(TWR_EP * 100) / 100;
+		System.out.println("TWR: " + newTWR_EP + " %");
+		double newROI_EP = (double) Math.round(ROI_EP * 100) / 100;
+		System.out.println("ROI: " + newROI_EP + " %");
+		double newBench_EP = (double) Math.round(bench_EP * 100) / 100;
+		System.out.println("Benchmark: " + newBench_EP + " %");
+		System.out.println("--------------------------------------------");
+	}
+	
+	
 	public static void main(String[] args) {
 		csv CSVFile = new csv();
 		parseFile("sample.csv", CSVFile);

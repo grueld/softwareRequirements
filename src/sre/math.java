@@ -266,8 +266,6 @@ public class math {
 			}
 			res += p ;
 		}
-
-		System.out.println("final value: " + res) ;		
 		
 		return res ;
 

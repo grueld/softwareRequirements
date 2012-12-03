@@ -86,7 +86,7 @@ public class date {
 	
 	public String toString()
 	{
-		return "date: " + year + "-" + month + "-" + day;
+		return year + "-" + month + "-" + day;
 	}
 	
 	
