@@ -650,7 +650,11 @@ public class ROI_Calculation {
 				bench_EP
 				) ;
 
-		System.out.println("nbr jour " + m.days(a_start, a_end)) ;
+		System.out.println("nbr jour " + m.days(new date(2007,1,1), new date(2009,4,1))) ;
+		System.out.println("nbr jour " + m.days(new date(2007,2,11), new date(2009,4,1))) ;
+		System.out.println("nbr jour " + m.days(new date(2008,5,14), new date(2009,4,1))) ;
+		System.out.println("nbr jour " + m.days(new date(2008,9,10), new date(2009,4,1))) ;
+		System.out.println("nbr jour " + m.days(new date(2009,2,20), new date(2009,4,1))) ;
 	}
 
 }
