@@ -666,7 +666,7 @@ public class ROI_Calculation {
 			
 	
 			if (!CSVFile.warningInvalidEvaluationPeriod) {
-				if (m.twr_calculable(start, end)) {
+				if (m.twr_calculable(a_start, a_end)) {
 					TWR_EP   = m.annual_compounded_TWR(a_start, a_end) ; 
 				}
 				else
