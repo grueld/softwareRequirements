@@ -624,7 +624,6 @@ public class ROI_Calculation {
 		//parseFile("sample_warning_invalid_eval_period.csv", CSVFile);
 		//parseFile("sample_warning_name.csv", CSVFile);
 		//parseFile("sample_warning_no_eval_period.csv", CSVFile);
-		System.out.println(args[0]);
 		parseFile(args[0], CSVFile);
 		
 
@@ -647,23 +646,26 @@ public class ROI_Calculation {
 		double ROI_EP   = Double.MAX_VALUE ;
 		double bench_EP = Double.MAX_VALUE ;
 
-		if (m.twr_calculable(start, end)) {
-			TWR_WI   = m.annual_compounded_TWR(start, end) ; 
-		}
-		ROI_WI   = m.roi(start, end) ;
-		if (m.bm_calculable(start, end)) {
-			bench_WI = m.benchmark(start, end)	;
-		}
-
-		if (!CSVFile.warningInvalidEvaluationPeriod) {
+		if(!CSVFile.errorInvalidFile)
+		{
 			if (m.twr_calculable(start, end)) {
-				TWR_EP   = m.annual_compounded_TWR(a_start, a_end) ; 
+				TWR_WI   = m.annual_compounded_TWR(start, end) ; 
 			}
-			ROI_EP   = m.roi(a_start, a_end) ; 
-			if (m.bm_calculable(a_start, a_end)) {
-				bench_EP = m.benchmark(a_start, a_end)	;
+			ROI_WI   = m.roi(start, end) ;
+			if (m.bm_calculable(start, end)) {
+				bench_WI = m.benchmark(start, end)	;
 			}
-		}	
+	
+			if (!CSVFile.warningInvalidEvaluationPeriod) {
+				if (m.twr_calculable(start, end)) {
+					TWR_EP   = m.annual_compounded_TWR(a_start, a_end) ; 
+				}
+				ROI_EP   = m.roi(a_start, a_end) ; 
+				if (m.bm_calculable(a_start, a_end)) {
+					bench_EP = m.benchmark(a_start, a_end)	;
+				}
+			}	
+		}
 
 		printOutput(
 				CSVFile,
