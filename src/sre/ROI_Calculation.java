@@ -233,7 +233,7 @@ public class ROI_Calculation {
 	{
 		try
 		{
-			CSVFile.file = new BufferedReader(new FileReader("csv/" + nameFile)); 
+			CSVFile.file = new BufferedReader(new FileReader(nameFile)); 
 
 			try 
 			{
@@ -606,7 +606,7 @@ public class ROI_Calculation {
 	public static void main(String[] args) {
 		csv CSVFile = new csv();
 		//parseFile("sample.csv", CSVFile);
-		parseFile("sampleAgentFees.csv", CSVFile);		
+		//parseFile("sampleAgentFees.csv", CSVFile);		
 		//parseFile("test_without_name.csv", CSVFile);
 		//parseFile("test_date_invalid.csv", CSVFile);
 		//parseFile("test_date_invalid_February.csv", CSVFile);
@@ -624,6 +624,8 @@ public class ROI_Calculation {
 		//parseFile("sample_warning_invalid_eval_period.csv", CSVFile);
 		//parseFile("sample_warning_name.csv", CSVFile);
 		//parseFile("sample_warning_no_eval_period.csv", CSVFile);
+		parseFile(args[0], CSVFile);
+		
 
 		CSVFile.printWarningsErrors();
 
@@ -644,23 +646,43 @@ public class ROI_Calculation {
 		double ROI_EP   = Double.MAX_VALUE ;
 		double bench_EP = Double.MAX_VALUE ;
 
-		if (m.twr_calculable(start, end)) {
-			TWR_WI   = m.annual_compounded_TWR(start, end) ; 
-		}
-		ROI_WI   = m.roi(start, end) ;
-		if (m.bm_calculable(start, end)) {
-			bench_WI = m.benchmark(start, end)	;
-		}
-
-		if (!CSVFile.warningInvalidEvaluationPeriod) {
+		if(!CSVFile.errorInvalidFile)
+		{
 			if (m.twr_calculable(start, end)) {
-				TWR_EP   = m.annual_compounded_TWR(a_start, a_end) ; 
+				TWR_WI   = m.annual_compounded_TWR(start, end) ; 
 			}
-			ROI_EP   = m.roi(a_start, a_end) ; 
-			if (m.bm_calculable(a_start, a_end)) {
-				bench_EP = m.benchmark(a_start, a_end)	;
+			else
+			{
+				System.out.println("Warning: The TWR for the whole input is not calculable.");
 			}
-		}	
+			ROI_WI   = m.roi(start, end) ;
+			if (m.bm_calculable(start, end)) {
+				bench_WI = m.benchmark(start, end)	;
+			}
+			else
+			{
+				System.out.println("Warning: The benchmark for the whole input is not calculable.");
+			}
+			
+	
+			if (!CSVFile.warningInvalidEvaluationPeriod) {
+				if (m.twr_calculable(start, end)) {
+					TWR_EP   = m.annual_compounded_TWR(a_start, a_end) ; 
+				}
+				else
+				{
+					System.out.println("Warning: The TWRs are not calculable.");
+				}
+				ROI_EP   = m.roi(a_start, a_end) ; 
+				if (m.bm_calculable(a_start, a_end)) {
+					bench_EP = m.benchmark(a_start, a_end)	;
+				}
+				else
+				{
+					System.out.println("Warning: The benchmarks are not calculable.");
+				}
+			}	
+		}
 
 		printOutput(
 				CSVFile,
