@@ -485,6 +485,16 @@ public class ROI_Calculation {
 //				System.out.println("Dates are unique and ordered :                       " + checkDateUniqueOrdered(CSVFile));
 //				System.out.println("Withdraws are less important than the market value : " + checkWithdraw(CSVFile));
 //				System.out.println("Account does not grow  :                             " + checkAccountGrow(CSVFile));
+				checkNameNotNull(CSVFile);
+				checkTuplesDates(CSVFile);
+				checkEvaluationPeriodDates(CSVFile);
+				checkStartBeforeEnd(CSVFile);
+				checkEvaluationPeriod(CSVFile);
+				checkTupleHasDate(CSVFile);
+				checkNonNegativeMarketValue(CSVFile);
+				checkDateUniqueOrdered(CSVFile);
+				checkWithdraw(CSVFile);
+				checkAccountGrow(CSVFile);
 //				System.out.println("") ;
 			}
 			finally 
@@ -626,19 +636,22 @@ public class ROI_Calculation {
 		date a_start = CSVFile.start ;
 		date a_end = CSVFile.end ;
 		
-		double TWR_WI   = 0 ;
-		double ROI_WI   = 0 ;
-		double bench_WI = 0 ;
-		double TWR_EP   = 0 ;
-		double ROI_EP   = 0 ;
-		double bench_EP = 0 ;
+		double TWR_WI   = Double.MAX_VALUE ;
+		double ROI_WI   = Double.MAX_VALUE ;
+		double bench_WI = Double.MAX_VALUE ;
+		double TWR_EP   = Double.MAX_VALUE ;
+		double ROI_EP   = Double.MAX_VALUE ;
+		double bench_EP = Double.MAX_VALUE ;
 		
 		TWR_WI   = m.annual_compounded_TWR(start, end) ; 
 		ROI_WI   = m.roi(start, end) ;
 		bench_WI = m.benchmark(start, end)	;
-		TWR_EP   = m.annual_compounded_TWR(a_start, a_end) ; 
-		ROI_EP   = m.roi(a_start, a_end) ; 
-		bench_EP = m.benchmark(a_start, a_end)	;
+		if(!CSVFile.warningInvalidEvaluationPeriod)
+		{
+			TWR_EP   = m.annual_compounded_TWR(a_start, a_end) ; 
+			ROI_EP   = m.roi(a_start, a_end) ; 
+			bench_EP = m.benchmark(a_start, a_end)	;
+		}
 		
 		printOutput(
 				CSVFile,
