@@ -193,7 +193,7 @@ E4.3 & The evaluation period is in range. & See Invariant 1 of TWR\_ROI\_CALCULA
 E5.1 & A portfolio history records investment performance in a non-empty sequence of tuple data, each tuple having the fields: date (required), market value (required), cash flow (optional), agent fees (optional) and benchmark (optional). & See \textit{tr} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
 
 \hline
-E5.2 &  For each tuple, the dates must be in ISO format (yyyy-mm-dd). & \\
+E5.2 &  For each tuple, the dates must be in ISO format (yyyy-mm-dd). & See appendix B \\
 
 \hline
 E5.3 & When there is a customer contribution, the cash flow is a positive number. For a withdrawal, the number is negative. & \\
@@ -391,9 +391,6 @@ $end:$ DATE $\eqdef tr[count]$ \comment last date of the file\\
 \ensure \textit{Result $\in$ tr.domain $\land$ tr[Result].date=d}\\
 \\
 
-TODO: DANS REQUIRE I VARIE DANS L'INTERVALLE D'INDICE\\
- DEFINIT PAR S ET E\\
-IL FAUT VERIFIER QUE CE SOIT BIEN CA DANS LES E/R\\
 \comment TWR for the period \textit{s .. e}\\
 \textit{twr (s, e}: DATE): VALUE\\
 \require\\
@@ -405,19 +402,12 @@ IL FAUT VERIFIER QUE CE SOIT BIEN CA DANS LES E/R\\
 	\tab where \textit{wealth(i) $\eqdef$ tr[i].mv$\div$(tr[i-1].mv + tr[i-1].cf + tr[i-1].af)}\\
 \\
 
-TODO: SUPPRIMER LA VARIABLE DURATION ET\\
- REMPLACER PAR LA BONNE CHOSE\\
 \textit{annual\_compounded\_TWR (s, e}: DATE): VALUE \\
 \ensure \\
-	\tab \textit{(duration$\ge 1)\Rightarrow Result=((1+twr(s, e))^{1\div duration}-1)*100$}\\
-	\tab \textit{(duration$<$1)$\Rightarrow$ Result= twr(s, e) * 100}\\
+	\tab \textit{(days(e-s)/365.2422$\ge 1)\Rightarrow Result=((1+twr(s, e))^{1\div (days(e-s)/365.2422)}-1)*100$}\\
+	\tab \textit{(days(e-s)/365.2422$<$1)$\Rightarrow$ Result= twr(s, e) * 100}\\
 \\
 
-TODO: IL FAUT RETIRER DES E-R DESCRIPTION QUE\\
- AF EST UN DEPOSIT AILLEUR QUE POUR LE TWR\\
-TODO:VERIFIER QUE LE + POUR LES AGENT FEES\\
- CI DESSOUS EST CORRECT,DANS LE CODE JE L'AI\\
-CHANGE EN -\\
 \textit{roi (s, e}: DATE): VALUE\\
 \require\\
 	\tab \textit{s, e $\in$ dates}\\
@@ -453,27 +443,19 @@ $day(d:$ DATE): INTEGER\\
 \tab $Result = dd$\\
 \\	
 
-TODO FAIRE LES FONCTION TABLE POUR MIN ET MAX\\
-TODO VOIR POUR LE REQUIRE DE MIN ET MAX\\
 $\uparrow$ ($f, s$: DATE): DATE\\
-\require\\
 \ensure\\
-\tab $<<$ see table...$>>$\\
+\tab $<<$ see table ~\ref{table:table_bench}$>>$\\
 \\
 $\downarrow$ ($f, s$: DATE): DATE\\
-\require\\
 \ensure\\
-\tab $<<$ see table...$>>$\\
+\tab $<<$ see table ~\ref{table:table_bench}$>>$\\
 \\
-TODO FAIRE ET NUMEROTER LA FUNCTION TABLE\\
- DE LA FCT SUIVANTE\\
 \textit{at (d}: DATE): DATA\\
 \ensure\\
-\tab $<<see$ $table ... >>$ \\
+\tab $<<see$ $table  ~\ref{table:table_ROI} >>$ \\
 \\
 
-TODO: FAIRE UN CHECK AVANT (DANS LE MAIN)\\
-POUR SAVOIR SI S ET E SONT DANS DATES\\
 \textit{bm\_calculable (s, e}: DATE): $\Bool$\\
 \require\\
 	\tab $s, e \in dates$\\ 
@@ -490,7 +472,6 @@ POUR SAVOIR SI S ET E SONT DANS DATES\\
 \tab $C = (mon(e) = 1 \wedge day(e) = 1)$\\
 \\
 
-TODO RAJOUTER LA FUNCTION TABLE\\
 \comment the function below return a set of DATA with a benchmark $\neq$ void\\
 \textit{bm\_seq (s, e}: DATE): SEQ[DATA]\\
 \require\\
@@ -501,7 +482,8 @@ TODO RAJOUTER LA FUNCTION TABLE\\
 	\tab \tab $ \oplus <t>$\\
 
 \where\\
-\tab t = $<<$ see table ...$>>$\\
+	\tab $(mon(e) = 1 \wedge day(e) = 1) \Rightarrow t = at(e)$\\
+	\tab $(mon(e) \neq 1 \vee day(e) \neq 1) \Rightarrow t = at(end \downarrow "year(e)-01-01")$\\
 \\
 
 $po(s,e, d1, d2:$ DATE) : VALUE\\
@@ -531,8 +513,6 @@ $bm\_final\_value(s,e:$ DATE): VALUE\\
 \tab$b(k) = <(tr[k].date, 0, 0, 0, void)>$ \\
 \\
 
-EST-CE QUE C'EST NORMAL QU'IL N'Y AI PAS DE AF DANS \\
-BENCHMARK?\\
 $benchmark (s, e$: DATE): VALUE\\
 \require\\
 \tab $s, e \in dates$\\
@@ -584,15 +564,13 @@ $benchmark (s, e$: DATE): VALUE\\
 \bibliographystyle{plain}
 \bibliography{inputs/ref}
 
-TODO : A CHECKER !!! + TITRE
-
 \begin{table}[H]
 {
 \centering
 
 \begin{tabular}{|l|l|l||l|l|}
 \hline
-\multicolumn{3}{|l||}{fi, se : DATE} & Min & Max\\ 
+\multicolumn{3}{|l||}{fi, se : DATE} & $fi \downarrow se$ & $fi \uparrow se$\\ 
 
 \hline
 \multicolumn{3}{|l||}{year(fi) $<$ year(se)} & fi & se\\ 
@@ -615,8 +593,8 @@ year(fi) $=$ year(se) & \multicolumn{2}{|l||}{mon(fi) $<$ mon(se)} & fi & se\\
 \hline
 \end{tabular}
 
-\caption{Function table for ROI system (calculation of the benchmarks)}
-\label{table:ftable_bench}
+\caption{Function table to define functions $\uparrow$ and $\downarrow$}
+\label{table:table_bench}
 }
 \end{table}
 %%%
@@ -626,7 +604,7 @@ year(fi) $=$ year(se) & \multicolumn{2}{|l||}{mon(fi) $<$ mon(se)} & fi & se\\
 
 \begin{tabular}{|l|l||l|}
 \hline
-\multicolumn{2}{|c||}{} & at(d)\\ 
+\multicolumn{2}{|l||}{d: DATE} & at(d)$|\_$\\ 
 
 \hline
 \multicolumn{2}{|l||}{d$\in$dates} & $\exists$! i $|$ 1$\le$i$\le$count$\itholds$Result = tr[i]$\wedge$Result.date = d\\ 
@@ -653,8 +631,8 @@ d$\notin$dates & mon(d)=1 $\wedge$ day(d)=1 & Result = (d,0,0,0,void)\\
 \hline
 \end{tabular}
 
-\caption{Function table for ROI system (calculation of the ROIs)}
-\label{table:ftable_ROI}
+\caption{Function table to define the function at(d)}
+\label{table:table_ROI}
 }
 \end{table}
 
@@ -682,6 +660,12 @@ first & tr[1].date \\
 
 \hline
 last & tr[tr.count].date\\
+
+\hline
+start & first date of the evaluation periode \\
+
+\hline
+end & last date of the evaluation periode \\
 
 \hline
  a\_c\_TWR & annual\_compounded\_TWR\\
