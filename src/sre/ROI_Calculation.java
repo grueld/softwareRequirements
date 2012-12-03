@@ -504,25 +504,91 @@ public class ROI_Calculation {
 			double TWR_WI, double ROI_WI, double bench_WI,
 			double TWR_EP, double ROI_EP, double bench_EP)
 	{
-		System.out.println("Name: " + CSVFile.name);
+		if(CSVFile.warningNoName)
+		{
+			System.out.println("Name: undefined");
+		}
+		else
+		{
+			System.out.println("Name: " + CSVFile.name);
+		}
+
 		System.out.println("--------------------------------------------");
 		date first = CSVFile.listTuple.get(0).date;
 		date last = CSVFile.listTuple.get(CSVFile.listTuple.size()-1).date;
 		System.out.println("Whole input: " + first.toString() + " to " + last.toString());
-		double newTWR_WI = (double) Math.round(TWR_WI * 100) / 100;
-		System.out.println("TWR: " + newTWR_WI + " %");
-		double newROI_WI = (double) Math.round(ROI_WI * 100) / 100;
-		System.out.println("ROI: " + newROI_WI + " %");
-		double newBench_WI = (double) Math.round(bench_WI * 100) / 100;
-		System.out.println("Benchmark: " + newBench_WI + " %");
+		
+		if(TWR_WI == Double.MAX_VALUE)
+		{
+			System.out.println("TWR: undefined");
+		}
+		else
+		{
+			double newTWR_WI = (double) Math.round(TWR_WI * 100) / 100;
+			System.out.println("TWR: " + newTWR_WI + " %");
+		}
+		
+		if(ROI_WI == Double.MAX_VALUE)
+		{
+			System.out.println("ROI: undefined");
+		}
+		else
+		{
+			double newROI_WI = (double) Math.round(ROI_WI * 100) / 100;
+			System.out.println("ROI: " + newROI_WI + " %");
+		}
+		
+		if(bench_WI == Double.MAX_VALUE)
+		{
+			System.out.println("Benchmark: undefined");
+		}
+		else
+		{
+			double newBench_WI = (double) Math.round(bench_WI * 100) / 100;
+			System.out.println("Benchmark: " + newBench_WI + " %");
+		}
+		
 		System.out.println("--------------------------------------------");
-		System.out.println("Evaluation period: " + CSVFile.start.toString() + " to " + CSVFile.end.toString());
-		double newTWR_EP = (double) Math.round(TWR_EP * 100) / 100;
-		System.out.println("TWR: " + newTWR_EP + " %");
-		double newROI_EP = (double) Math.round(ROI_EP * 100) / 100;
-		System.out.println("ROI: " + newROI_EP + " %");
-		double newBench_EP = (double) Math.round(bench_EP * 100) / 100;
-		System.out.println("Benchmark: " + newBench_EP + " %");
+		
+		if(CSVFile.warningInvalidEvaluationPeriod)
+		{
+			System.out.println("Evaluation period: undefined");
+		}
+		else
+		{
+			System.out.println("Evaluation period: " + CSVFile.start.toString() + " to " + CSVFile.end.toString());
+		}
+		
+		if(TWR_EP == Double.MAX_VALUE)
+		{
+			System.out.println("TWR: undefined");
+		}
+		else
+		{
+			double newTWR_EP = (double) Math.round(TWR_EP * 100) / 100;
+			System.out.println("TWR: " + newTWR_EP + " %");
+		}
+		
+		if(ROI_EP == Double.MAX_VALUE)
+		{
+			System.out.println("ROI: undefined");
+		}
+		else
+		{
+			double newROI_EP = (double) Math.round(ROI_EP * 100) / 100;
+			System.out.println("ROI: " + newROI_EP + " %");
+		}
+		
+		if(bench_EP == Double.MAX_VALUE)
+		{
+			System.out.println("Benchmark: undefined");
+		}
+		else
+		{
+			double newBench_EP = (double) Math.round(bench_EP * 100) / 100;
+			System.out.println("Benchmark: " + newBench_EP + " %");
+		}
+		
 		System.out.println("--------------------------------------------");
 	}
 	
@@ -546,7 +612,7 @@ public class ROI_Calculation {
 		//parseFile("test_grow.csv", CSVFile);
 		
 		CSVFile.printWarningsErrors();
-		
+
 		math m = new math(CSVFile.listTuple) ;
 		date a_start = new date(2007,1,1) ;
 		date a_end = new date(2008,1,1);
