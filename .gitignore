@@ -4,3 +4,10 @@
 *.jar
 *.war
 *.ear
+
+roi-template/roi.aux
+roi-template/roi.lof
+roi-template/roi.lot
+roi-template/roi.pdf
+roi-template/roi.synctex.gz
+roi-template/roi.toc

@@ -206,7 +206,7 @@ public class math {
 
 		res = (at(min(end, a)).bm != 0) && p &&
 				((c && at(e).bm != 0) || (!c && at(min(end, b)).bm != 0)) ;
-		
+
 		return res ;
 	}
 
@@ -215,7 +215,7 @@ public class math {
 			System.err.println("error: denominator equals to zero in function po") ;
 			return -1 ;
 		}
-		return days (max (d1,s), min (d2,e)) / days(d1, d2) ;
+		return days (d1, min (d2,e)) / (double)days(new date(d1.year,1,1), d2) ;
 	}
 
 	public ArrayList<tuple> bm_seq (date s, date e) {
@@ -245,61 +245,59 @@ public class math {
 		double res, p ;
 
 		res = tr.get(m).mv ;
-		a = new tuple(new date(s.year , 1, 1)) ;
+		a = new tuple(s) ;
 		seq = bm_seq(s, e) ;
 		seq.add(0, a) ;
 
 		for ( int i = 1 ; i < seq.size() ; i++ ) {
 			t = seq.get(i) ;
-			res *= Math.pow(t.bm, po(s, e, seq.get(i-1).date, t.date)) ;
+			res *= Math.pow(1 + t.bm/100 , po(s, e, seq.get(i-1).date, t.date)) ;
 		}
 
 		for ( int k = m ; k < n ; k++ ) {
-			tuple b = new tuple(new date(tr.get(k).date.year , 1, 1)) ;
+			tuple b = new tuple(tr.get(k).date) ;
 			seq = bm_seq(tr.get(k).date, e) ;
 			seq.add(0, b) ;
 			p = tr.get(k).cf - tr.get(k).af ;
-			
+
 			for ( int i = 1 ; i < seq.size() ; i++ ) {
 				t = seq.get(i) ;
-				p *= Math.pow(t.bm, po(s, e, seq.get(i-1).date, t.date)) ;
+				p *= Math.pow(1 + t.bm/100, po(s, e, seq.get(i-1).date, t.date)) ;
 			}
-			
 			res += p ;
 		}
 		
-		System.out.println("final value: " + res) ;
 		return res ;
 
 	}
 
 	public double benchmark (date s, date e) {
-		
+
 		if (!bm_calculable(s, e)) {
 			System.err.println("benchmark not calculable") ;
 			return -1 ;
 		}
-		
+
 		double x0 = 0 ;
 		double x1 = x0 - g(s,e,x0)/ gPrime(s, e, x0) ;
 		double x2 = x1 - g(s,e,x1)/ gPrime(s, e, x1) ;
 		double x3 = x2 - g(s,e,x2)/ gPrime(s, e, x2) ;
 		double x4 = x3 - g(s,e,x3)/ gPrime(s, e, x3) ;
 
-
 		return x4 ;
 	}
+
 
 	public double g (date s, date e, double x) {
 		int m = di(s) ;
 		int n = di(e) ;
 		double dur = days(s, e) / 365.2422 ;
 
-		double result = tr.get(m).mv * Math.pow(1 + x, dur) ;
+		double result = tr.get(m).mv * Math.pow(1+x/100, dur) ;
 
 		for (int k = m ; k < n ; k++) {
 			dur = days (tr.get(k).date, e) / 365.2422 ;
-			result += tr.get(k).cf * Math.pow(1 + x, dur) ;
+			result += tr.get(k).cf * Math.pow(1 + x/100, dur) ;
 		}
 		result -= bm_final_value(s, e) ;
 
@@ -311,48 +309,15 @@ public class math {
 		int n = di(e) ;
 		double dur = days(s, e) / 365.2422 ;
 
-		double result = (tr.get(m).mv + tr.get(m).cf) * dur * Math.pow( 1 + x, dur - 1) ;
+		double result = (tr.get(m).mv + tr.get(m).cf) * dur /100 * Math.pow( 1 + x/100, dur - 1) ;
 
 		for (int k = m + 1 ; k < n ; k++) {
 			dur = days (tr.get(k).date, e) / 365.2422 ;
-			result += tr.get(k).cf * dur * Math.pow(1 + x, dur - 1) ;
+			result += tr.get(k).cf * dur/100 * Math.pow(1+x/100, dur - 1) ;
 		}
 
 		return result ;
 	}
-
-
-
-//public double g (date s, date e, double x) {
-//	int m = di(s) ;
-//	int n = di(e) ;
-//	double dur = days(s, e) / 365.2422 ;
-//
-//	double result = tr.get(m).mv * Math.pow(1+x/100, dur) ;
-//
-//	for (int k = m ; k < n ; k++) {
-//		dur = days (tr.get(k).date, e) / 365.2422 ;
-//		result += tr.get(k).cf * Math.pow(1 + x/100, dur) ;
-//	}
-//	result -= bm_final_value(s, e) ;
-//
-//	return result ;
-//}
-//
-//public double gPrime (date s, date e, double x) {
-//	int m = di(s) ;
-//	int n = di(e) ;
-//	double dur = days(s, e) / 365.2422 ;
-//
-//	double result = (tr.get(m).mv + tr.get(m).cf) * dur /100 * Math.pow( 1 + x/100, dur - 1) ;
-//
-//	for (int k = m + 1 ; k < n ; k++) {
-//		dur = days (tr.get(k).date, e) / 365.2422 ;
-//		result += tr.get(k).cf * dur/100 * Math.pow(1+x/100, dur - 1) ;
-//	}
-//
-//	return result ;
-//}
 
 
 

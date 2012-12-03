@@ -553,9 +553,11 @@ public class ROI_Calculation {
 		double twr = m.annual_compounded_TWR(a_start, a_end) ;
 		double roi = m.roi(a_start, a_end) ;
 		double bench = m.benchmark(a_start, a_end) ;
-				
-		System.out.println("twr, roi et benchmark: " + twr + " " + roi + " " + bench) ;
-		System.out.println("nbr jour " + m.days(new date(2007,2,11), new date(2008,1,1))) ;
+		
+		System.out.println("twr: " + twr) ;
+		System.out.println("roi: " + roi) ;
+		System.out.println("benchmark: " + bench) ;
+		System.out.println("nbr jour " + m.days(a_start, a_end)) ;
 	}
 
 }

@@ -514,7 +514,7 @@ $po(s,e, d1, d2:$ DATE) : VALUE\\
 \require\\
 	\tab $d1 \neq d2 $ \\
 \ensure\\
-	\tab $Result \eqdef days(d2 \downarrow e - d1 \uparrow s) \div days(d2 - d1)$\\
+	\tab $Result \eqdef days(d2 \downarrow e - d1) \div days(d2 - "year(d1)-01-01")$\\
 \\
  
 $bm\_final\_value(s,e:$ DATE): VALUE\\
@@ -533,8 +533,8 @@ $bm\_final\_value(s,e:$ DATE): VALUE\\
 \tab $n = di(e)$\\
 {\hspace*{1em}} \comment $a$ defines seq[0] in the first product\\
 {\hspace*{1em}} \comment $b(k)$ defines seq[0] in the second product\\
-\tab$a = <("year(s) - 01 - 01", 0, 0, 0, void)>$\\
-\tab$b(k) = <("year(tr[k].date) - 01 - 01", 0, 0, 0, void)>$ \\
+\tab$a = <(s, 0, 0, 0, void)>$\\
+\tab$b(k) = <(tr[k].date, 0, 0, 0, void)>$ \\
 \\
 
 EST-CE QUE C'EST NORMAL QU'IL N'Y AI PAS DE AF DANS \\
