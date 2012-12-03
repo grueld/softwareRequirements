@@ -605,7 +605,7 @@ public class ROI_Calculation {
 	
 	public static void main(String[] args) {
 		csv CSVFile = new csv();
-		parseFile("sample.csv", CSVFile);
+		//parseFile("sample.csv", CSVFile);
 		//parseFile("test_without_name.csv", CSVFile);
 		//parseFile("test_date_invalid.csv", CSVFile);
 		//parseFile("test_date_invalid_February.csv", CSVFile);
@@ -623,6 +623,8 @@ public class ROI_Calculation {
 		//parseFile("sample_warning_invalid_eval_period.csv", CSVFile);
 		//parseFile("sample_warning_name.csv", CSVFile);
 		//parseFile("sample_warning_no_eval_period.csv", CSVFile);
+		System.out.println(args[0]);
+		parseFile(args[0], CSVFile);
 		
 		CSVFile.printWarningsErrors();
 
@@ -663,7 +665,7 @@ public class ROI_Calculation {
 				bench_EP
 				) ;
 
-		System.out.println("nbr jour " + m.days(a_start, a_end)) ;
+		//System.out.println("nbr jour " + m.days(a_start, a_end)) ;
 	}
 
 }
