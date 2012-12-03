@@ -5,9 +5,9 @@
 *.war
 *.ear
 
-roi-template/roi.aux
-roi-template/roi.lof
-roi-template/roi.lot
-roi-template/roi.pdf
-roi-template/roi.synctex.gz
-roi-template/roi.toc
+roi-template/roi.aux   export-ignore
+roi-template/roi.lof   export-ignore
+roi-template/roi.lot   export-ignore
+roi-template/roi.pdf   export-ignore
+roi-template/roi.synctex.gz   export-ignore
+roi-template/roi.toc   export-ignore

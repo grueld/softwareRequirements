@@ -614,15 +614,25 @@ public class ROI_Calculation {
 		CSVFile.printWarningsErrors();
 
 		math m = new math(CSVFile.listTuple) ;
+		
+		// whole input
+		
+		// evaluation periode
 		date a_start = new date(2007,1,1) ;
 		date a_end = new date(2008,1,1);
 		double twr = m.annual_compounded_TWR(a_start, a_end) ;
 		double roi = m.roi(a_start, a_end) ;
 		double bench = m.benchmark(a_start, a_end) ;
 		
-		System.out.println("twr: " + twr) ;
-		System.out.println("roi: " + roi) ;
-		System.out.println("benchmark: " + bench) ;
+		public static void printOutput(
+				CSVFile,
+				TWR_WI, 
+				ROI_WI, 
+				bench_WI,
+				TWR_EP, 
+				ROI_EP, 
+				bench_EP) ;
+
 		System.out.println("nbr jour " + m.days(a_start, a_end)) ;
 	}
 
