@@ -4,13 +4,13 @@
 \contentsline {subsection}{\numberline {3.1}E-descriptions}{5}
 \contentsline {subsection}{\numberline {3.2}R-descriptions}{7}
 \contentsline {section}{\numberline {4}Mathematical model}{10}
-\contentsline {subsection}{\numberline {4.1}Function tables}{18}
-\contentsline {subsubsection}{\numberline {4.1.1}Abbreviations, conditions and messages}{18}
-\contentsline {subsubsection}{\numberline {4.1.2}Calculation of the TWRs}{19}
-\contentsline {subsubsection}{\numberline {4.1.3}Calculation of the ROIs}{20}
-\contentsline {subsubsection}{\numberline {4.1.4}Calculation of the benchmarks}{21}
-\contentsline {subsubsection}{\numberline {4.1.5}Name of the portfolio history}{22}
-\contentsline {section}{\numberline {5}Acceptance tests}{22}
-\contentsline {section}{\numberline {6}Requirements Traceability matrix}{24}
-\contentsline {section}{\numberline {A}REGEXP}{25}
-\contentsline {section}{\numberline {B}DATE}{26}
+\contentsline {subsection}{\numberline {4.1}Function tables}{19}
+\contentsline {subsubsection}{\numberline {4.1.1}Abbreviations, conditions and messages}{19}
+\contentsline {subsubsection}{\numberline {4.1.2}Calculation of the TWRs}{20}
+\contentsline {subsubsection}{\numberline {4.1.3}Calculation of the ROIs}{21}
+\contentsline {subsubsection}{\numberline {4.1.4}Calculation of the benchmarks}{22}
+\contentsline {subsubsection}{\numberline {4.1.5}Name of the portfolio history}{23}
+\contentsline {section}{\numberline {5}Acceptance tests}{23}
+\contentsline {section}{\numberline {6}Requirements Traceability matrix}{25}
+\contentsline {section}{\numberline {A}REGEXP}{26}
+\contentsline {section}{\numberline {B}DATE}{27}

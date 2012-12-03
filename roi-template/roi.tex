@@ -572,8 +572,81 @@ $benchmark (s, e$: DATE): VALUE\\
 \bibliographystyle{plain}
 \bibliography{inputs/ref}
 
+TODO : A CHECKER !!! + TITRE
 
+\begin{table}[H]
+{
+\centering
 
+\begin{tabular}{|l|l|l||l|l|}
+\hline
+\multicolumn{3}{|l||}{fi, se : DATE} & Min & Max\\ 
+
+\hline
+\multicolumn{3}{|l||}{year(fi) $<$ year(se)} & fi & se\\ 
+
+\hline
+\multicolumn{3}{|l||}{year(fi) $>$ year(se)} & se & fi\\ 
+
+\hline
+year(fi) $=$ year(se) & \multicolumn{2}{|l||}{mon(fi) $<$ mon(se)} & fi & se\\ 
+
+\cline{2-5}
+& \multicolumn{2}{|l||}{mon(fi) $>$ mon(se)} & se & fi\\
+
+\cline{2-5}
+& mon(fi) $=$ mon(se) & day(fi) $<$ day(se) & fi & se\\
+
+\cline{3-5}
+& & day(fi) $\ge$ day(se) & se &  fi\\
+
+\hline
+\end{tabular}
+
+\caption{Function table for ROI system (calculation of the benchmarks)}
+\label{table:ftable_bench}
+}
+\end{table}
+%%%
+\begin{table}[H]
+{
+\centering
+
+\begin{tabular}{|l|l||l|}
+\hline
+\multicolumn{2}{|c||}{} & at(d)\\ 
+
+\hline
+\multicolumn{2}{|l||}{d$\in$dates} & $\exists$! i $|$ 1$\le$i$\le$count$\itholds$Result = tr[i]$\wedge$Result.date = d\\ 
+
+\hline
+d$\notin$dates & mon(d)=1 $\wedge$ day(d)=1 & Result = (d,0,0,0,void)\\
+
+\cline{2-3}
+& $\lnot$(mon(d)=1 $\wedge$ day(d)=1) & null\\
+
+%\hline
+%Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & |& W & | & |\\ 
+%& $\lnot$(End$\_$Valid) $\vee$ &&&&\\
+%& end $\le$ start &&& &\\
+%
+%\cline{2-6}
+%& Start$\_$Valid  $\wedge$ & |& | & roi(first,last) & roi(start,end)\\
+%& End$\_$Valid $\wedge$ &&&&\\
+%& end$>$start &&&&\\
+%
+%\hline
+%\multicolumn{2}{|l||}{Invalid$\_$CSV} & E & |& | & |\\ 
+%
+\hline
+\end{tabular}
+
+\caption{Function table for ROI system (calculation of the ROIs)}
+\label{table:ftable_ROI}
+}
+\end{table}
+
+%%%
 
 
 
@@ -582,6 +655,9 @@ $benchmark (s, e$: DATE): VALUE\\
 
 %%%%%%%%%%%%%%%%%%%
 \subsection{Function tables}
+
+
+
 
 \subsubsection{Abbreviations, conditions and messages}
 {\centering
