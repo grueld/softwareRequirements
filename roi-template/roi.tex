@@ -833,6 +833,193 @@ $\lnot$Name & W7 \\
 
 
 
+
+\section{Acceptance tests}
+
+\bigskip
+{\centering
+\begin{tabular}{|p{1.2in}|p{4in}|}
+\hline
+\textbf{Test Case ID} & test\_date\_invalid.csv \\ 
+\hline
+\textbf{Description} & Verify that an invalid date raises an error.\\
+\hline
+\textbf{Requirement IDs tested} & R3.1 \\ 
+\hline
+\textbf{Type} & Negative \\ 
+\hline
+\textbf{Initial State} & A directory containing the CSV file.\\
+\hline 
+\textbf{Action} & Execute the ROI system on the CSV file \\
+\hline 
+\textbf{Consequences} & Output : "Error: Invalid file." \\ 
+\hline
+\end{tabular}
+%%%%
+\bigskip\bigskip
+\centering
+\begin{tabular}{|p{1.2in}|p{4in}|}
+\hline
+\textbf{Test Case ID} & test\_date\_invalid\_February.csv \\ 
+\hline
+\textbf{Description} & Verify that an invalid date (because of the leap years) raises an error.\\
+\hline
+\textbf{Requirement IDs tested} & R3.1 \\ 
+\hline
+\textbf{Type} & Negative \\ 
+\hline
+\textbf{Initial State} & A directory containing the CSV file.\\
+\hline 
+\textbf{Action} & Execute the ROI system on the CSV file \\
+\hline 
+\textbf{Consequences} & Output : "Error: Invalid file." \\ 
+\hline
+\end{tabular}
+%%%%
+\bigskip
+\centering
+\begin{tabular}{|p{1.2in}|p{4in}|}
+\hline
+\textbf{Test Case ID} & test\_tuple\_without\_date.csv \\ 
+\hline
+\textbf{Description} & Verify that a tuple without a date raises an error.\\
+\hline
+\textbf{Requirement IDs tested} & E5.5 - R3.1 \\ 
+\hline
+\textbf{Type} & Negative \\ 
+\hline
+\textbf{Initial State} & A directory containing the CSV file.\\
+\hline 
+\textbf{Action} & Execute the ROI system on the CSV file \\
+\hline 
+\textbf{Consequences} & Output : "Error: Invalid file." \\ 
+\hline
+\end{tabular}
+%%%%
+\bigskip
+\centering
+\begin{tabular}{|p{1.2in}|p{4in}|}
+\hline
+\textbf{Test Case ID} & test\_negative\_market\_value.csv \\ 
+\hline
+\textbf{Description} & Verify that a negative market value raises an error.\\
+\hline
+\textbf{Requirement IDs tested} & E5.5 - R3.1 \\ 
+\hline
+\textbf{Type} & Negative \\ 
+\hline
+\textbf{Initial State} & A directory containing the CSV file.\\
+\hline 
+\textbf{Action} & Execute the ROI system on the CSV file \\
+\hline 
+\textbf{Consequences} & Output : "Error: Invalid file." \\ 
+\hline
+\end{tabular}
+%%%%
+\bigskip
+\centering
+\begin{tabular}{|p{1.2in}|p{4in}|}
+\hline
+\textbf{Test Case ID} & test\_dates\_non\_unique.csv \\ 
+\hline
+\textbf{Description} & Verify that two tuples with the same date raise an error.\\
+\hline
+\textbf{Requirement IDs tested} & E5.6 - R3.1 \\ 
+\hline
+\textbf{Type} & Negative \\ 
+\hline
+\textbf{Initial State} & A directory containing the CSV file.\\
+\hline 
+\textbf{Action} & Execute the ROI system on the CSV file \\
+\hline 
+\textbf{Consequences} & Output : "Error: Invalid file." \\ 
+\hline
+\end{tabular}
+%%%%
+\bigskip
+\centering
+\begin{tabular}{|p{1.2in}|p{4in}|}
+\hline
+\textbf{Test Case ID} & test\_dates\_non\_ordered.csv \\ 
+\hline
+\textbf{Description} & Verify that tuples which are not ordered raise an error.\\
+\hline
+\textbf{Requirement IDs tested} & E5.6 - R3.1 \\ 
+\hline
+\textbf{Type} & Negative \\ 
+\hline
+\textbf{Initial State} & A directory containing the CSV file.\\
+\hline 
+\textbf{Action} & Execute the ROI system on the CSV file \\
+\hline 
+\textbf{Consequences} & Output : "Error: Invalid file." \\ 
+\hline
+\end{tabular}
+%%%%
+\bigskip
+\centering
+\begin{tabular}{|p{1.2in}|p{4in}|}
+\hline
+\textbf{Test Case ID} & test\_withdraw.csv \\ 
+\hline
+\textbf{Description} & Verify that a withdraw which is greater that the market value raises an error.\\
+\hline
+\textbf{Requirement IDs tested} & E5.7 - R3.1 \\ 
+\hline
+\textbf{Type} & Negative \\ 
+\hline
+\textbf{Initial State} & A directory containing the CSV file.\\
+\hline 
+\textbf{Action} & Execute the ROI system on the CSV file \\
+\hline 
+\textbf{Consequences} & Output : "Error: Invalid file." \\ 
+\hline
+\end{tabular}
+%%%%
+\bigskip
+\centering
+\begin{tabular}{|p{1.2in}|p{4in}|}
+\hline
+\textbf{Test Case ID} & test\_grow.csv \\ 
+\hline
+\textbf{Description} & Verify that an account which grow from zero market value and cash flow raises an error.\\
+\hline
+\textbf{Requirement IDs tested} & E5.8 - R3.1 \\ 
+\hline
+\textbf{Type} & Negative \\ 
+\hline
+\textbf{Initial State} & A directory containing the CSV file.\\
+\hline 
+\textbf{Action} & Execute the ROI system on the CSV file \\
+\hline 
+\textbf{Consequences} & Output : "Error: Invalid file." \\ 
+\hline
+\end{tabular}
+}
+
+
+
+
+
+
+
+\section{Requirements Traceability matrix}
+
+\begin{tabular}{|p{1.5in}|p{3.5in}|}
+\hline
+\textbf{Requirement ID}	 & \textbf{Test Case IDs}\\ 
+\hline
+R1 & T1, T2, ...\\
+\hline
+R2 & ...\\ 
+\hline
+R3 & ...\\ 
+\hline
+\end{tabular}
+
+
+
+
 \newpage
 \appendix
 
