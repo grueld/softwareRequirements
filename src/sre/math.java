@@ -56,7 +56,7 @@ public class math {
 	
 	public boolean twr_calculable(date s, date e) {
 		for ( int i = di(s) + 1 ; i <= di(e) ; i++ ) {
-			if (tr.get(i).mv + tr.get(i-1).cf + tr.get(i-1).af == 0) return false ;
+			if (tr.get(i-1).mv + tr.get(i-1).cf + tr.get(i-1).af == 0) return false ;
 		}
 		return true ;
 	}
