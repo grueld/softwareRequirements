@@ -502,9 +502,9 @@ public class ROI_Calculation {
 	
 	public static void main(String[] args) {
 		csv CSVFile = new csv();
-		parseFile("sample.csv", CSVFile);
+		//parseFile("sample.csv", CSVFile);
 		//parseFile("test_without_name.csv", CSVFile);
-		//parseFile("test_date_invalid.csv", CSVFile);
+		parseFile("test_date_invalid.csv", CSVFile);
 		//parseFile("test_date_invalid_February.csv", CSVFile);
 		//parseFile("test_without_evaluation_period.csv", CSVFile);
 		//parseFile("test_start_invalid.csv", CSVFile);

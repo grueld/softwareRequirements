@@ -1,5 +1,6 @@
 package sre;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class date {
@@ -148,8 +149,8 @@ public class date {
 	public int differenceDate(date date)
 	{
 		long MILISECOND_PER_DAY = 24 * 60 * 60 * 1000;	
-		GregorianCalendar dateBegin= new java.util.GregorianCalendar(this.year, this.month, this.day);
-		GregorianCalendar dateEnd= new java.util.GregorianCalendar(date.year, date.month, date.day);
+		GregorianCalendar dateBegin= new java.util.GregorianCalendar(this.year, this.month-1, this.day);
+		GregorianCalendar dateEnd= new java.util.GregorianCalendar(date.year, date.month-1, date.day);
 		return Math.round(Math.abs((dateEnd.getTimeInMillis()- dateBegin.getTimeInMillis())/MILISECOND_PER_DAY));
 	}
 	

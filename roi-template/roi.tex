@@ -83,7 +83,7 @@ Benchmark: ?? \%\\
 --------------------------------------------\\
 \\
 \\
-The controlled variables are also a warning (if a calculation is not possible, or if there is no name) and an error (if the CSV file is not valid).\\
+The controlled variables are also a warning (if a calculation is not possible, if the evaluation period is not valid, or if the portfolio history has no name) and an error (if the CSV file is not valid).\\
 
 \begin{figure}
 \centering
@@ -240,10 +240,10 @@ R1 & All return on investment calculations shall follow the GIPS standard. & See
 \multicolumn{3}{|c|}{\textbf{Evaluation period}} \\
 
 \hline
-R2.1 & If no evaluation period is provided, then the start date is the earliest date and the end date the latest date in the sequence of tuple data. & See Start\_Valid and End\_Valid in Function Table\\
+R2.1 & If no evaluation period is provided, then the start date is the earliest date and the end date the latest date in the sequence of tuple data. & See Start\_Valid and End\_Valid conditions of the function tables\\
 
 \hline
-R2.2 &  Warning message: If the evaluation dates are not valid, then the following error message shall be displayed to the user: "Invalid evaluation period" & See Function Table \\
+R2.2 &  Warning message: If the evaluation dates are not valid, then the following error message shall be displayed to the user: "Invalid evaluation period" & See Function tables \\
 
 \hline
 \end{longtable}
@@ -255,10 +255,10 @@ R2.2 &  Warning message: If the evaluation dates are not valid, then the followi
 \multicolumn{3}{|c|}{\textbf{CSV file}} \\
 
 \hline
-R3.1 &  Error message: If the CSV file is not valid (i.e. if any of the conditions mentioned above do not hold), then the following error message shall be displayed to the user: "Invalid file". & See Function table\\
+R3.1 &  Error message: If the CSV file is not valid (i.e. if any of the conditions mentioned above do not hold), then the following error message shall be displayed to the user: "Invalid file". & See Function tables\\
 
 \hline
-R3.2 &  Warning message: If the CSV file does not contain a name, then the following error message shall be displayed to the user: "Incomplete file: absence of name". & See Function table\\
+R3.2 &  Warning message: If the CSV file does not contain a name, then the following error message shall be displayed to the user: "Incomplete file: absence of name". & See Function table~\ref{table:ftable_name}\\
 
 \hline
 \end{longtable}
@@ -270,7 +270,7 @@ R3.2 &  Warning message: If the CSV file does not contain a name, then the follo
 \multicolumn{3}{|c|}{\textbf{Calculation of the TWR}} \\
 
 \hline
-R4.1 & The system shall provide two TWRs (if each one is calculable) : one for the evaluation period, and one for the whole input. & See Function Table \\
+R4.1 & The system shall provide two TWRs (if each one is calculable) : one for the evaluation period, and one for the whole input. & See Function table~\ref{table:ftable_TWR} \\
 
 \hline
 R4.2 &  The TWRs shall be rounded to two decimal places. & \\
@@ -285,7 +285,7 @@ R4.4 & The annualized TWR shall be reported as a percentage. & See \textit{annua
 R4.5 & Agent fees are treated like a deposit (the agent fees are \underline{added} to the market value and the cash flow). & See \textit{twr} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
 
 \hline
-R4.6 & Warning message: If the TWR is not calculable, then a warning message shall be displayed to the user. & See Function Table\\
+R4.6 & Warning message: If the TWR is not calculable, then a warning message shall be displayed to the user. & See Function table~\ref{table:ftable_TWR}\\
 
 \hline
 \end{longtable}
@@ -297,7 +297,7 @@ R4.6 & Warning message: If the TWR is not calculable, then a warning message sha
 \multicolumn{3}{|c|}{\textbf{Calculation of the ROI}} \\
 
 \hline
-R5.1 & The system shall provide two ROIs : one for the evaluation period, and one for the whole input. & See Function Table\\
+R5.1 & The system shall provide two ROIs : one for the evaluation period, and one for the whole input. & See Function table~\ref{table:ftable_ROI}\\
 
 \hline
 R5.2 &  The ROIs shall be rounded to two decimal places. & \\
@@ -318,7 +318,7 @@ R5.4 & Agent fees are treated like a deposit (the agent fees are \underline{adde
 \multicolumn{3}{|c|}{\textbf{Calculation of the Benchmark}} \\
 
 \hline
-R6.1 & The system shall provide two benchmarks (if each one is calculable) : one for the evaluation period, and one for the whole input. & See Function Table\\
+R6.1 & The system shall provide two benchmarks (if each one is calculable) : one for the evaluation period, and one for the whole input. & See Function table~\ref{table:ftable_bench}\\
 
 \hline
 R6.2 &  The benchmarks shall be rounded to two decimal places. & \\
@@ -327,7 +327,7 @@ R6.2 &  The benchmarks shall be rounded to two decimal places. & \\
 R6.3 & The benchmark shall be reported as a compounded ROI, if the benchmark figures are available for the evaluation period. & See \textit{benchmark} of TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})\\
 
 \hline
-R6.4 & Warning message: If the benchmark is not calculable, then a warning message shall be displayed to the user. & See Function Table\\
+R6.4 & Warning message: If the benchmark is not calculable, then a warning message shall be displayed to the user. & See Function table~\ref{table:ftable_bench}\\
 
 
 
@@ -597,188 +597,114 @@ $benchmark (s, e$: DATE): VALUE\\
 
 
 \newpage
-\begin{landscape}
-\begin{table}
-
-\centering
-
-\begin{tabular}{|l|l|l|l|l|l||l|l|l|l|l|}
-\hline
-\multicolumn{6}{|c||}{} & $Error$ & $Warning$ & \multicolumn{3}{|c|}{Whole input}\\ 
-
-
-\multicolumn{6}{|c||}{} & & & TWR & ROI & B\\ 
-
-
-\hline
-Valid$\_$CSV & \multicolumn{5}{|l||}{Start$\_$Invalid $\vee$ } & E1 & | & | & | & |\\ 
-& \multicolumn{5}{|l||}{End$\_$Invalid $\vee$}& & & &&\\
-& \multicolumn{5}{|l||}{end $\le$ start}& & & &&\\
-
-\cline{2-11}
-& Start$\_$Valid  $\wedge$ & C1 & \multicolumn{3}{|l||}{C2} & | & | & a$\_$c$\_$TWR(all) & roi(all) & b(all)\\
-& End$\_$Valid $\wedge$& &\multicolumn{3}{|l||}{}&&&&&\\
-& end$>$start &&\multicolumn{3}{|l||}{}&&&&&\\
-
-\cline{4-11}
-& & & $\lnot$C2 &\multicolumn{2}{|l||}{C4} & | & W1 & a$\_$c$\_$TWR(all) & roi(all) & |\\
-
-\cline{5-11}
-& & & &\multicolumn{2}{|l||}{$\lnot$C4} & | & W2 & a$\_$c$\_$TWR(all) & roi(all) & |\\
-
-\cline{3-11}
-& & $\lnot$C1 & C3 &\multicolumn{2}{|l||}{C2} & | & W3 & | & roi(all) & b(all)\\
-
-\cline{5-11}
-& & & & $\lnot$C2 & C4 & | & W4 & | & roi(all) & |\\
-
-\cline{6-11}
-& & & & & $\lnot$C4 & | & W5 & | & roi(all) & |\\
-
-\cline{4-11}
-& & & $\lnot$C3 &\multicolumn{2}{|l||}{C2} & | & W6 & | & roi(all) & b(all)\\
-
-\cline{5-11}
-& & & & $\lnot$C2 & C4 & | & W7 & | & roi(all) & |\\
-
-\cline{6-11}
-& & & & & $\lnot$C4 & | & W8 & | & roi(all) & |\\
-
-\hline
-\multicolumn{6}{|l||}{Invalid$\_$CSV} & E2 & | & | & | & |\\ 
-
-
-\hline
-\end{tabular}
-\caption{Function table for ROI system (error, warning and whole input)}
-\label{table:table_ROI}
-\end{table}
-\end{landscape}
-
-
-
-
-\newpage
-\begin{landscape}
-\begin{table}
-\centering
-
-\begin{tabular}{|l|l|l|l|l|l||l|l|l|}
-\hline
-\multicolumn{6}{|c||}{} & \multicolumn{3}{|c|}{Evaluation period}\\ 
-
-\multicolumn{6}{|c||}{} & TWR & ROI & B\\ 
-
-
-\hline
-Valid$\_$CSV & \multicolumn{5}{|l||}{Start$\_$Invalid $\vee$ } & | & | & |\\ 
-& \multicolumn{5}{|l||}{End$\_$Invalid $\vee$} & &&\\
-& \multicolumn{5}{|l||}{end $\le$ start}& & &\\
-
-\cline{2-9}
-& Start$\_$Valid  $\wedge$ & C1 & \multicolumn{3}{|l||}{C2} & a$\_$c$\_$TWR(start,end) & roi(start,end) & b(start,end)\\
-& End$\_$Valid $\wedge$& &\multicolumn{3}{|l||}{}&&&\\
-& end$>$start &&\multicolumn{3}{|l||}{}&&&\\
-
-\cline{4-9}
-& & & $\lnot$C2 &\multicolumn{2}{|l||}{C4} & a$\_$c$\_$TWR(start,end) & roi(start,end) & b(start,end)\\
-
-\cline{5-9}
-& & & &\multicolumn{2}{|l||}{$\lnot$C4} & a$\_$c$\_$TWR(start,end) & roi(start,end) & |\\
-
-\cline{3-9}
-& & $\lnot$C1 & C3 &\multicolumn{2}{|l||}{C2} & a$\_$c$\_$TWR(start,end) & roi(start,end) & b(start,end)\\
-
-\cline{5-9}
-& & & & $\lnot$C2 & C4 & a$\_$c$\_$TWR(start,end) & roi(start,end) & b(start,end)\\
-
-\cline{6-9}
-& & & & & $\lnot$C4 & a$\_$c$\_$TWR(start,end) & roi(start,end) & |\\
-
-\cline{4-9}
-& & & $\lnot$C3 &\multicolumn{2}{|l||}{C2} & | & roi(start,end) & b(start,end)\\
-
-\cline{5-9}
-& & & & $\lnot$C2 & C4 & | & roi(start,end) & b(start,end)\\
-
-\cline{6-9}
-& & & & & $\lnot$C4 & | & roi(start,end) & |\\
-
-
-\hline
-\multicolumn{6}{|l||}{Invalid$\_$CSV} & | & | & |\\ 
-
-
-\hline
-\end{tabular}
-
-
-
-
-\caption{Function table for ROI system (evaluation period)}
-\label{table:table_ROI_2}
-\end{table}
-\end{landscape}
-
-
-
-
-
-
-
-\bigskip
-The function tables use some abbreviations:\\
-\begin{itemize}
-\item a\_c\_TWR = annual\_compounded\_TWR (see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation}))\\
-\item b = benchmark (see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation}))\\
-\item function(all) = function(tr[1].date, tr[tr.count].date)\\
-\end{itemize}
-\bigskip
-\bigskip
-The function tables use also conditions:\\
-\begin{itemize}
-\item C1 = \textit{$\forall$i $\in$ 2..count$\itholds$tr[i-1].mv + tr[i-1].cf + tr[i-1].af $\neq$ 0}\\
-\item C2 = benchmark\_calculable(all) (see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation}))\\
-\item C3 = \textit{$\forall$i $\in$ di(start)+1..di(end)$\itholds$tr[i-1].mv + tr[i-1].cf + tr[i-1].af $\neq$ 0}\\
-\item C4 = benchmark\_calculable(start,end) (see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation}))\\
-\item Start\_Valid = $\lnot$ (Start\_Invalid) = (start $\in$ dates$\cup$\{null\}) $\wedge$ (start in ISO format)\\
-(if Start\_Valid $\wedge$ start=null, then start=tr[1].date)\\
-\item End\_Valid = $\lnot$ (End\_Invalid) = (end $\in$ dates$\cup$\{null\}) $\wedge$ (end in ISO format)\\
-(if End\_Valid $\wedge$ end=null, then end=tr[tr.count].date)\\
-
-
-\end{itemize}
-\bigskip
-\bigskip
-The function tables provide errors and warnings messages:\\
-\begin{itemize}
-\item E1 = "Invalid\_Evaluation\_Period"
-\item E2 = "Invalid\_file"
-\item W1 =  "Benchmark for the whole input is not calculable"
-\item W2 = "The benchmarks are not calculable"
-\item W3 = "The TWR for the whole input is not calculable"
-\item W4 = W1+W3
-\item W5 = W1+W2+W3
-\item W6 = "The TWR's are not calculable"
-\item W7 = W1+W6
-\item W8 = W2+W6
-\end{itemize}
-
-\newpage
 
 %%%%%%%%%%%%%%%%%%%
 \subsection{Function tables}
 
-\subsubsection{Function table for the TWRs}
+\subsubsection{Abbreviations, conditions and messages}
+{\centering
+\begin{longtable}{|l|p{11cm}|}
+\hline
+\textbf{Abbreviation} & \textbf{Description}\\
+
+\hline
+first & tr[1].date \\
+
+\hline
+last & tr[tr.count].date\\
+
+\hline
+ a\_c\_TWR & annual\_compounded\_TWR\\
+& (see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation})) \\
+
+\hline
+ b & benchmark (see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation}))\\
+
+
+
+\hline
+\end{longtable}
+
+\centering
+\begin{longtable}{|l|p{12cm}|}
+\hline
+\textbf{Condition} & \textbf{Description}\\
+
+\hline
+C1 & \textit{$\forall$i $\in$ 2..count$\itholds$tr[i-1].mv + tr[i-1].cf + tr[i-1].af $\neq$ 0}\\
+
+\hline
+C2 & \textit{$\forall$i $\in$ di(start)+1..di(end)$\itholds$tr[i-1].mv + tr[i-1].cf + tr[i-1].af $\neq$ 0}\\
+
+\hline
+C3 & benchmark\_calculable(first,last)\\
+& (see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation}))\\
+
+\hline
+C4 & benchmark\_calculable(start,end)\\
+&(see TWR\_ROI\_CALCULATION (Fig.~\ref{tab:twr_calculation}))\\
+
+\hline
+ Start\_Valid & (start $\in$ dates$\cup$\{null\}) $\wedge$ (start in ISO format)\\
+& (if Start\_Valid $\wedge$ start=null, then start=tr[1].date)\\
+
+\hline
+ End\_Valid & (end $\in$ dates$\cup$\{null\}) $\wedge$ (end in ISO format)\\
+&(if End\_Valid $\wedge$ end=null, then end=tr[tr.count].date)\\
+
+\hline
+Name & (csvfile.name = null)\\
+
+\hline
+\end{longtable}
+
+\centering
+\begin{longtable}{|l|p{13cm}|}
+\hline
+\textbf{Message} & \textbf{Description}\\
+
+\hline
+ E & "Invalid file"\\
+
+\hline
+W & "Invalid evaluation period"\\
+
+\hline
+W1 & "The TWR for the whole input is not calculable"\\
+
+\hline
+W2 & "The TWR's are not calculable"\\
+
+\hline
+W3 & W + W1\\
+
+\hline
+W4 &  "Benchmark for the whole input is not calculable"\\
+
+\hline
+W5 & "The benchmarks are not calculable"\\
+
+\hline
+W6 & W + W4\\
+
+\hline
+W7 & "Incomplete file: absence of name"\\
+
+\hline
+
+\end{longtable}
+}
 
 \begin{landscape}
+\subsubsection{Calculation of the TWRs}
+
 \begin{table}[H]
 {
 \centering
-
 \begin{tabular}{|l|l|l|l||l|l|l|l|}
 \hline
-\multicolumn{4}{|c||}{} & Error & Warning &TWR (whole input) & TWR (evaluation period)\\ 
+\multicolumn{4}{|c||}{} & Error & Warning &TWR & TWR\\ 
+\multicolumn{4}{|l||}{}&&& (whole input) & (evaluation period)\\
 
 \hline
 Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & \multicolumn{2}{|l||}{C1} & | & W & a\_c\_TWR(first,last) & |\\ 
@@ -786,7 +712,7 @@ Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & \multicolumn{2}{|l||}{C1} & | & 
 & end $\le$ start & \multicolumn{2}{|l||}{} &&& &\\
 
 \cline{3-8}
-& & \multicolumn{2}{|l||}{$\lnot$C1} & | & W9 & | & |\\ 
+& & \multicolumn{2}{|l||}{$\lnot$C1} & | & W3 & | & |\\ 
 
 
 \cline{2-8}
@@ -795,10 +721,10 @@ Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & \multicolumn{2}{|l||}{C1} & | & 
 & end$>$start   & \multicolumn{2}{|l||}{}&&&&\\
 
 \cline{3-8}
-&& $\lnot$C1 & C3 & | & W3 & | & a\_c\_TWR(start,end)\\
+&& $\lnot$C1 & C2 & | & W1 & | & a\_c\_TWR(start,end)\\
 
 \cline{4-8}
-&& & $\lnot$C3 & | & W6 & | & |\\
+&& & $\lnot$C2 & | & W2 & | & |\\
 
 \hline
 \multicolumn{4}{|l||}{Invalid$\_$CSV} & E & | & | & |\\ 
@@ -816,9 +742,9 @@ Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & \multicolumn{2}{|l||}{C1} & | & 
 %%%
 
 
-\subsubsection{Function table for the ROIs}
 
 \begin{landscape}
+\subsubsection{Calculation of the ROIs}
 
 \begin{table}[H]
 {
@@ -852,9 +778,9 @@ Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & |& W & | & |\\
 
 %%%
 
-\subsubsection{Function table for the benchmarks}
 
 \begin{landscape}
+\subsubsection{Calculation of the benchmarks}
 
 \begin{table}[H]
 {
@@ -862,26 +788,28 @@ Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & |& W & | & |\\
 
 \begin{tabular}{|l|l|l|l||l|l|l|l|}
 \hline
-\multicolumn{4}{|c||}{} & Error & Warning & Benchmark (whole input) & Benchmark (evaluation period)\\ 
+\multicolumn{4}{|c||}{} & Error & Warning & Benchmark & Benchmark\\ 
+\multicolumn{4}{|l||}{}&&&(whole input) & (evaluation period)\\
+
 
 \hline
-Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & \multicolumn{2}{|l||}{C2} & | & W & b(first,last) & |\\ 
+Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & \multicolumn{2}{|l||}{C3} & | & W & b(first,last) & |\\ 
 & $\lnot$(End$\_$Valid) $\vee$& \multicolumn{2}{|l||}{} &&& &\\
 & end $\le$ start & \multicolumn{2}{|l||}{} & &&&\\
 
 \cline{3-8}
-& & \multicolumn{2}{|l||}{$\lnot$C2}& | & W10 & | & |\\ 
+& & \multicolumn{2}{|l||}{$\lnot$C3}& | & W6 & | & |\\ 
 
 \cline{2-8}
-& Start$\_$Valid  $\wedge$  & \multicolumn{2}{|l||}{C2} & | & | & b(first,last) & b(start,end)\\ 
+& Start$\_$Valid  $\wedge$  & \multicolumn{2}{|l||}{C3} & | & | & b(first,last) & b(start,end)\\ 
 & End$\_$Valid $\wedge$  & \multicolumn{2}{|l||}{} &&&&\\
 & end$>$start   & \multicolumn{2}{|l||}{}&&&&\\
 
 \cline{3-8}
-&& $\lnot$C2 & C4 & | & W1 & | & b(start,end)\\
+&& $\lnot$C3 & C4 & | & W4 & | & b(start,end)\\
 
 \cline{4-8}
-&& & $\lnot$C4 & | & W2 & | & |\\
+&& & $\lnot$C4 & | & W5 & | & |\\
 
 \hline
 \multicolumn{4}{|l||}{Invalid$\_$CSV} & E & |& |& |\\ 
@@ -895,6 +823,213 @@ Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & \multicolumn{2}{|l||}{C2} & | & 
 \end{table}
 \end{landscape}
 
+%%%
+
+\subsubsection{Name of the portfolio history}
+
+\begin{table}[H]
+{
+\centering
+
+\begin{tabular}{|l||l|}
+\hline
+ & Warning\\ 
+
+\hline
+Name  & |\\ 
+
+\hline
+$\lnot$Name & W7 \\ 
+
+\hline
+\end{tabular}
+
+\caption{Function table for ROI system (name of the portfolio history)}
+\label{table:ftable_name}
+}
+\end{table}
+
+
+
+
+\section{Acceptance tests}
+
+\bigskip
+{\centering
+\begin{tabular}{|p{1.2in}|p{4in}|}
+\hline
+\textbf{Test Case ID} & T1 - test\_date\_invalid.csv \\ 
+\hline
+\textbf{Description} & Verify that an invalid date raises an error.\\
+\hline
+\textbf{Requirement IDs tested} & R3.1 \\ 
+\hline
+\textbf{Type} & Negative \\ 
+\hline
+\textbf{Initial State} & A directory containing the CSV file.\\
+\hline 
+\textbf{Action} & Execute the ROI system on the CSV file \\
+\hline 
+\textbf{Consequences} & Output : "Error: Invalid file." \\ 
+\hline
+\end{tabular}
+%%%%
+\bigskip\bigskip
+\centering
+\begin{tabular}{|p{1.2in}|p{4in}|}
+\hline
+\textbf{Test Case ID} & T2 - test\_date\_invalid\_February.csv \\ 
+\hline
+\textbf{Description} & Verify that an invalid date (because of the leap years) raises an error.\\
+\hline
+\textbf{Requirement IDs tested} & R3.1 \\ 
+\hline
+\textbf{Type} & Negative \\ 
+\hline
+\textbf{Initial State} & A directory containing the CSV file.\\
+\hline 
+\textbf{Action} & Execute the ROI system on the CSV file \\
+\hline 
+\textbf{Consequences} & Output : "Error: Invalid file." \\ 
+\hline
+\end{tabular}
+%%%%
+\bigskip
+\centering
+\begin{tabular}{|p{1.2in}|p{4in}|}
+\hline
+\textbf{Test Case ID} & T3 - test\_tuple\_without\_date.csv \\ 
+\hline
+\textbf{Description} & Verify that a tuple without a date raises an error.\\
+\hline
+\textbf{Requirement IDs tested} & E5.5 - R3.1 \\ 
+\hline
+\textbf{Type} & Negative \\ 
+\hline
+\textbf{Initial State} & A directory containing the CSV file.\\
+\hline 
+\textbf{Action} & Execute the ROI system on the CSV file \\
+\hline 
+\textbf{Consequences} & Output : "Error: Invalid file." \\ 
+\hline
+\end{tabular}
+%%%%
+\bigskip
+\centering
+\begin{tabular}{|p{1.2in}|p{4in}|}
+\hline
+\textbf{Test Case ID} & T4 - test\_negative\_market\_value.csv \\ 
+\hline
+\textbf{Description} & Verify that a negative market value raises an error.\\
+\hline
+\textbf{Requirement IDs tested} & E5.5 - R3.1 \\ 
+\hline
+\textbf{Type} & Negative \\ 
+\hline
+\textbf{Initial State} & A directory containing the CSV file.\\
+\hline 
+\textbf{Action} & Execute the ROI system on the CSV file \\
+\hline 
+\textbf{Consequences} & Output : "Error: Invalid file." \\ 
+\hline
+\end{tabular}
+%%%%
+\bigskip
+\centering
+\begin{tabular}{|p{1.2in}|p{4in}|}
+\hline
+\textbf{Test Case ID} & T5 - test\_dates\_non\_unique.csv \\ 
+\hline
+\textbf{Description} & Verify that two tuples with the same date raise an error.\\
+\hline
+\textbf{Requirement IDs tested} & E5.6 - R3.1 \\ 
+\hline
+\textbf{Type} & Negative \\ 
+\hline
+\textbf{Initial State} & A directory containing the CSV file.\\
+\hline 
+\textbf{Action} & Execute the ROI system on the CSV file \\
+\hline 
+\textbf{Consequences} & Output : "Error: Invalid file." \\ 
+\hline
+\end{tabular}
+%%%%
+\bigskip
+\centering
+\begin{tabular}{|p{1.2in}|p{4in}|}
+\hline
+\textbf{Test Case ID} & T6 - test\_dates\_non\_ordered.csv \\ 
+\hline
+\textbf{Description} & Verify that tuples which are not ordered raise an error.\\
+\hline
+\textbf{Requirement IDs tested} & E5.6 - R3.1 \\ 
+\hline
+\textbf{Type} & Negative \\ 
+\hline
+\textbf{Initial State} & A directory containing the CSV file.\\
+\hline 
+\textbf{Action} & Execute the ROI system on the CSV file \\
+\hline 
+\textbf{Consequences} & Output : "Error: Invalid file." \\ 
+\hline
+\end{tabular}
+%%%%
+\bigskip
+\centering
+\begin{tabular}{|p{1.2in}|p{4in}|}
+\hline
+\textbf{Test Case ID} & T7 - test\_withdraw.csv \\ 
+\hline
+\textbf{Description} & Verify that a withdraw which is greater that the market value raises an error.\\
+\hline
+\textbf{Requirement IDs tested} & E5.7 - R3.1 \\ 
+\hline
+\textbf{Type} & Negative \\ 
+\hline
+\textbf{Initial State} & A directory containing the CSV file.\\
+\hline 
+\textbf{Action} & Execute the ROI system on the CSV file \\
+\hline 
+\textbf{Consequences} & Output : "Error: Invalid file." \\ 
+\hline
+\end{tabular}
+%%%%
+\bigskip
+\centering
+\begin{tabular}{|p{1.2in}|p{4in}|}
+\hline
+\textbf{Test Case ID} & T8 - test\_grow.csv \\ 
+\hline
+\textbf{Description} & Verify that an account which grow from zero market value and cash flow raises an error.\\
+\hline
+\textbf{Requirement IDs tested} & E5.8 - R3.1 \\ 
+\hline
+\textbf{Type} & Negative \\ 
+\hline
+\textbf{Initial State} & A directory containing the CSV file.\\
+\hline 
+\textbf{Action} & Execute the ROI system on the CSV file \\
+\hline 
+\textbf{Consequences} & Output : "Error: Invalid file." \\ 
+\hline
+\end{tabular}
+}
+
+
+
+
+
+
+
+\section{Requirements Traceability matrix}
+
+\begin{tabular}{|p{1.5in}|p{3.5in}|}
+\hline
+\textbf{Requirement ID}	 & \textbf{Test Case IDs}\\ 
+\hline
+R3.1 & T1, T2, T3, T4, T5, T6, T7, T8\\
+\hline
+\end{tabular}
 
 
 
@@ -904,10 +1039,6 @@ Valid$\_$CSV & $\lnot$(Start$\_$Valid) $\vee$ & \multicolumn{2}{|l||}{C2} & | & 
 
 \section{REGEXP}
 
-\begin{figure}
-\input{inputs/regexp}
-\caption{Type REGEXP for regular expressions over printing characters}
-\end{figure}
 
 A set of strings is used as the model for regular expressions. We use prefix operators for the Kleene closure (e.g. $*x$ where $x$ is a regular expression such as $\{\squote{hello}\}$) and iteration at least one or more (e.g. $\textrm{+}x$) rather than suffix operators. Note that where there is no confusion we use \squote{hello} instead of $\{\squote{hello}\}$ where the set is a singleton. 
 
@@ -923,6 +1054,12 @@ d = &\squote{0} | \squote{1} | \cdots |\squote{9}
 \end{align}
 
 In the above we use the convention that \squote{e}, for example, really stands for the single set $\{\squote{e}\}$.
+
+
+\begin{figure} [H]
+\input{inputs/regexp}
+\caption{Type REGEXP for regular expressions over printing characters}
+\end{figure}
 
 %  x^0
 %=    { definition }
@@ -946,6 +1083,111 @@ In the above we use the convention that \squote{e}, for example, really stands f
 %=    { one point rule }
 %   w ∈ x
 %%%%%%%%%%%%%%%%%%
+
+
+\section{DATE}
+The specification of the date module is provided on the following page.
+\newpage
+
+\centering 
+%\begin{mdframed}%%Put a frame around the figure
+%\subfigure[Module for DATE]{
+    
+%\begin{tikzpicture}
+%\begin{class}[text width=11cm]{type DATE}{0, 0}
+%\attribute{$\cset DATE$\newlineindent
+%$\qquad \eqdef date(year,month,day:\nat)$\comment injective constructor\newlineindent 
+%$\qquad\qquad \require valid\_date(year,month,date)$}
+%\attribute{\const $year,month,day\in DATE \tfun \nat$}
+%\attribute{\axiom $\forall d \in DATE \itholds d = date(year(d), month(d), day(d))$}
+%\attribute{\query
+%$valid\_date(y,m, d:\nat):\Bl$\newlineindent
+%$\quad\qquad\eqdef$ $\ll$Table in Fig.~\ref{tabexp:valid-date}$\gg$ \newlineindent
+%\comment is $(y,m,d)$ a valid date?}
+%\attribute{\query $leap\_year(y:\nat): \Bl$\newlineindent
+%$\qquad\eqdef mod(y,4)=0 ~\land~ mod(y,400) \notin \{100, 200, 300\}$\newlineindent
+%\require $y \ge 1583$}
+%\attribute{\query $to\_string(d:DATE): \St$ \newlineindent
+%$\qquad\eqdef d.year.to\_string + ``-"$\newlineindent 
+%$\qquad\qquad + d.month.to\_string + ``-"$\newlineindent
+%$\qquad\qquad + d.day.to\_string$}
+%
+%\attribute{\query $\textbf{~infix~} ``\cong" (d1,d2: DATE): \Bl$\newlineindent
+%$\qquad\eqdef d1.month = d2.month \land d1.day=d2.day$\newlineindent
+%\comment $``\cong"$ has higher precedence\newlineindent
+%$\qquad\qquad$ than predicate logic operators 
+%}
+%\end{class}
+%\end{tikzpicture}
+%\label{subfig:date}
+
+\begin{table}[H]
+{
+\centering
+\begin{tabular}{|l|}
+
+\hline
+\multicolumn{1}{|c|}{\textbf{type DATE}}\\
+
+\hline
+\textbf{carrier set} DATE\\
+$\qquad$date $\eqdef$ (year, month, day : $\mathbb{N}$)    -- injective constructor\\
+$\qquad$$\qquad$\textbf{require} valid\_date(year, month, day)\\
+\textbf{const} year, month, day $\in$ DATE -$\rightarrow$  $\mathbb{N}$\\
+\textbf{axiom} $\forall$ d $\in$ DATE $ \itholds$d = date(year(d), month(d), day(d))\\
+\textbf{query} valid\_date(y,m, d:$\mathbb{N}$) : $\mathbb{B}$\\
+$\qquad$$\eqdef$ $<$$<$Table below$>$$>$\\
+\textbf{query} leap\_year(y : $\mathbb{N}$) : $\mathbb{B}$\\
+$\qquad$$\eqdef$ mod(y, 4) = 0 $\land$ mod(y, 400) $\notin$ {100,200,300)}\\
+$\qquad$$\qquad$\textbf{require} y $\ge$ 1583\\
+
+
+\hline
+\end{tabular}
+}
+\end{table}
+
+
+%%%%%%%%%%%%%%%
+%\subfigure[Tabular expression for query: $valid\_date(y,m,d:\nat):\Bl$]{
+%\small
+%%%Stuff
+\begin{table}[H]
+{
+\centering
+\begin{tabular}{|l|l|l|l|l|}
+\multicolumn{5}{l}{Below: $ly$ abbreviates $leap\_year$}\\
+\hline
+\multicolumn{4}{|c|}{} & $valid\_date$ \\ 
+\hline
+$~~ (1583 \leq y \leq 9999)$ & \multicolumn{3}{l|}{$m\in \{1,3,5,7,8,10,12\}$} &true\\ 
+\cline{2-5}
+
+$\land (1 \leq m \leq  12)$ & $m\in \{4,6,9,11\}$ & \multicolumn{2}{c|}{$d \leq 30$} &true \\ 
+\cline{3-5}
+$\land (1 \leq d \leq 31)$ &  & \multicolumn{2}{c|}{$d>30$} &false\\ 
+\cline{2-5}
+
+& $m=2$ & $ly(y)$ & $d\leq 29$ &true\\ 
+\cline{4-5}
+&  &  & $d>29$ &false\\ 
+\cline{3-5}
+&  & $\lnot ly(y)$ & $d\leq 28$ &true\\ 
+\cline{4-5}
+&  &  & $d>28$ &false\\ 
+\cline{1-5}
+\multicolumn{4}{|l|}{not the above } &false\\ 
+\hline
+\end{tabular}
+}
+\end{table}
+%%\caption{Tabular expression for query $valid\_date$}
+%\label{tabexp:valid-date}
+%\normalsize
+%}
+%\end{mdframed}%%Put a frame around the figure
+
+%%%%%%%%%%%%%%%
 
 
 
